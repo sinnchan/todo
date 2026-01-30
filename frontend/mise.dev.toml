@@ -1,0 +1,6 @@
+[tools]
+android-sdk = "19.0"
+java = "17.0.2"
+
+[shell_alias]
+adb = "$ANDROID_HOME/platform-tools/adb"

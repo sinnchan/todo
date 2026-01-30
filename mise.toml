@@ -5,3 +5,4 @@ config_roots = ["frontend/*", "backend/*"]
 
 [env]
 MISE_EXPERIMENTAL = 1
+MISE_ENV = "dev"
