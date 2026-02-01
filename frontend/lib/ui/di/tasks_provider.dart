@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:todo/app/share/logger.dart';
 import 'package:todo/domain/task/task_entity.dart';
 import 'package:todo/domain/task/task_repository.dart';
 import 'package:todo/domain/task/task_sort.dart';
@@ -76,27 +75,46 @@ class Tasks extends _$Tasks {
   TaskSortSpec? _sortSpec;
   UserId? _userId;
   String? _nextToken;
+  bool _showCompleted = true;
   bool _isFetching = false;
   bool _hasMore = true;
+  int _buildToken = 0;
 
   @override
   Future<TasksState> build(UserId userId) async {
+    final buildToken = ++_buildToken;
     _userId = userId;
-    _repo = await ref.read(taskRepositoryProvider.future);
-    final settings = await ref.read(userSettingsProvider(userId).future);
-    _sortSpec = TaskSortSpec(
+    ref.onDispose(() {
+      _buildToken++;
+      _subscription?.cancel();
+    });
+    _repo = await ref.watch(taskRepositoryProvider.future);
+    if (!ref.mounted || buildToken != _buildToken) {
+      return TasksState.empty();
+    }
+    final settings = await ref.watch(userSettingsProvider(userId).future);
+    if (!ref.mounted || buildToken != _buildToken) {
+      return TasksState.empty();
+    }
+    final previousSortSpec = _sortSpec;
+    final nextSortSpec = TaskSortSpec(
       key: settings.sortKey,
       direction: settings.sortDirection,
     );
-    _resetPaging();
-    ref.onDispose(() {
-      _subscription?.cancel();
-    });
-    _listenSettings();
+    final sortChanged = previousSortSpec?.key != nextSortSpec.key ||
+        previousSortSpec?.direction != nextSortSpec.direction;
+    _sortSpec = nextSortSpec;
+    _showCompleted = settings.showCompleted;
+    if (previousSortSpec == null || sortChanged) {
+      _resetPaging();
+    }
 
     final completer = Completer<TasksState>();
     _subscribe(userId, completer);
     final initialState = await completer.future;
+    if (!ref.mounted || buildToken != _buildToken) {
+      return TasksState.empty();
+    }
     unawaited(_prefetchIfNeeded(initialState.ids.length));
     return initialState;
   }
@@ -119,34 +137,11 @@ class Tasks extends _$Tasks {
       );
       _nextToken = nextToken;
       _hasMore = nextToken != null;
-    } catch (e, st) {
-      logger.w('failed to fetch tasks page', e, st);
+    } catch (_) {
     } finally {
       _isFetching = false;
       _updateStatus();
     }
-  }
-
-  void _listenSettings() {
-    final userId = _userId;
-    if (userId == null) return;
-    ref.listen(userSettingsProvider(userId), (previous, next) {
-      final settings = next.valueOrNull;
-      if (settings == null) return;
-      final nextSort = TaskSortSpec(
-        key: settings.sortKey,
-        direction: settings.sortDirection,
-      );
-      if (_sortSpec?.key == nextSort.key &&
-          _sortSpec?.direction == nextSort.direction) {
-        return;
-      }
-      _sortSpec = nextSort;
-      _resetPaging();
-      _subscribe(userId, null);
-      _updateStatus();
-      unawaited(_prefetchIfNeeded(state.valueOrNull?.ids.length ?? 0));
-    });
   }
 
   void _subscribe(UserId userId, Completer<TasksState>? completer) {
@@ -155,7 +150,9 @@ class Tasks extends _$Tasks {
     if (repo == null || sortSpec == null) return;
 
     _subscription?.cancel();
-    _subscription = repo.getTasks(userId, sortSpec).listen(
+    _subscription = repo
+        .getTasks(userId, sortSpec, showCompleted: _showCompleted)
+        .listen(
       (ids) {
         final nextState = TasksState(
           ids: ids,
@@ -167,9 +164,6 @@ class Tasks extends _$Tasks {
         }
         state = AsyncData(nextState);
       },
-      onError: (error, stackTrace) {
-        logger.w('failed to load tasks', error, stackTrace);
-      },
     );
   }
 
@@ -179,7 +173,7 @@ class Tasks extends _$Tasks {
   }
 
   void _updateStatus() {
-    final current = state.valueOrNull ?? TasksState.empty();
+    final current = state.asData?.value ?? TasksState.empty();
     state = AsyncData(
       current.copyWith(
         isFetching: _isFetching,

@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:todo/app/share/logger.dart';
 import 'package:todo/domain/task/task_entity.dart';
 import 'package:todo/domain/task/task_repository.dart';
 import 'package:todo/domain/task/task_sort.dart';
@@ -39,8 +38,12 @@ class TaskRepositoryImpl implements TaskRepository {
   }
 
   @override
-  Stream<List<TaskId>> getTasks(UserId id, TaskSortSpec sortSpec) {
-    return _dao.getTasks(id, sortSpec);
+  Stream<List<TaskId>> getTasks(
+    UserId id,
+    TaskSortSpec sortSpec, {
+    required bool showCompleted,
+  }) {
+    return _dao.getTasks(id, sortSpec, showCompleted: showCompleted);
   }
 
   @override
@@ -65,24 +68,24 @@ class TaskRepositoryImpl implements TaskRepository {
   Future<void> _syncCreate(Task task) async {
     try {
       await _api.createTask(task);
-    } catch (e, st) {
-      logger.w('failed to sync task create', e, st);
+    } catch (_) {
+      return;
     }
   }
 
   Future<void> _syncUpdate(Task task) async {
     try {
       await _api.updateTask(task);
-    } catch (e, st) {
-      logger.w('failed to sync task update', e, st);
+    } catch (_) {
+      return;
     }
   }
 
   Future<void> _syncDelete(TaskId id) async {
     try {
       await _api.deleteTask(id);
-    } catch (e, st) {
-      logger.w('failed to sync task delete', e, st);
+    } catch (_) {
+      return;
     }
   }
 }

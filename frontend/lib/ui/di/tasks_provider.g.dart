@@ -163,7 +163,7 @@ final class TasksProvider extends $AsyncNotifierProvider<Tasks, TasksState> {
   }
 }
 
-String _$tasksHash() => r'4bd8f719a6724b7c76c317e6bcaa572aac4cd7e9';
+String _$tasksHash() => r'3fc2f5a52da4035c3773597b35bb504669df2109';
 
 final class TasksFamily extends $Family
     with

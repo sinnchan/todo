@@ -45,9 +45,19 @@ class TasksDao {
     }
   }
 
-  Stream<List<TaskId>> getTasks(UserId id, TaskSortSpec sortSpec) async* {
+  Stream<List<TaskId>> getTasks(
+    UserId id,
+    TaskSortSpec sortSpec, {
+    required bool showCompleted,
+  }) async* {
     List<TaskId> snapshot() {
-      final tasks = box.values.where((task) => task.owner == id).toList();
+      final tasks = box.values
+          .where(
+            (task) =>
+                task.owner == id &&
+                (showCompleted || !(task.isCompleted ?? false)),
+          )
+          .toList();
       tasks.sort((a, b) => _compareTasks(a, b, sortSpec));
       return tasks.map((task) => TaskId(task.id)).toList();
     }

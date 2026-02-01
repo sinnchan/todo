@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:animated_list_plus/animated_list_plus.dart';
 import 'package:animated_list_plus/transitions.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:todo/domain/task/task_values.dart';
 import 'package:todo/domain/user/user_values.dart';
 import 'package:todo/ui/di/tasks_provider.dart';
 import 'package:todo/ui/share/task/task_item.dart';
@@ -19,9 +20,17 @@ class TaskList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tasksAsync = ref.watch(tasksProvider(userId));
-    final state = tasksAsync.valueOrNull ?? TasksState.empty();
+    final state = tasksAsync.asData?.value ?? TasksState.empty();
     final taskIds = state.ids;
     final isFetching = state.isFetching;
+
+    if (tasksAsync.hasError) {
+      return Center(
+        child: Text(
+          'Failed to load tasks: ${tasksAsync.error}',
+        ),
+      );
+    }
 
     if (tasksAsync.isLoading && taskIds.isEmpty) {
       return const Center(child: CircularProgressIndicator());

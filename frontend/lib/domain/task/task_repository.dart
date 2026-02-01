@@ -8,7 +8,11 @@ abstract interface class TaskRepository {
   Future<void> updateTask(Task task);
   Future<void> deleteTask(TaskId id);
   Stream<Task> getTask(TaskId id);
-  Stream<List<TaskId>> getTasks(UserId id, TaskSortSpec sortSpec);
+  Stream<List<TaskId>> getTasks(
+    UserId id,
+    TaskSortSpec sortSpec, {
+    required bool showCompleted,
+  });
   Future<String?> fetchTasksPage({
     required UserId userId,
     required TaskSortSpec sortSpec,
