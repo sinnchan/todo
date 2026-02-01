@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:animated_list_plus/animated_list_plus.dart';
+import 'package:animated_list_plus/transitions.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todo/domain/user/user_values.dart';
 import 'package:todo/ui/di/tasks_provider.dart';
@@ -32,26 +34,60 @@ class TaskList extends ConsumerWidget {
         }
         return false;
       },
-      child: ListView.separated(
+      child: CustomScrollView(
         key: PageStorageKey('task_list_${userId.id}'),
-        padding: padding,
-        itemCount: taskIds.length + (isFetching ? 1 : 0),
-        separatorBuilder: (_, _) => const SizedBox(height: 8),
-        itemBuilder: (context, index) {
-          if (index >= taskIds.length) {
-            return const Padding(
-              padding: EdgeInsets.symmetric(vertical: 12),
-              child: Center(
-                child: SizedBox(
-                  width: 24,
-                  height: 24,
-                  child: CircularProgressIndicator(strokeWidth: 2),
+        slivers: [
+          SliverPadding(
+            padding: padding,
+            sliver: SliverImplicitlyAnimatedList<TaskId>(
+              items: taskIds,
+              areItemsTheSame: (a, b) => a.id == b.id,
+              itemBuilder: (context, animation, id, index) {
+                return SizeFadeTransition(
+                  animation: animation,
+                  curve: Curves.easeOutCubic,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: TaskItem(
+                      key: ValueKey(id.id),
+                      id: id,
+                    ),
+                  ),
+                );
+              },
+              removeItemBuilder: (context, animation, id) {
+                return SizeFadeTransition(
+                  animation: animation,
+                  curve: Curves.easeOutCubic,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: TaskItem(
+                      key: ValueKey(id.id),
+                      id: id,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+          if (isFetching)
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.only(
+                  left: padding.left,
+                  right: padding.right,
+                  bottom: padding.bottom,
+                ),
+                child: const Center(
+                  child: SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ),
                 ),
               ),
-            );
-          }
-          return TaskItem(id: taskIds[index]);
-        },
+            ),
+        ],
       ),
     );
   }

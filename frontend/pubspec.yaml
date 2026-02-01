@@ -11,6 +11,7 @@ dependencies:
   amplify_auth_cognito: ^2.9.0
   amplify_authenticator: ^2.4.1
   amplify_flutter: ^2.9.0
+  animated_list_plus: ^0.5.2
   cupertino_icons: ^1.0.8
   dart_scope_functions: ^1.0.6
   flutter:
