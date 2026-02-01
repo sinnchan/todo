@@ -1,12 +1,16 @@
-experimental_monorepo_root = true
-
-[monorepo]
-config_roots = ["frontend/*", "backend/*"]
-
 [env]
 MISE_EXPERIMENTAL = 1
 MISE_ENV = "dev"
+FRONTEND_AMPLIFY_DIR = "frontend/lib/infra/api/amplify"
 
 [tools]
 node = "20.20.0"
 flutter = "3.38.9"
+
+[tasks.amplify_gen_model]
+dir = "backend"
+run = "npx ampx generate graphql-client-code --format modelgen --model-target dart --out ../$FRONTEND_AMPLIFY_DIR/gen/models"
+
+[tasks.amplify_sandbox]
+dir = "backend"
+run = "npx ampx sandbox --outputs-format dart --outputs-out-dir ../$FRONTEND_AMPLIFY_DIR/gen"
