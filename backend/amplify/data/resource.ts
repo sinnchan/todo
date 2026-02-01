@@ -8,7 +8,7 @@ const schema = a.schema({
       description: a.string(),
       order: a.integer(),
       datetime: a.datetime().required(),
-      done: a.boolean().default(false).required(),
+      isCompleted: a.boolean().default(false).required(),
     })
     .authorization((allow) => [allow.ownerDefinedIn('owner')])
     .secondaryIndexes((index) => [

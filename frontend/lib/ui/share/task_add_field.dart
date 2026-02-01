@@ -52,7 +52,7 @@ class TaskAddField extends HookConsumerWidget {
         description: null,
         order: null,
         datetime: now,
-        done: false,
+        isCompleted: false,
         createdAt: now,
         updatedAt: now,
       );

@@ -14,7 +14,7 @@ abstract class Task with _$Task {
     required String? description,
     required int? order,
     required DateTime? datetime,
-    required bool? done,
+    required bool? isCompleted,
     required DateTime? createdAt,
     required DateTime? updatedAt,
   }) = _Task;

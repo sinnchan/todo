@@ -23,7 +23,7 @@ class DbTaskAdapter extends TypeAdapter<DbTask> {
       description: fields[3] as String?,
       order: (fields[4] as num?)?.toInt(),
       datetime: fields[5] as DateTime?,
-      done: fields[6] as bool?,
+      isCompleted: fields[6] as bool?,
       createdAt: fields[7] as DateTime?,
       updatedAt: fields[8] as DateTime?,
     );
@@ -46,7 +46,7 @@ class DbTaskAdapter extends TypeAdapter<DbTask> {
       ..writeByte(5)
       ..write(obj.datetime)
       ..writeByte(6)
-      ..write(obj.done)
+      ..write(obj.isCompleted)
       ..writeByte(7)
       ..write(obj.createdAt)
       ..writeByte(8)

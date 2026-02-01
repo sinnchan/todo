@@ -114,13 +114,13 @@ class TaskItem extends HookConsumerWidget {
     final toggling = useState(false);
     final deleting = useState(false);
 
-    Future<void> toggleDone(Task task) async {
+    Future<void> toggleCompleted(Task task) async {
       if (toggling.value || deleting.value) return;
       toggling.value = true;
       try {
         final repo = await ref.read(taskRepositoryProvider.future);
         final updated = task.copyWith(
-          done: !(task.done ?? false),
+          isCompleted: !(task.isCompleted ?? false),
           updatedAt: DateTime.now(),
         );
         await repo.updateTask(updated);
@@ -148,15 +148,14 @@ class TaskItem extends HookConsumerWidget {
               child: ListTile(
                 title: Text(task.title ?? 'Untitled'),
                 leading: IconButton(
-                  tooltip: (task.done ?? false) ? 'Mark not done' : 'Mark done',
                   onPressed: toggling.value || deleting.value
                       ? null
-                      : () => toggleDone(task),
+                      : () => toggleCompleted(task),
                   icon: Icon(
-                    (task.done ?? false)
+                    (task.isCompleted ?? false)
                         ? Icons.check_circle
                         : Icons.radio_button_unchecked,
-                    color: (task.done ?? false)
+                    color: (task.isCompleted ?? false)
                         ? theme.colorScheme.primary
                         : theme.colorScheme.outline,
                   ),

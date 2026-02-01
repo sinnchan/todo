@@ -14,7 +14,7 @@ abstract class DbTask with _$DbTask {
     @HiveField(3) required String? description,
     @HiveField(4) required int? order,
     @HiveField(5) required DateTime? datetime,
-    @HiveField(6) required bool? done,
+    @HiveField(6) required bool? isCompleted,
     @HiveField(7) required DateTime? createdAt,
     @HiveField(8) required DateTime? updatedAt,
   }) = _DbTask;

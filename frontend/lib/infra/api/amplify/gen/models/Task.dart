@@ -32,7 +32,7 @@ class Task extends amplify_core.Model {
   final String? _description;
   final int? _order;
   final amplify_core.TemporalDateTime? _datetime;
-  final bool? _done;
+  final bool? _isCompleted;
   final amplify_core.TemporalDateTime? _createdAt;
   final amplify_core.TemporalDateTime? _updatedAt;
 
@@ -87,9 +87,9 @@ class Task extends amplify_core.Model {
     }
   }
   
-  bool get done {
+  bool get isCompleted {
     try {
-      return _done!;
+      return _isCompleted!;
     } catch(e) {
       throw amplify_core.AmplifyCodeGenModelException(
           amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
@@ -108,9 +108,9 @@ class Task extends amplify_core.Model {
     return _updatedAt;
   }
   
-  const Task._internal({required this.id, owner, required title, description, order, required datetime, required done, createdAt, updatedAt}): _owner = owner, _title = title, _description = description, _order = order, _datetime = datetime, _done = done, _createdAt = createdAt, _updatedAt = updatedAt;
+  const Task._internal({required this.id, owner, required title, description, order, required datetime, required isCompleted, createdAt, updatedAt}): _owner = owner, _title = title, _description = description, _order = order, _datetime = datetime, _isCompleted = isCompleted, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory Task({String? id, String? owner, required String title, String? description, int? order, required amplify_core.TemporalDateTime datetime, required bool done}) {
+  factory Task({String? id, String? owner, required String title, String? description, int? order, required amplify_core.TemporalDateTime datetime, required bool isCompleted}) {
     return Task._internal(
       id: id == null ? amplify_core.UUID.getUUID() : id,
       owner: owner,
@@ -118,7 +118,7 @@ class Task extends amplify_core.Model {
       description: description,
       order: order,
       datetime: datetime,
-      done: done);
+      isCompleted: isCompleted);
   }
   
   bool equals(Object other) {
@@ -135,7 +135,7 @@ class Task extends amplify_core.Model {
       _description == other._description &&
       _order == other._order &&
       _datetime == other._datetime &&
-      _done == other._done;
+      _isCompleted == other._isCompleted;
   }
   
   @override
@@ -152,7 +152,7 @@ class Task extends amplify_core.Model {
     buffer.write("description=" + "$_description" + ", ");
     buffer.write("order=" + (_order != null ? _order!.toString() : "null") + ", ");
     buffer.write("datetime=" + (_datetime != null ? _datetime!.format() : "null") + ", ");
-    buffer.write("done=" + (_done != null ? _done!.toString() : "null") + ", ");
+    buffer.write("isCompleted=" + (_isCompleted != null ? _isCompleted!.toString() : "null") + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
     buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
@@ -160,7 +160,7 @@ class Task extends amplify_core.Model {
     return buffer.toString();
   }
   
-  Task copyWith({String? owner, String? title, String? description, int? order, amplify_core.TemporalDateTime? datetime, bool? done}) {
+  Task copyWith({String? owner, String? title, String? description, int? order, amplify_core.TemporalDateTime? datetime, bool? isCompleted}) {
     return Task._internal(
       id: id,
       owner: owner ?? this.owner,
@@ -168,7 +168,7 @@ class Task extends amplify_core.Model {
       description: description ?? this.description,
       order: order ?? this.order,
       datetime: datetime ?? this.datetime,
-      done: done ?? this.done);
+      isCompleted: isCompleted ?? this.isCompleted);
   }
   
   Task copyWithModelFieldValues({
@@ -177,7 +177,7 @@ class Task extends amplify_core.Model {
     ModelFieldValue<String?>? description,
     ModelFieldValue<int?>? order,
     ModelFieldValue<amplify_core.TemporalDateTime>? datetime,
-    ModelFieldValue<bool>? done
+    ModelFieldValue<bool>? isCompleted
   }) {
     return Task._internal(
       id: id,
@@ -186,7 +186,7 @@ class Task extends amplify_core.Model {
       description: description == null ? this.description : description.value,
       order: order == null ? this.order : order.value,
       datetime: datetime == null ? this.datetime : datetime.value,
-      done: done == null ? this.done : done.value
+      isCompleted: isCompleted == null ? this.isCompleted : isCompleted.value
     );
   }
   
@@ -197,12 +197,12 @@ class Task extends amplify_core.Model {
       _description = json['description'],
       _order = (json['order'] as num?)?.toInt(),
       _datetime = json['datetime'] != null ? amplify_core.TemporalDateTime.fromString(json['datetime']) : null,
-      _done = json['done'],
+      _isCompleted = json['isCompleted'],
       _createdAt = json['createdAt'] != null ? amplify_core.TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? amplify_core.TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'owner': _owner, 'title': _title, 'description': _description, 'order': _order, 'datetime': _datetime?.format(), 'done': _done, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'owner': _owner, 'title': _title, 'description': _description, 'order': _order, 'datetime': _datetime?.format(), 'isCompleted': _isCompleted, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
   
   Map<String, Object?> toMap() => {
@@ -212,7 +212,7 @@ class Task extends amplify_core.Model {
     'description': _description,
     'order': _order,
     'datetime': _datetime,
-    'done': _done,
+    'isCompleted': _isCompleted,
     'createdAt': _createdAt,
     'updatedAt': _updatedAt
   };
@@ -224,7 +224,7 @@ class Task extends amplify_core.Model {
   static final DESCRIPTION = amplify_core.QueryField(fieldName: "description");
   static final ORDER = amplify_core.QueryField(fieldName: "order");
   static final DATETIME = amplify_core.QueryField(fieldName: "datetime");
-  static final DONE = amplify_core.QueryField(fieldName: "done");
+  static final ISCOMPLETED = amplify_core.QueryField(fieldName: "isCompleted");
   static var schema = amplify_core.Model.defineSchema(define: (amplify_core.ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Task";
     modelSchemaDefinition.pluralName = "Tasks";
@@ -280,7 +280,7 @@ class Task extends amplify_core.Model {
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
-      key: Task.DONE,
+      key: Task.ISCOMPLETED,
       isRequired: true,
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.bool)
     ));
