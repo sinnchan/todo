@@ -4,15 +4,18 @@
 
 import 'package:hive_ce/hive.dart';
 import 'package:todo/infra/db/task/db_task.dart';
+import 'package:todo/infra/db/user_settings/db_user_setting_model.dart';
 
 extension HiveRegistrar on HiveInterface {
   void registerAdapters() {
     registerAdapter(DbTaskAdapter());
+    registerAdapter(DbUserSettingModelAdapter());
   }
 }
 
 extension IsolatedHiveRegistrar on IsolatedHiveInterface {
   void registerAdapters() {
     registerAdapter(DbTaskAdapter());
+    registerAdapter(DbUserSettingModelAdapter());
   }
 }
