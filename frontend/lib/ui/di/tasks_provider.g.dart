@@ -123,17 +123,10 @@ final class TasksDaoProvider
 
 String _$tasksDaoHash() => r'da66570ce14247c562d1ed23ce7a9f530b694421';
 
-@ProviderFor(tasks)
+@ProviderFor(Tasks)
 const tasksProvider = TasksFamily._();
 
-final class TasksProvider
-    extends
-        $FunctionalProvider<
-          AsyncValue<List<TaskId>>,
-          List<TaskId>,
-          Stream<List<TaskId>>
-        >
-    with $FutureModifier<List<TaskId>>, $StreamProvider<List<TaskId>> {
+final class TasksProvider extends $AsyncNotifierProvider<Tasks, TasksState> {
   const TasksProvider._({
     required TasksFamily super.from,
     required UserId super.argument,
@@ -157,15 +150,7 @@ final class TasksProvider
 
   @$internal
   @override
-  $StreamProviderElement<List<TaskId>> $createElement(
-    $ProviderPointer pointer,
-  ) => $StreamProviderElement(pointer);
-
-  @override
-  Stream<List<TaskId>> create(Ref ref) {
-    final argument = this.argument as UserId;
-    return tasks(ref, argument);
-  }
+  Tasks create() => Tasks();
 
   @override
   bool operator ==(Object other) {
@@ -178,10 +163,17 @@ final class TasksProvider
   }
 }
 
-String _$tasksHash() => r'481b9e685510abc73108acfd9ab87867da8e6ea4';
+String _$tasksHash() => r'4bd8f719a6724b7c76c317e6bcaa572aac4cd7e9';
 
 final class TasksFamily extends $Family
-    with $FunctionalFamilyOverride<Stream<List<TaskId>>, UserId> {
+    with
+        $ClassFamilyOverride<
+          Tasks,
+          AsyncValue<TasksState>,
+          TasksState,
+          FutureOr<TasksState>,
+          UserId
+        > {
   const TasksFamily._()
     : super(
         retry: null,
@@ -196,6 +188,28 @@ final class TasksFamily extends $Family
 
   @override
   String toString() => r'tasksProvider';
+}
+
+abstract class _$Tasks extends $AsyncNotifier<TasksState> {
+  late final _$args = ref.$arg as UserId;
+  UserId get userId => _$args;
+
+  FutureOr<TasksState> build(UserId userId);
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build(_$args);
+    final ref = this.ref as $Ref<AsyncValue<TasksState>, TasksState>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<TasksState>, TasksState>,
+              AsyncValue<TasksState>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
 }
 
 @ProviderFor(task)

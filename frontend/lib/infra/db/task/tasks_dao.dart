@@ -53,10 +53,7 @@ class TasksDao {
     }
 
     yield snapshot();
-    yield* box
-        .watch()
-        .where((i) => (i.value as DbTask?)?.owner == id)
-        .map((i) => snapshot());
+    yield* box.watch().map((_) => snapshot());
   }
 
   int _compareTasks(DbTask a, DbTask b, TaskSortSpec sortSpec) {

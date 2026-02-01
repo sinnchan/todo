@@ -16,15 +16,43 @@ class TaskList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final taskIds = ref.watch(tasksProvider(userId)).value ?? [];
+    final tasksAsync = ref.watch(tasksProvider(userId));
+    final state = tasksAsync.valueOrNull ?? TasksState.empty();
+    final taskIds = state.ids;
+    final isFetching = state.isFetching;
 
-    return ListView.separated(
-      padding: padding,
-      itemCount: taskIds.length,
-      separatorBuilder: (_, _) => const SizedBox(height: 8),
-      itemBuilder: (context, index) {
-        return TaskItem(id: taskIds[index]);
+    if (tasksAsync.isLoading && taskIds.isEmpty) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    return NotificationListener<ScrollNotification>(
+      onNotification: (notification) {
+        if (notification.metrics.extentAfter < 240) {
+          ref.read(tasksProvider(userId).notifier).fetchNextPage();
+        }
+        return false;
       },
+      child: ListView.separated(
+        key: PageStorageKey('task_list_${userId.id}'),
+        padding: padding,
+        itemCount: taskIds.length + (isFetching ? 1 : 0),
+        separatorBuilder: (_, _) => const SizedBox(height: 8),
+        itemBuilder: (context, index) {
+          if (index >= taskIds.length) {
+            return const Padding(
+              padding: EdgeInsets.symmetric(vertical: 12),
+              child: Center(
+                child: SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+              ),
+            );
+          }
+          return TaskItem(id: taskIds[index]);
+        },
+      ),
     );
   }
 }
