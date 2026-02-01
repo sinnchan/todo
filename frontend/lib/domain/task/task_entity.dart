@@ -10,7 +10,7 @@ abstract class Task with _$Task {
   const factory Task({
     required TaskId id,
     required UserId owner,
-    required String? title,
+    required String title,
     required String? description,
     required int? order,
     required DateTime? datetime,

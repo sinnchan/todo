@@ -19,7 +19,7 @@ class DbTaskAdapter extends TypeAdapter<DbTask> {
     return DbTask(
       id: fields[0] as String,
       owner: fields[1] as String,
-      title: fields[2] as String?,
+      title: fields[2] as String,
       description: fields[3] as String?,
       order: (fields[4] as num?)?.toInt(),
       datetime: fields[5] as DateTime?,

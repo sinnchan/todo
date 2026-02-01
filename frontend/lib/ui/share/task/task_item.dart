@@ -48,7 +48,7 @@ class TaskItem extends HookConsumerWidget {
           data: (task) {
             return Card(
               child: ListTile(
-                title: Text(task.title ?? 'Untitled'),
+                title: Text(task.title),
                 leading: IconButton(
                   onPressed: toggling.value || deleting.value
                       ? null

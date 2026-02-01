@@ -1,5 +1,6 @@
 import 'package:todo/domain/task/task_entity.dart';
 import 'package:todo/domain/task/task_repository.dart';
+import 'package:todo/domain/task/task_sort.dart';
 import 'package:todo/domain/task/task_values.dart';
 import 'package:todo/domain/user/user_values.dart';
 import 'package:todo/infra/db/task/tasks_dao.dart';
@@ -30,7 +31,7 @@ class TaskRepositoryImpl implements TaskRepository {
   }
 
   @override
-  Stream<List<TaskId>> getTasks(UserId id) {
-    return _dao.getTasks(id);
+  Stream<List<TaskId>> getTasks(UserId id, TaskSortSpec sortSpec) {
+    return _dao.getTasks(id, sortSpec);
   }
 }

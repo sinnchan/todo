@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DbTask {
 
-@HiveField(0) String get id;@HiveField(1) String get owner;@HiveField(2) String? get title;@HiveField(3) String? get description;@HiveField(4) int? get order;@HiveField(5) DateTime? get datetime;@HiveField(6) bool? get isCompleted;@HiveField(7) DateTime? get createdAt;@HiveField(8) DateTime? get updatedAt;
+@HiveField(0) String get id;@HiveField(1) String get owner;@HiveField(2) String get title;@HiveField(3) String? get description;@HiveField(4) int? get order;@HiveField(5) DateTime? get datetime;@HiveField(6) bool? get isCompleted;@HiveField(7) DateTime? get createdAt;@HiveField(8) DateTime? get updatedAt;
 /// Create a copy of DbTask
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -45,7 +45,7 @@ abstract mixin class $DbTaskCopyWith<$Res>  {
   factory $DbTaskCopyWith(DbTask value, $Res Function(DbTask) _then) = _$DbTaskCopyWithImpl;
 @useResult
 $Res call({
-@HiveField(0) String id,@HiveField(1) String owner,@HiveField(2) String? title,@HiveField(3) String? description,@HiveField(4) int? order,@HiveField(5) DateTime? datetime,@HiveField(6) bool? isCompleted,@HiveField(7) DateTime? createdAt,@HiveField(8) DateTime? updatedAt
+@HiveField(0) String id,@HiveField(1) String owner,@HiveField(2) String title,@HiveField(3) String? description,@HiveField(4) int? order,@HiveField(5) DateTime? datetime,@HiveField(6) bool? isCompleted,@HiveField(7) DateTime? createdAt,@HiveField(8) DateTime? updatedAt
 });
 
 
@@ -62,12 +62,12 @@ class _$DbTaskCopyWithImpl<$Res>
 
 /// Create a copy of DbTask
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? owner = null,Object? title = freezed,Object? description = freezed,Object? order = freezed,Object? datetime = freezed,Object? isCompleted = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? owner = null,Object? title = null,Object? description = freezed,Object? order = freezed,Object? datetime = freezed,Object? isCompleted = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,owner: null == owner ? _self.owner : owner // ignore: cast_nullable_to_non_nullable
-as String,title: freezed == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
-as String?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as String,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String?,order: freezed == order ? _self.order : order // ignore: cast_nullable_to_non_nullable
 as int?,datetime: freezed == datetime ? _self.datetime : datetime // ignore: cast_nullable_to_non_nullable
 as DateTime?,isCompleted: freezed == isCompleted ? _self.isCompleted : isCompleted // ignore: cast_nullable_to_non_nullable
@@ -158,7 +158,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@HiveField(0)  String id, @HiveField(1)  String owner, @HiveField(2)  String? title, @HiveField(3)  String? description, @HiveField(4)  int? order, @HiveField(5)  DateTime? datetime, @HiveField(6)  bool? isCompleted, @HiveField(7)  DateTime? createdAt, @HiveField(8)  DateTime? updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@HiveField(0)  String id, @HiveField(1)  String owner, @HiveField(2)  String title, @HiveField(3)  String? description, @HiveField(4)  int? order, @HiveField(5)  DateTime? datetime, @HiveField(6)  bool? isCompleted, @HiveField(7)  DateTime? createdAt, @HiveField(8)  DateTime? updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _DbTask() when $default != null:
 return $default(_that.id,_that.owner,_that.title,_that.description,_that.order,_that.datetime,_that.isCompleted,_that.createdAt,_that.updatedAt);case _:
@@ -179,7 +179,7 @@ return $default(_that.id,_that.owner,_that.title,_that.description,_that.order,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@HiveField(0)  String id, @HiveField(1)  String owner, @HiveField(2)  String? title, @HiveField(3)  String? description, @HiveField(4)  int? order, @HiveField(5)  DateTime? datetime, @HiveField(6)  bool? isCompleted, @HiveField(7)  DateTime? createdAt, @HiveField(8)  DateTime? updatedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@HiveField(0)  String id, @HiveField(1)  String owner, @HiveField(2)  String title, @HiveField(3)  String? description, @HiveField(4)  int? order, @HiveField(5)  DateTime? datetime, @HiveField(6)  bool? isCompleted, @HiveField(7)  DateTime? createdAt, @HiveField(8)  DateTime? updatedAt)  $default,) {final _that = this;
 switch (_that) {
 case _DbTask():
 return $default(_that.id,_that.owner,_that.title,_that.description,_that.order,_that.datetime,_that.isCompleted,_that.createdAt,_that.updatedAt);case _:
@@ -199,7 +199,7 @@ return $default(_that.id,_that.owner,_that.title,_that.description,_that.order,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@HiveField(0)  String id, @HiveField(1)  String owner, @HiveField(2)  String? title, @HiveField(3)  String? description, @HiveField(4)  int? order, @HiveField(5)  DateTime? datetime, @HiveField(6)  bool? isCompleted, @HiveField(7)  DateTime? createdAt, @HiveField(8)  DateTime? updatedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@HiveField(0)  String id, @HiveField(1)  String owner, @HiveField(2)  String title, @HiveField(3)  String? description, @HiveField(4)  int? order, @HiveField(5)  DateTime? datetime, @HiveField(6)  bool? isCompleted, @HiveField(7)  DateTime? createdAt, @HiveField(8)  DateTime? updatedAt)?  $default,) {final _that = this;
 switch (_that) {
 case _DbTask() when $default != null:
 return $default(_that.id,_that.owner,_that.title,_that.description,_that.order,_that.datetime,_that.isCompleted,_that.createdAt,_that.updatedAt);case _:
@@ -219,7 +219,7 @@ class _DbTask implements DbTask {
 
 @override@HiveField(0) final  String id;
 @override@HiveField(1) final  String owner;
-@override@HiveField(2) final  String? title;
+@override@HiveField(2) final  String title;
 @override@HiveField(3) final  String? description;
 @override@HiveField(4) final  int? order;
 @override@HiveField(5) final  DateTime? datetime;
@@ -257,7 +257,7 @@ abstract mixin class _$DbTaskCopyWith<$Res> implements $DbTaskCopyWith<$Res> {
   factory _$DbTaskCopyWith(_DbTask value, $Res Function(_DbTask) _then) = __$DbTaskCopyWithImpl;
 @override @useResult
 $Res call({
-@HiveField(0) String id,@HiveField(1) String owner,@HiveField(2) String? title,@HiveField(3) String? description,@HiveField(4) int? order,@HiveField(5) DateTime? datetime,@HiveField(6) bool? isCompleted,@HiveField(7) DateTime? createdAt,@HiveField(8) DateTime? updatedAt
+@HiveField(0) String id,@HiveField(1) String owner,@HiveField(2) String title,@HiveField(3) String? description,@HiveField(4) int? order,@HiveField(5) DateTime? datetime,@HiveField(6) bool? isCompleted,@HiveField(7) DateTime? createdAt,@HiveField(8) DateTime? updatedAt
 });
 
 
@@ -274,12 +274,12 @@ class __$DbTaskCopyWithImpl<$Res>
 
 /// Create a copy of DbTask
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? owner = null,Object? title = freezed,Object? description = freezed,Object? order = freezed,Object? datetime = freezed,Object? isCompleted = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? owner = null,Object? title = null,Object? description = freezed,Object? order = freezed,Object? datetime = freezed,Object? isCompleted = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,}) {
   return _then(_DbTask(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,owner: null == owner ? _self.owner : owner // ignore: cast_nullable_to_non_nullable
-as String,title: freezed == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
-as String?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as String,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String?,order: freezed == order ? _self.order : order // ignore: cast_nullable_to_non_nullable
 as int?,datetime: freezed == datetime ? _self.datetime : datetime // ignore: cast_nullable_to_non_nullable
 as DateTime?,isCompleted: freezed == isCompleted ? _self.isCompleted : isCompleted // ignore: cast_nullable_to_non_nullable

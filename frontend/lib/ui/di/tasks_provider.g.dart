@@ -137,7 +137,7 @@ final class TasksProvider
   }
 }
 
-String _$tasksHash() => r'5636ad84afee0c6dc271728c6d781ce455cc1cb3';
+String _$tasksHash() => r'481b9e685510abc73108acfd9ab87867da8e6ea4';
 
 final class TasksFamily extends $Family
     with $FunctionalFamilyOverride<Stream<List<TaskId>>, UserId> {
@@ -150,7 +150,8 @@ final class TasksFamily extends $Family
         isAutoDispose: true,
       );
 
-  TasksProvider call(UserId id) => TasksProvider._(argument: id, from: this);
+  TasksProvider call(UserId userId) =>
+      TasksProvider._(argument: userId, from: this);
 
   @override
   String toString() => r'tasksProvider';

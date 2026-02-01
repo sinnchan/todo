@@ -7,6 +7,7 @@ import 'package:todo/infra/db/task/db_task.dart';
 import 'package:todo/infra/db/task/tasks_dao.dart';
 import 'package:todo/infra/repository/task_repository.dart';
 import 'package:todo/ui/di/box_provider.dart';
+import 'package:todo/ui/di/service_providers.dart';
 
 part 'tasks_provider.g.dart';
 
@@ -27,9 +28,13 @@ Future<TasksDao> tasksDao(Ref ref) async {
 }
 
 @riverpod
-Stream<List<TaskId>> tasks(Ref ref, UserId id) async* {
-  final repo = await ref.watch(taskRepositoryProvider.future);
-  yield* repo.getTasks(id);
+Stream<List<TaskId>> tasks(Ref ref, UserId userId) async* {
+  final sortService = await ref.watch(sortServiceProvider.future);
+  final taskRepo = await ref.watch(taskRepositoryProvider.future);
+  yield* taskRepo.getTasks(
+    userId,
+    await sortService.getSortSpec(userId),
+  );
 }
 
 @riverpod

@@ -1,4 +1,5 @@
 import 'package:todo/domain/task/task_entity.dart';
+import 'package:todo/domain/task/task_sort.dart';
 import 'package:todo/domain/task/task_values.dart';
 import 'package:todo/domain/user/user_values.dart';
 
@@ -7,5 +8,5 @@ abstract interface class TaskRepository {
   Future<void> updateTask(Task task);
   Future<void> deleteTask(TaskId id);
   Stream<Task> getTask(TaskId id);
-  Stream<List<TaskId>> getTasks(UserId id);
+  Stream<List<TaskId>> getTasks(UserId id, TaskSortSpec sortSpec);
 }

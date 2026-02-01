@@ -9,7 +9,7 @@ part of 'task_entity.dart';
 _Task _$TaskFromJson(Map<String, dynamic> json) => _Task(
   id: json['id'] as TaskId,
   owner: json['owner'] as UserId,
-  title: json['title'] as String?,
+  title: json['title'] as String,
   description: json['description'] as String?,
   order: (json['order'] as num?)?.toInt(),
   datetime: json['datetime'] == null
