@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:todo/domain/settings/repository.dart';
+import 'package:todo/domain/settings/settings_repository.dart';
 import 'package:todo/domain/settings/user_settings.dart';
-import 'package:todo/domain/user/values.dart';
+import 'package:todo/domain/user/user_values.dart';
 import 'package:todo/infra/db/user_settings/db_user_setting_model.dart';
 import 'package:todo/infra/db/user_settings/user_settings_dao.dart';
 import 'package:todo/infra/repository/user_settings_repository.dart';

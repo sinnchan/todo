@@ -1,9 +1,9 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:todo/domain/task/values.dart';
-import 'package:todo/domain/user/values.dart';
+import 'package:todo/domain/task/task_values.dart';
+import 'package:todo/domain/user/user_values.dart';
 
-part 'entity.freezed.dart';
-part 'entity.g.dart';
+part 'task_entity.freezed.dart';
+part 'task_entity.g.dart';
 
 @freezed
 abstract class Task with _$Task {

@@ -1,7 +1,7 @@
 import 'package:hive_ce/hive.dart';
 import 'package:todo/domain/settings/user_settings.dart';
-import 'package:todo/domain/settings/values.dart';
-import 'package:todo/domain/user/values.dart';
+import 'package:todo/domain/settings/settings_values.dart';
+import 'package:todo/domain/user/user_values.dart';
 import 'package:todo/infra/db/user_settings/db_user_setting_mapper.dart';
 import 'package:todo/infra/db/user_settings/db_user_setting_model.dart';
 

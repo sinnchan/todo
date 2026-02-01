@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:todo/domain/settings/values.dart';
-import 'package:todo/domain/user/values.dart';
+import 'package:todo/domain/settings/settings_values.dart';
+import 'package:todo/domain/user/user_values.dart';
 
 part 'user_settings.freezed.dart';
 part 'user_settings.g.dart';

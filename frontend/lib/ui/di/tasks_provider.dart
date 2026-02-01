@@ -1,8 +1,8 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:todo/domain/task/entity.dart';
-import 'package:todo/domain/task/repository.dart';
-import 'package:todo/domain/task/values.dart';
-import 'package:todo/domain/user/values.dart';
+import 'package:todo/domain/task/task_entity.dart';
+import 'package:todo/domain/task/task_repository.dart';
+import 'package:todo/domain/task/task_values.dart';
+import 'package:todo/domain/user/user_values.dart';
 import 'package:todo/infra/db/task/db_task.dart';
 import 'package:todo/infra/db/task/tasks_dao.dart';
 import 'package:todo/infra/repository/task_repository.dart';

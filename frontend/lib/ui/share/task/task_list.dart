@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:todo/domain/user/values.dart';
+import 'package:todo/domain/user/user_values.dart';
 import 'package:todo/ui/di/tasks_provider.dart';
 import 'package:todo/ui/share/task/task_item.dart';
 

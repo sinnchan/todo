@@ -1,7 +1,7 @@
 import 'package:hive_ce/hive.dart';
-import 'package:todo/domain/task/entity.dart';
-import 'package:todo/domain/task/values.dart';
-import 'package:todo/domain/user/values.dart';
+import 'package:todo/domain/task/task_entity.dart';
+import 'package:todo/domain/task/task_values.dart';
+import 'package:todo/domain/user/user_values.dart';
 import 'package:todo/infra/db/task/db_task.dart';
 import 'package:todo/infra/db/task/db_task_mapper.dart';
 

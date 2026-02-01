@@ -2,7 +2,7 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todo/domain/settings/user_settings.dart';
-import 'package:todo/domain/settings/values.dart';
+import 'package:todo/domain/settings/settings_values.dart';
 import 'package:todo/ui/di/settings_providers.dart';
 import 'package:todo/ui/share/use_signed_user_id.dart';
 
