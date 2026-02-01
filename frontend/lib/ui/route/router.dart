@@ -1,29 +1,46 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:todo/domain/user/values.dart';
 import 'package:todo/ui/page/settings/settings_page.dart';
-import 'package:todo/ui/page/top.dart';
+import 'package:todo/ui/page/todo/todo_list_page.dart';
 
 part 'router.g.dart';
 
-@TypedGoRoute<TopPageRoute>(path: '/')
+@TypedGoRoute<TopRoute>(path: '/')
 @immutable
-class TopPageRoute extends GoRouteData with $TopPageRoute {
+class TopRoute extends GoRouteData with $TopRoute {
+  const TopRoute();
+
+  @override
+  FutureOr<String?> redirect(BuildContext context, GoRouterState state) {
+    return TodoListRoute().location;
+  }
+
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return TopPage();
+    return const SizedBox.shrink();
   }
 }
 
-@TypedGoRoute<SettingsRoute>(path: '/:userId/settings')
+@TypedGoRoute<TodoListRoute>(path: '/todo')
 @immutable
-class SettingsRoute extends GoRouteData with $SettingsRoute {
-  const SettingsRoute({required this.userId});
-
-  final String userId;
+class TodoListRoute extends GoRouteData with $TodoListRoute {
+  const TodoListRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return SettingsPage(userId: UserId(userId));
+    return TodoListPage();
+  }
+}
+
+@TypedGoRoute<SettingsRoute>(path: '/settings')
+@immutable
+class SettingsRoute extends GoRouteData with $SettingsRoute {
+  const SettingsRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return SettingsPage();
   }
 }

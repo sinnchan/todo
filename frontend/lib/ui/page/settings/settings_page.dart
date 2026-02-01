@@ -1,37 +1,50 @@
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todo/domain/settings/user_settings.dart';
 import 'package:todo/domain/settings/values.dart';
-import 'package:todo/domain/user/values.dart';
 import 'package:todo/ui/di/settings_providers.dart';
+import 'package:todo/ui/share/use_signed_user_id.dart';
 
 class SettingsPage extends HookConsumerWidget {
-  const SettingsPage({super.key, required this.userId});
-
-  final UserId userId;
+  const SettingsPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final settings = ref.watch(userSettingsProvider(userId));
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Amplify.Auth.signOut();
+            },
+            icon: Icon(Icons.logout),
+          ),
+        ],
       ),
-      body: settings.when(
-        data: (value) => _SettingsBody(
-          settings: value,
-          onChanged: (updated) async {
-            final repo = await ref.read(userSettingsRepositoryProvider.future);
-            await repo.updateSettings(updated);
-          },
-        ),
-        loading: () => const Center(
-          child: CircularProgressIndicator(),
-        ),
-        error: (error, _) => Center(
-          child: Text(error.toString()),
-        ),
+      body: SignedUserIdBuilder(
+        builder: (context, userId) {
+          return ref
+              .watch(userSettingsProvider(userId))
+              .when(
+                data: (value) => _SettingsBody(
+                  settings: value,
+                  onChanged: (updated) async {
+                    final repo = await ref.read(
+                      userSettingsRepositoryProvider.future,
+                    );
+                    await repo.updateSettings(updated);
+                  },
+                ),
+                loading: () => const Center(
+                  child: CircularProgressIndicator(),
+                ),
+                error: (error, _) => Center(
+                  child: Text(error.toString()),
+                ),
+              );
+        },
       ),
     );
   }

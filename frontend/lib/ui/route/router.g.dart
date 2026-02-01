@@ -6,13 +6,13 @@ part of 'router.dart';
 // GoRouterGenerator
 // **************************************************************************
 
-List<RouteBase> get $appRoutes => [$topPageRoute, $settingsRoute];
+List<RouteBase> get $appRoutes => [$topRoute, $todoListRoute, $settingsRoute];
 
-RouteBase get $topPageRoute =>
-    GoRouteData.$route(path: '/', factory: $TopPageRoute._fromState);
+RouteBase get $topRoute =>
+    GoRouteData.$route(path: '/', factory: $TopRoute._fromState);
 
-mixin $TopPageRoute on GoRouteData {
-  static TopPageRoute _fromState(GoRouterState state) => TopPageRoute();
+mixin $TopRoute on GoRouteData {
+  static TopRoute _fromState(GoRouterState state) => const TopRoute();
 
   @override
   String get location => GoRouteData.$location('/');
@@ -31,20 +31,37 @@ mixin $TopPageRoute on GoRouteData {
   void replace(BuildContext context) => context.replace(location);
 }
 
-RouteBase get $settingsRoute => GoRouteData.$route(
-  path: '/:userId/settings',
-  factory: $SettingsRoute._fromState,
-);
+RouteBase get $todoListRoute =>
+    GoRouteData.$route(path: '/todo', factory: $TodoListRoute._fromState);
 
-mixin $SettingsRoute on GoRouteData {
-  static SettingsRoute _fromState(GoRouterState state) =>
-      SettingsRoute(userId: state.pathParameters['userId']!);
-
-  SettingsRoute get _self => this as SettingsRoute;
+mixin $TodoListRoute on GoRouteData {
+  static TodoListRoute _fromState(GoRouterState state) => const TodoListRoute();
 
   @override
-  String get location =>
-      GoRouteData.$location('/${Uri.encodeComponent(_self.userId)}/settings');
+  String get location => GoRouteData.$location('/todo');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $settingsRoute =>
+    GoRouteData.$route(path: '/settings', factory: $SettingsRoute._fromState);
+
+mixin $SettingsRoute on GoRouteData {
+  static SettingsRoute _fromState(GoRouterState state) => const SettingsRoute();
+
+  @override
+  String get location => GoRouteData.$location('/settings');
 
   @override
   void go(BuildContext context) => context.go(location);

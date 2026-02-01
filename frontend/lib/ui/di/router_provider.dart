@@ -6,5 +6,8 @@ part 'router_provider.g.dart';
 
 @riverpod
 GoRouter router(Ref ref) {
-  return GoRouter(routes: $appRoutes);
+  return GoRouter(
+    routes: $appRoutes,
+    initialLocation: '/todo',
+  );
 }
