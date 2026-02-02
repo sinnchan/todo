@@ -78,9 +78,6 @@ class TasksDao {
             ? a.title.compareTo(b.title)
             : b.title.compareTo(a.title);
         break;
-      case SortKey.order:
-        result = _compareNullable(a.order, b.order, ascending);
-        break;
     }
 
     if (result != 0) {

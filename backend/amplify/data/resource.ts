@@ -6,7 +6,6 @@ const schema = a.schema({
       owner: a.string(),
       title: a.string().required(),
       description: a.string(),
-      order: a.integer(),
       datetime: a.datetime(),
       createdAt: a.datetime().required(),
       updatedAt: a.datetime().required(),
@@ -30,10 +29,6 @@ const schema = a.schema({
         .sortKeys(['title'])
         .name('byOwnerTitle')
         .queryField('tasksByOwnerTitle'),
-      index('owner')
-        .sortKeys(['order'])
-        .name('byOwnerOrder')
-        .queryField('tasksByOwnerOrder'),
     ]),
 });
 

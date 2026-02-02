@@ -11,7 +11,6 @@ _Task _$TaskFromJson(Map<String, dynamic> json) => _Task(
   owner: json['owner'] as UserId,
   title: json['title'] as String,
   description: json['description'] as String?,
-  order: (json['order'] as num?)?.toInt(),
   datetime: json['datetime'] == null
       ? null
       : DateTime.parse(json['datetime'] as String),
@@ -25,7 +24,6 @@ Map<String, dynamic> _$TaskToJson(_Task instance) => <String, dynamic>{
   'owner': instance.owner,
   'title': instance.title,
   'description': instance.description,
-  'order': instance.order,
   'datetime': instance.datetime?.toIso8601String(),
   'isCompleted': instance.isCompleted,
   'createdAt': instance.createdAt.toIso8601String(),

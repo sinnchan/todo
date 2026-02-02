@@ -13,7 +13,6 @@ import 'package:todo/infra/api/amplify/gen/models/Task.dart' as api;
 import 'package:todo/infra/api/graphql/gen/schema.graphql.dart';
 import 'package:todo/infra/api/graphql/gen/tasks_by_owner_created_at.graphql.dart';
 import 'package:todo/infra/api/graphql/gen/tasks_by_owner_datetime.graphql.dart';
-import 'package:todo/infra/api/graphql/gen/tasks_by_owner_order.graphql.dart';
 import 'package:todo/infra/api/graphql/gen/tasks_by_owner_title.graphql.dart';
 import 'package:todo/infra/api/graphql/gen/tasks_by_owner_updated_at.graphql.dart';
 import 'package:todo/infra/api/amplify/task/amplify_task_mapper.dart';
@@ -52,12 +51,6 @@ class AmplifyTaskApi implements TaskApi {
         direction: sortSpec.direction,
       ),
       SortKey.title => _fetchByTitle(
-        userId: userId,
-        limit: limit,
-        nextToken: nextToken,
-        direction: sortSpec.direction,
-      ),
-      SortKey.order => _fetchByOrder(
         userId: userId,
         limit: limit,
         nextToken: nextToken,
@@ -201,27 +194,6 @@ class AmplifyTaskApi implements TaskApi {
     );
   }
 
-  Future<TaskApiPage> _fetchByOrder({
-    required UserId userId,
-    required int limit,
-    required SortDirection direction,
-    String? nextToken,
-  }) {
-    return _fetchPage(
-      document: documentNodeQueryTasksByOwnerOrder,
-      variables: Variables$Query$TasksByOwnerOrder(
-        owner: userId.id,
-        limit: limit,
-        nextToken: nextToken,
-        sortDirection: _sortDirection(direction),
-      ).toJson(),
-      fromJson: Query$TasksByOwnerOrder.fromJson,
-      getConnection: (result) => result.tasksByOwnerOrder,
-      getItems: (connection) => connection.items.cast<Object?>(),
-      getNextToken: (connection) => connection.nextToken,
-    );
-  }
-
   Future<Map<String, dynamic>?> _query(
     DocumentNode document,
     Map<String, dynamic> variables,
@@ -287,7 +259,6 @@ class AmplifyTaskApi implements TaskApi {
         owner: t.owner,
         title: t.title,
         description: t.description,
-        order: t.order,
         datetime: t.datetime,
         isCompleted: t.isCompleted,
         createdAt: t.createdAt,
@@ -298,7 +269,6 @@ class AmplifyTaskApi implements TaskApi {
         owner: t.owner,
         title: t.title,
         description: t.description,
-        order: t.order,
         datetime: t.datetime,
         isCompleted: t.isCompleted,
         createdAt: t.createdAt,
@@ -309,7 +279,6 @@ class AmplifyTaskApi implements TaskApi {
         owner: t.owner,
         title: t.title,
         description: t.description,
-        order: t.order,
         datetime: t.datetime,
         isCompleted: t.isCompleted,
         createdAt: t.createdAt,
@@ -320,18 +289,6 @@ class AmplifyTaskApi implements TaskApi {
         owner: t.owner,
         title: t.title,
         description: t.description,
-        order: t.order,
-        datetime: t.datetime,
-        isCompleted: t.isCompleted,
-        createdAt: t.createdAt,
-        updatedAt: t.updatedAt,
-      ),
-      Query$TasksByOwnerOrder$tasksByOwnerOrder$items t => _mapTasks(
-        id: t.id,
-        owner: t.owner,
-        title: t.title,
-        description: t.description,
-        order: t.order,
         datetime: t.datetime,
         isCompleted: t.isCompleted,
         createdAt: t.createdAt,
@@ -346,7 +303,6 @@ class AmplifyTaskApi implements TaskApi {
     required String? owner,
     required String title,
     required String? description,
-    required int? order,
     required DateTime? datetime,
     required bool? isCompleted,
     required DateTime createdAt,
@@ -360,7 +316,6 @@ class AmplifyTaskApi implements TaskApi {
       owner: UserId(owner),
       title: title,
       description: description,
-      order: order,
       datetime: datetime,
       isCompleted: isCompleted,
       createdAt: createdAt,

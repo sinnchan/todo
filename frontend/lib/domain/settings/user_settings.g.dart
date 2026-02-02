@@ -29,7 +29,6 @@ const _$SortKeyEnumMap = {
   SortKey.updatedAt: 'updatedAt',
   SortKey.dueAt: 'dueAt',
   SortKey.title: 'title',
-  SortKey.order: 'order',
 };
 
 const _$SortDirectionEnumMap = {

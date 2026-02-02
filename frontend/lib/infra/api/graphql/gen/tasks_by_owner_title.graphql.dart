@@ -426,13 +426,6 @@ const documentNodeQueryTasksByOwnerTitle = DocumentNode(
                         selectionSet: null,
                       ),
                       FieldNode(
-                        name: NameNode(value: 'order'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null,
-                      ),
-                      FieldNode(
                         name: NameNode(value: 'datetime'),
                         alias: null,
                         arguments: [],
@@ -702,8 +695,7 @@ class Query$TasksByOwnerTitle$tasksByOwnerTitle$items {
     this.owner,
     required this.title,
     this.description,
-    this.order,
-    required this.datetime,
+    this.datetime,
     required this.isCompleted,
     required this.createdAt,
     required this.updatedAt,
@@ -717,7 +709,6 @@ class Query$TasksByOwnerTitle$tasksByOwnerTitle$items {
     final l$owner = json['owner'];
     final l$title = json['title'];
     final l$description = json['description'];
-    final l$order = json['order'];
     final l$datetime = json['datetime'];
     final l$isCompleted = json['isCompleted'];
     final l$createdAt = json['createdAt'];
@@ -728,8 +719,7 @@ class Query$TasksByOwnerTitle$tasksByOwnerTitle$items {
       owner: (l$owner as String?),
       title: (l$title as String),
       description: (l$description as String?),
-      order: (l$order as int?),
-      datetime: fromGraphQLAWSDateTime(l$datetime),
+      datetime: l$datetime == null ? null : fromGraphQLAWSDateTime(l$datetime),
       isCompleted: (l$isCompleted as bool),
       createdAt: fromGraphQLAWSDateTime(l$createdAt),
       updatedAt: fromGraphQLAWSDateTime(l$updatedAt),
@@ -745,9 +735,7 @@ class Query$TasksByOwnerTitle$tasksByOwnerTitle$items {
 
   final String? description;
 
-  final int? order;
-
-  final DateTime datetime;
+  final DateTime? datetime;
 
   final bool isCompleted;
 
@@ -767,10 +755,10 @@ class Query$TasksByOwnerTitle$tasksByOwnerTitle$items {
     _resultData['title'] = l$title;
     final l$description = description;
     _resultData['description'] = l$description;
-    final l$order = order;
-    _resultData['order'] = l$order;
     final l$datetime = datetime;
-    _resultData['datetime'] = toGraphQLAWSDateTime(l$datetime);
+    _resultData['datetime'] = l$datetime == null
+        ? null
+        : toGraphQLAWSDateTime(l$datetime);
     final l$isCompleted = isCompleted;
     _resultData['isCompleted'] = l$isCompleted;
     final l$createdAt = createdAt;
@@ -788,7 +776,6 @@ class Query$TasksByOwnerTitle$tasksByOwnerTitle$items {
     final l$owner = owner;
     final l$title = title;
     final l$description = description;
-    final l$order = order;
     final l$datetime = datetime;
     final l$isCompleted = isCompleted;
     final l$createdAt = createdAt;
@@ -799,7 +786,6 @@ class Query$TasksByOwnerTitle$tasksByOwnerTitle$items {
       l$owner,
       l$title,
       l$description,
-      l$order,
       l$datetime,
       l$isCompleted,
       l$createdAt,
@@ -835,11 +821,6 @@ class Query$TasksByOwnerTitle$tasksByOwnerTitle$items {
     final l$description = description;
     final lOther$description = other.description;
     if (l$description != lOther$description) {
-      return false;
-    }
-    final l$order = order;
-    final lOther$order = other.order;
-    if (l$order != lOther$order) {
       return false;
     }
     final l$datetime = datetime;
@@ -895,7 +876,6 @@ abstract class CopyWith$Query$TasksByOwnerTitle$tasksByOwnerTitle$items<TRes> {
     String? owner,
     String? title,
     String? description,
-    int? order,
     DateTime? datetime,
     bool? isCompleted,
     DateTime? createdAt,
@@ -922,7 +902,6 @@ class _CopyWithImpl$Query$TasksByOwnerTitle$tasksByOwnerTitle$items<TRes>
     Object? owner = _undefined,
     Object? title = _undefined,
     Object? description = _undefined,
-    Object? order = _undefined,
     Object? datetime = _undefined,
     Object? isCompleted = _undefined,
     Object? createdAt = _undefined,
@@ -938,10 +917,9 @@ class _CopyWithImpl$Query$TasksByOwnerTitle$tasksByOwnerTitle$items<TRes>
       description: description == _undefined
           ? _instance.description
           : (description as String?),
-      order: order == _undefined ? _instance.order : (order as int?),
-      datetime: datetime == _undefined || datetime == null
+      datetime: datetime == _undefined
           ? _instance.datetime
-          : (datetime as DateTime),
+          : (datetime as DateTime?),
       isCompleted: isCompleted == _undefined || isCompleted == null
           ? _instance.isCompleted
           : (isCompleted as bool),
@@ -969,7 +947,6 @@ class _CopyWithStubImpl$Query$TasksByOwnerTitle$tasksByOwnerTitle$items<TRes>
     String? owner,
     String? title,
     String? description,
-    int? order,
     DateTime? datetime,
     bool? isCompleted,
     DateTime? createdAt,

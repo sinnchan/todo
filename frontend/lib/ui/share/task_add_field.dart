@@ -50,7 +50,6 @@ class TaskAddField extends HookConsumerWidget {
         owner: userId,
         title: title,
         description: null,
-        order: null,
         datetime: now,
         isCompleted: false,
         createdAt: now,

@@ -21,7 +21,6 @@ class DbTaskAdapter extends TypeAdapter<DbTask> {
       owner: fields[1] as String,
       title: fields[2] as String,
       description: fields[3] as String?,
-      order: (fields[4] as num?)?.toInt(),
       datetime: fields[5] as DateTime?,
       isCompleted: fields[6] as bool?,
       createdAt: fields[7] as DateTime?,
@@ -32,7 +31,7 @@ class DbTaskAdapter extends TypeAdapter<DbTask> {
   @override
   void write(BinaryWriter writer, DbTask obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -41,8 +40,6 @@ class DbTaskAdapter extends TypeAdapter<DbTask> {
       ..write(obj.title)
       ..writeByte(3)
       ..write(obj.description)
-      ..writeByte(4)
-      ..write(obj.order)
       ..writeByte(5)
       ..write(obj.datetime)
       ..writeByte(6)

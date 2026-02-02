@@ -15,7 +15,6 @@ query TasksByOwnerDatetime(
       owner
       title
       description
-      order
       datetime
       isCompleted
       createdAt

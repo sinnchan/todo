@@ -11,9 +11,6 @@ enum SortKey {
 
   /// タイトル順
   title,
-
-  /// 手動
-  order,
 }
 
 enum SortDirection {

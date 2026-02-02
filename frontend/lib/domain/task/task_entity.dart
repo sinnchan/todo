@@ -12,7 +12,6 @@ abstract class Task with _$Task {
     required UserId owner,
     required String title,
     required String? description,
-    required int? order,
     required DateTime? datetime,
     required bool? isCompleted,
     required DateTime createdAt,
