@@ -5,23 +5,18 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:gql/ast.dart';
 import 'package:gql/language.dart';
 import 'package:todo/domain/settings/settings_values.dart';
-import 'package:todo/domain/task/task_entity.dart';
 import 'package:todo/domain/task/task_sort.dart';
-import 'package:todo/domain/task/task_values.dart';
 import 'package:todo/domain/user/user_values.dart';
+import 'package:todo/infra/api/amplify/gen/models/Task.dart' as api;
 import 'package:todo/infra/api/graphql/gen/schema.graphql.dart';
 import 'package:todo/infra/api/graphql/gen/tasks_by_owner_created_at.graphql.dart';
 import 'package:todo/infra/api/graphql/gen/tasks_by_owner_datetime.graphql.dart';
 import 'package:todo/infra/api/graphql/gen/tasks_by_owner_title.graphql.dart';
 import 'package:todo/infra/api/graphql/gen/tasks_by_owner_updated_at.graphql.dart';
-import 'package:todo/infra/api/amplify/task/amplify_task_mapper.dart';
 import 'package:todo/infra/api/task/task_api.dart';
 
 class AmplifyTaskApi implements TaskApi {
-  AmplifyTaskApi({AmplifyTaskMapper? mapper})
-    : _mapper = mapper ?? const AmplifyTaskMapper();
-
-  final AmplifyTaskMapper _mapper;
+  AmplifyTaskApi();
 
   @override
   Future<TaskApiPage> fetchTasks({
@@ -59,25 +54,24 @@ class AmplifyTaskApi implements TaskApi {
   }
 
   @override
-  Future<void> createTask(Task task) async {
+  Future<void> createTask(api.Task task) async {
     await _mutateRaw(
       _createTaskWithLimitMutation,
       {
         'id': task.id,
         'title': task.title,
         'description': task.description,
-        'datetime': task.datetime?.toUtc().toIso8601String(),
-        'createdAt': task.createdAt.toUtc().toIso8601String(),
-        'updatedAt': task.updatedAt.toUtc().toIso8601String(),
-        'isCompleted': task.isCompleted ?? false,
+        'datetime': task.datetime?.getDateTimeInUtc().toIso8601String(),
+        'createdAt': task.createdAt.getDateTimeInUtc().toIso8601String(),
+        'updatedAt': task.updatedAt.getDateTimeInUtc().toIso8601String(),
+        'isCompleted': task.isCompleted,
       },
     );
   }
 
   @override
-  Future<void> updateTask(Task task) async {
-    final apiTask = _mapper.toApi(task);
-    final request = ModelMutations.update(apiTask);
+  Future<void> updateTask(api.Task task) async {
+    final request = ModelMutations.update(task);
     final response = await Amplify.API.mutate(request: request).response;
     if (response.errors.isNotEmpty) {
       throw ApiOperationException(
@@ -88,11 +82,11 @@ class AmplifyTaskApi implements TaskApi {
   }
 
   @override
-  Future<void> deleteTask(TaskId id) async {
+  Future<void> deleteTask(String id) async {
     await _mutateRaw(
       _deleteTaskWithLimitMutation,
       {
-        'id': id.id,
+        'id': id,
       },
     );
   }
@@ -260,12 +254,12 @@ class AmplifyTaskApi implements TaskApi {
     final tasks = items
         .whereType<Object>()
         .map(_mapItem)
-        .whereType<Task>()
+        .whereType<api.Task>()
         .toList(growable: false);
     return TaskApiPage(items: tasks, nextToken: nextToken);
   }
 
-  Task? _mapItem(Object task) {
+  api.Task? _mapItem(Object task) {
     return switch (task) {
       Query$TasksByOwnerCreatedAt$tasksByOwnerCreatedAt$items t => _mapTasks(
         id: t.id,
@@ -311,7 +305,7 @@ class AmplifyTaskApi implements TaskApi {
     };
   }
 
-  Task? _mapTasks({
+  api.Task? _mapTasks({
     required String id,
     required String? owner,
     required String title,
@@ -324,15 +318,15 @@ class AmplifyTaskApi implements TaskApi {
     if (owner == null) {
       return null;
     }
-    return Task(
-      id: TaskId(id),
-      owner: UserId(owner),
+    return api.Task(
+      id: id,
+      owner: owner,
       title: title,
       description: description,
-      datetime: datetime,
-      isCompleted: isCompleted,
-      createdAt: createdAt,
-      updatedAt: updatedAt,
+      datetime: datetime == null ? null : TemporalDateTime(datetime),
+      isCompleted: isCompleted ?? false,
+      createdAt: TemporalDateTime(createdAt),
+      updatedAt: TemporalDateTime(updatedAt),
     );
   }
 }

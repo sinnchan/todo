@@ -6,35 +6,45 @@ import 'package:todo/domain/task/task_sort.dart';
 import 'package:todo/domain/task/task_values.dart';
 import 'package:todo/domain/user/user_values.dart';
 import 'package:todo/infra/api/task/task_api.dart';
+import 'package:todo/infra/api/amplify/task/amplify_task_mapper.dart';
+import 'package:todo/infra/db/task/db_task_mapper.dart';
 import 'package:todo/infra/db/task/tasks_dao.dart';
 
 class TaskRepositoryImpl implements TaskRepository {
-  TaskRepositoryImpl(this._dao, this._api);
+  TaskRepositoryImpl(
+    this._dao,
+    this._api, {
+    DbTaskMapper? dbMapper,
+    AmplifyTaskMapper? apiMapper,
+  })  : _dbMapper = dbMapper ?? const DbTaskMapper(),
+        _apiMapper = apiMapper ?? const AmplifyTaskMapper();
 
   final TasksDao _dao;
   final TaskApi _api;
+  final DbTaskMapper _dbMapper;
+  final AmplifyTaskMapper _apiMapper;
 
   @override
   Future<void> createTask(Task task) async {
-    await _dao.createTask(task);
+    await _dao.createTask(_dbMapper.fromDomain(task));
     unawaited(_syncCreate(task));
   }
 
   @override
   Future<void> deleteTask(TaskId id) async {
-    await _dao.deleteTask(id);
+    await _dao.deleteTask(id.id);
     unawaited(_syncDelete(id));
   }
 
   @override
   Future<void> updateTask(Task task) async {
-    await _dao.updateTask(task);
+    await _dao.updateTask(_dbMapper.fromDomain(task));
     unawaited(_syncUpdate(task));
   }
 
   @override
   Stream<Task> getTask(TaskId id) {
-    return _dao.getTask(id);
+    return _dao.getTask(id.id).map(_dbMapper.toDomain);
   }
 
   @override
@@ -43,7 +53,9 @@ class TaskRepositoryImpl implements TaskRepository {
     TaskSortSpec sortSpec, {
     required bool showCompleted,
   }) {
-    return _dao.getTasks(id, sortSpec, showCompleted: showCompleted);
+    return _dao
+        .getTasks(id.id, sortSpec, showCompleted: showCompleted)
+        .map((ids) => ids.map(TaskId.new).toList(growable: false));
   }
 
   @override
@@ -60,7 +72,8 @@ class TaskRepositoryImpl implements TaskRepository {
       nextToken: nextToken,
     );
     if (page.items.isNotEmpty) {
-      await _dao.upsertTasks(page.items);
+      final tasks = page.items.map(_apiMapper.toDomain);
+      await _dao.upsertTasks(tasks.map(_dbMapper.fromDomain));
     }
     return page.nextToken;
   }
@@ -83,7 +96,7 @@ class TaskRepositoryImpl implements TaskRepository {
 
   Future<void> _syncCreate(Task task) async {
     try {
-      await _api.createTask(task);
+      await _api.createTask(_apiMapper.toApi(task));
     } catch (e, st) {
       Zone.current.handleUncaughtError(e, st);
     }
@@ -91,7 +104,7 @@ class TaskRepositoryImpl implements TaskRepository {
 
   Future<void> _syncUpdate(Task task) async {
     try {
-      await _api.updateTask(task);
+      await _api.updateTask(_apiMapper.toApi(task));
     } catch (e, st) {
       Zone.current.handleUncaughtError(e, st);
     }
@@ -99,7 +112,7 @@ class TaskRepositoryImpl implements TaskRepository {
 
   Future<void> _syncDelete(TaskId id) async {
     try {
-      await _api.deleteTask(id);
+      await _api.deleteTask(id.id);
     } catch (e, st) {
       Zone.current.handleUncaughtError(e, st);
     }

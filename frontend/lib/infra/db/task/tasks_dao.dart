@@ -1,40 +1,35 @@
 import 'package:hive_ce/hive.dart';
 import 'package:todo/domain/settings/settings_values.dart';
-import 'package:todo/domain/task/task_entity.dart';
 import 'package:todo/domain/task/task_sort.dart';
-import 'package:todo/domain/task/task_values.dart';
-import 'package:todo/domain/user/user_values.dart';
 import 'package:todo/infra/db/task/db_task.dart';
-import 'package:todo/infra/db/task/db_task_mapper.dart';
 
 class TasksDao {
-  static const DbTaskMapper _mapper = DbTaskMapper();
   final Box<DbTask> box;
 
   TasksDao(this.box);
 
-  Future<void> createTask(Task task) {
-    return box.put(task.id, _mapper.fromDomain(task));
+  Future<void> createTask(DbTask task) {
+    return box.put(task.id, task);
   }
 
-  Future<void> updateTask(Task task) {
-    return box.put(task.id, _mapper.fromDomain(task));
+  Future<void> updateTask(DbTask task) {
+    return box.put(task.id, task);
   }
 
-  Future<void> deleteTask(TaskId id) {
+  Future<void> deleteTask(String id) {
     return box.delete(id);
   }
 
-  Future<void> upsertTasks(Iterable<Task> tasks) async {
+  Future<void> upsertTasks(Iterable<DbTask> tasks) async {
     if (tasks.isEmpty) return;
     final mapped = <String, DbTask>{};
     for (final task in tasks) {
-      mapped[task.id] = _mapper.fromDomain(task);
+      mapped[task.id] = task;
     }
     await box.putAll(mapped);
   }
 
-  Stream<Task> getTask(TaskId id) async* {
+  Stream<DbTask> getTask(String id) async* {
     if (box.get(id) case final value?) {
       yield _taskFromBoxValue(value);
     }
@@ -45,21 +40,21 @@ class TasksDao {
     }
   }
 
-  Stream<List<TaskId>> getTasks(
-    UserId id,
+  Stream<List<String>> getTasks(
+    String ownerId,
     TaskSortSpec sortSpec, {
     required bool showCompleted,
   }) async* {
-    List<TaskId> snapshot() {
+    List<String> snapshot() {
       final tasks = box.values
           .where(
             (task) =>
-                task.owner == id &&
+                task.owner == ownerId &&
                 (showCompleted || !(task.isCompleted ?? false)),
           )
           .toList();
       tasks.sort((a, b) => _compareTasks(a, b, sortSpec));
-      return tasks.map((task) => TaskId(task.id)).toList();
+      return tasks.map((task) => task.id).toList();
     }
 
     yield snapshot();
@@ -110,9 +105,9 @@ class TasksDao {
     return ascending ? a.compareTo(b) : b.compareTo(a);
   }
 
-  Task _taskFromBoxValue(Object? value) {
+  DbTask _taskFromBoxValue(Object? value) {
     if (value case final DbTask task) {
-      return _mapper.toDomain(task);
+      return task;
     }
     throw StateError('Unexpected task value type: ${value.runtimeType}');
   }
