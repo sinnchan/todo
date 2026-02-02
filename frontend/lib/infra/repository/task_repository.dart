@@ -68,24 +68,24 @@ class TaskRepositoryImpl implements TaskRepository {
   Future<void> _syncCreate(Task task) async {
     try {
       await _api.createTask(task);
-    } catch (_) {
-      return;
+    } catch (e, st) {
+      Zone.current.handleUncaughtError(e, st);
     }
   }
 
   Future<void> _syncUpdate(Task task) async {
     try {
       await _api.updateTask(task);
-    } catch (_) {
-      return;
+    } catch (e, st) {
+      Zone.current.handleUncaughtError(e, st);
     }
   }
 
   Future<void> _syncDelete(TaskId id) async {
     try {
       await _api.deleteTask(id);
-    } catch (_) {
-      return;
+    } catch (e, st) {
+      Zone.current.handleUncaughtError(e, st);
     }
   }
 }

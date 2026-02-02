@@ -3966,6 +3966,7 @@ class Input$ModelTaskFilterInput {
     Input$ModelStringInput? owner,
     Input$ModelStringInput? title,
     Input$ModelStringInput? description,
+    Input$ModelIntInput? order,
     Input$ModelStringInput? datetime,
     Input$ModelStringInput? createdAt,
     Input$ModelStringInput? updatedAt,
@@ -3978,6 +3979,7 @@ class Input$ModelTaskFilterInput {
     if (owner != null) r'owner': owner,
     if (title != null) r'title': title,
     if (description != null) r'description': description,
+    if (order != null) r'order': order,
     if (datetime != null) r'datetime': datetime,
     if (createdAt != null) r'createdAt': createdAt,
     if (updatedAt != null) r'updatedAt': updatedAt,
@@ -4011,6 +4013,12 @@ class Input$ModelTaskFilterInput {
           : Input$ModelStringInput.fromJson(
               (l$description as Map<String, dynamic>),
             );
+    }
+    if (data.containsKey('order')) {
+      final l$order = data['order'];
+      result$data['order'] = l$order == null
+          ? null
+          : Input$ModelIntInput.fromJson((l$order as Map<String, dynamic>));
     }
     if (data.containsKey('datetime')) {
       final l$datetime = data['datetime'];
@@ -4096,6 +4104,8 @@ class Input$ModelTaskFilterInput {
   Input$ModelStringInput? get description =>
       (_$data['description'] as Input$ModelStringInput?);
 
+  Input$ModelIntInput? get order => (_$data['order'] as Input$ModelIntInput?);
+
   Input$ModelStringInput? get datetime =>
       (_$data['datetime'] as Input$ModelStringInput?);
 
@@ -4132,6 +4142,10 @@ class Input$ModelTaskFilterInput {
     if (_$data.containsKey('description')) {
       final l$description = description;
       result$data['description'] = l$description?.toJson();
+    }
+    if (_$data.containsKey('order')) {
+      final l$order = order;
+      result$data['order'] = l$order?.toJson();
     }
     if (_$data.containsKey('datetime')) {
       final l$datetime = datetime;
@@ -4203,6 +4217,14 @@ class Input$ModelTaskFilterInput {
       return false;
     }
     if (l$description != lOther$description) {
+      return false;
+    }
+    final l$order = order;
+    final lOther$order = other.order;
+    if (_$data.containsKey('order') != other._$data.containsKey('order')) {
+      return false;
+    }
+    if (l$order != lOther$order) {
       return false;
     }
     final l$datetime = datetime;
@@ -4303,6 +4325,7 @@ class Input$ModelTaskFilterInput {
     final l$owner = owner;
     final l$title = title;
     final l$description = description;
+    final l$order = order;
     final l$datetime = datetime;
     final l$createdAt = createdAt;
     final l$updatedAt = updatedAt;
@@ -4315,6 +4338,7 @@ class Input$ModelTaskFilterInput {
       _$data.containsKey('owner') ? l$owner : const {},
       _$data.containsKey('title') ? l$title : const {},
       _$data.containsKey('description') ? l$description : const {},
+      _$data.containsKey('order') ? l$order : const {},
       _$data.containsKey('datetime') ? l$datetime : const {},
       _$data.containsKey('createdAt') ? l$createdAt : const {},
       _$data.containsKey('updatedAt') ? l$updatedAt : const {},
@@ -4348,6 +4372,7 @@ abstract class CopyWith$Input$ModelTaskFilterInput<TRes> {
     Input$ModelStringInput? owner,
     Input$ModelStringInput? title,
     Input$ModelStringInput? description,
+    Input$ModelIntInput? order,
     Input$ModelStringInput? datetime,
     Input$ModelStringInput? createdAt,
     Input$ModelStringInput? updatedAt,
@@ -4360,6 +4385,7 @@ abstract class CopyWith$Input$ModelTaskFilterInput<TRes> {
   CopyWith$Input$ModelStringInput<TRes> get owner;
   CopyWith$Input$ModelStringInput<TRes> get title;
   CopyWith$Input$ModelStringInput<TRes> get description;
+  CopyWith$Input$ModelIntInput<TRes> get order;
   CopyWith$Input$ModelStringInput<TRes> get datetime;
   CopyWith$Input$ModelStringInput<TRes> get createdAt;
   CopyWith$Input$ModelStringInput<TRes> get updatedAt;
@@ -4398,6 +4424,7 @@ class _CopyWithImpl$Input$ModelTaskFilterInput<TRes>
     Object? owner = _undefined,
     Object? title = _undefined,
     Object? description = _undefined,
+    Object? order = _undefined,
     Object? datetime = _undefined,
     Object? createdAt = _undefined,
     Object? updatedAt = _undefined,
@@ -4413,6 +4440,7 @@ class _CopyWithImpl$Input$ModelTaskFilterInput<TRes>
       if (title != _undefined) 'title': (title as Input$ModelStringInput?),
       if (description != _undefined)
         'description': (description as Input$ModelStringInput?),
+      if (order != _undefined) 'order': (order as Input$ModelIntInput?),
       if (datetime != _undefined)
         'datetime': (datetime as Input$ModelStringInput?),
       if (createdAt != _undefined)
@@ -4450,6 +4478,13 @@ class _CopyWithImpl$Input$ModelTaskFilterInput<TRes>
             local$description,
             (e) => call(description: e),
           );
+  }
+
+  CopyWith$Input$ModelIntInput<TRes> get order {
+    final local$order = _instance.order;
+    return local$order == null
+        ? CopyWith$Input$ModelIntInput.stub(_then(_instance))
+        : CopyWith$Input$ModelIntInput(local$order, (e) => call(order: e));
   }
 
   CopyWith$Input$ModelStringInput<TRes> get datetime {
@@ -4549,6 +4584,7 @@ class _CopyWithStubImpl$Input$ModelTaskFilterInput<TRes>
     Input$ModelStringInput? owner,
     Input$ModelStringInput? title,
     Input$ModelStringInput? description,
+    Input$ModelIntInput? order,
     Input$ModelStringInput? datetime,
     Input$ModelStringInput? createdAt,
     Input$ModelStringInput? updatedAt,
@@ -4567,6 +4603,9 @@ class _CopyWithStubImpl$Input$ModelTaskFilterInput<TRes>
 
   CopyWith$Input$ModelStringInput<TRes> get description =>
       CopyWith$Input$ModelStringInput.stub(_res);
+
+  CopyWith$Input$ModelIntInput<TRes> get order =>
+      CopyWith$Input$ModelIntInput.stub(_res);
 
   CopyWith$Input$ModelStringInput<TRes> get datetime =>
       CopyWith$Input$ModelStringInput.stub(_res);
@@ -4596,6 +4635,7 @@ class Input$ModelTaskConditionInput {
     Input$ModelStringInput? owner,
     Input$ModelStringInput? title,
     Input$ModelStringInput? description,
+    Input$ModelIntInput? order,
     Input$ModelStringInput? datetime,
     Input$ModelStringInput? createdAt,
     Input$ModelStringInput? updatedAt,
@@ -4607,6 +4647,7 @@ class Input$ModelTaskConditionInput {
     if (owner != null) r'owner': owner,
     if (title != null) r'title': title,
     if (description != null) r'description': description,
+    if (order != null) r'order': order,
     if (datetime != null) r'datetime': datetime,
     if (createdAt != null) r'createdAt': createdAt,
     if (updatedAt != null) r'updatedAt': updatedAt,
@@ -4639,6 +4680,12 @@ class Input$ModelTaskConditionInput {
           : Input$ModelStringInput.fromJson(
               (l$description as Map<String, dynamic>),
             );
+    }
+    if (data.containsKey('order')) {
+      final l$order = data['order'];
+      result$data['order'] = l$order == null
+          ? null
+          : Input$ModelIntInput.fromJson((l$order as Map<String, dynamic>));
     }
     if (data.containsKey('datetime')) {
       final l$datetime = data['datetime'];
@@ -4718,6 +4765,8 @@ class Input$ModelTaskConditionInput {
   Input$ModelStringInput? get description =>
       (_$data['description'] as Input$ModelStringInput?);
 
+  Input$ModelIntInput? get order => (_$data['order'] as Input$ModelIntInput?);
+
   Input$ModelStringInput? get datetime =>
       (_$data['datetime'] as Input$ModelStringInput?);
 
@@ -4752,6 +4801,10 @@ class Input$ModelTaskConditionInput {
     if (_$data.containsKey('description')) {
       final l$description = description;
       result$data['description'] = l$description?.toJson();
+    }
+    if (_$data.containsKey('order')) {
+      final l$order = order;
+      result$data['order'] = l$order?.toJson();
     }
     if (_$data.containsKey('datetime')) {
       final l$datetime = datetime;
@@ -4819,6 +4872,14 @@ class Input$ModelTaskConditionInput {
       return false;
     }
     if (l$description != lOther$description) {
+      return false;
+    }
+    final l$order = order;
+    final lOther$order = other.order;
+    if (_$data.containsKey('order') != other._$data.containsKey('order')) {
+      return false;
+    }
+    if (l$order != lOther$order) {
       return false;
     }
     final l$datetime = datetime;
@@ -4911,6 +4972,7 @@ class Input$ModelTaskConditionInput {
     final l$owner = owner;
     final l$title = title;
     final l$description = description;
+    final l$order = order;
     final l$datetime = datetime;
     final l$createdAt = createdAt;
     final l$updatedAt = updatedAt;
@@ -4922,6 +4984,7 @@ class Input$ModelTaskConditionInput {
       _$data.containsKey('owner') ? l$owner : const {},
       _$data.containsKey('title') ? l$title : const {},
       _$data.containsKey('description') ? l$description : const {},
+      _$data.containsKey('order') ? l$order : const {},
       _$data.containsKey('datetime') ? l$datetime : const {},
       _$data.containsKey('createdAt') ? l$createdAt : const {},
       _$data.containsKey('updatedAt') ? l$updatedAt : const {},
@@ -4954,6 +5017,7 @@ abstract class CopyWith$Input$ModelTaskConditionInput<TRes> {
     Input$ModelStringInput? owner,
     Input$ModelStringInput? title,
     Input$ModelStringInput? description,
+    Input$ModelIntInput? order,
     Input$ModelStringInput? datetime,
     Input$ModelStringInput? createdAt,
     Input$ModelStringInput? updatedAt,
@@ -4965,6 +5029,7 @@ abstract class CopyWith$Input$ModelTaskConditionInput<TRes> {
   CopyWith$Input$ModelStringInput<TRes> get owner;
   CopyWith$Input$ModelStringInput<TRes> get title;
   CopyWith$Input$ModelStringInput<TRes> get description;
+  CopyWith$Input$ModelIntInput<TRes> get order;
   CopyWith$Input$ModelStringInput<TRes> get datetime;
   CopyWith$Input$ModelStringInput<TRes> get createdAt;
   CopyWith$Input$ModelStringInput<TRes> get updatedAt;
@@ -5002,6 +5067,7 @@ class _CopyWithImpl$Input$ModelTaskConditionInput<TRes>
     Object? owner = _undefined,
     Object? title = _undefined,
     Object? description = _undefined,
+    Object? order = _undefined,
     Object? datetime = _undefined,
     Object? createdAt = _undefined,
     Object? updatedAt = _undefined,
@@ -5016,6 +5082,7 @@ class _CopyWithImpl$Input$ModelTaskConditionInput<TRes>
       if (title != _undefined) 'title': (title as Input$ModelStringInput?),
       if (description != _undefined)
         'description': (description as Input$ModelStringInput?),
+      if (order != _undefined) 'order': (order as Input$ModelIntInput?),
       if (datetime != _undefined)
         'datetime': (datetime as Input$ModelStringInput?),
       if (createdAt != _undefined)
@@ -5053,6 +5120,13 @@ class _CopyWithImpl$Input$ModelTaskConditionInput<TRes>
             local$description,
             (e) => call(description: e),
           );
+  }
+
+  CopyWith$Input$ModelIntInput<TRes> get order {
+    final local$order = _instance.order;
+    return local$order == null
+        ? CopyWith$Input$ModelIntInput.stub(_then(_instance))
+        : CopyWith$Input$ModelIntInput(local$order, (e) => call(order: e));
   }
 
   CopyWith$Input$ModelStringInput<TRes> get datetime {
@@ -5150,6 +5224,7 @@ class _CopyWithStubImpl$Input$ModelTaskConditionInput<TRes>
     Input$ModelStringInput? owner,
     Input$ModelStringInput? title,
     Input$ModelStringInput? description,
+    Input$ModelIntInput? order,
     Input$ModelStringInput? datetime,
     Input$ModelStringInput? createdAt,
     Input$ModelStringInput? updatedAt,
@@ -5167,6 +5242,9 @@ class _CopyWithStubImpl$Input$ModelTaskConditionInput<TRes>
 
   CopyWith$Input$ModelStringInput<TRes> get description =>
       CopyWith$Input$ModelStringInput.stub(_res);
+
+  CopyWith$Input$ModelIntInput<TRes> get order =>
+      CopyWith$Input$ModelIntInput.stub(_res);
 
   CopyWith$Input$ModelStringInput<TRes> get datetime =>
       CopyWith$Input$ModelStringInput.stub(_res);
@@ -5193,6 +5271,7 @@ class Input$CreateTaskInput {
     String? owner,
     required String title,
     String? description,
+    int? order,
     DateTime? datetime,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -5202,6 +5281,7 @@ class Input$CreateTaskInput {
     if (owner != null) r'owner': owner,
     r'title': title,
     if (description != null) r'description': description,
+    if (order != null) r'order': order,
     if (datetime != null) r'datetime': datetime,
     if (createdAt != null) r'createdAt': createdAt,
     if (updatedAt != null) r'updatedAt': updatedAt,
@@ -5222,6 +5302,10 @@ class Input$CreateTaskInput {
     if (data.containsKey('description')) {
       final l$description = data['description'];
       result$data['description'] = (l$description as String?);
+    }
+    if (data.containsKey('order')) {
+      final l$order = data['order'];
+      result$data['order'] = (l$order as int?);
     }
     if (data.containsKey('datetime')) {
       final l$datetime = data['datetime'];
@@ -5258,6 +5342,8 @@ class Input$CreateTaskInput {
 
   String? get description => (_$data['description'] as String?);
 
+  int? get order => (_$data['order'] as int?);
+
   DateTime? get datetime => (_$data['datetime'] as DateTime?);
 
   DateTime? get createdAt => (_$data['createdAt'] as DateTime?);
@@ -5279,6 +5365,10 @@ class Input$CreateTaskInput {
     if (_$data.containsKey('description')) {
       final l$description = description;
       result$data['description'] = l$description;
+    }
+    if (_$data.containsKey('order')) {
+      final l$order = order;
+      result$data['order'] = l$order;
     }
     if (_$data.containsKey('datetime')) {
       final l$datetime = datetime;
@@ -5340,6 +5430,14 @@ class Input$CreateTaskInput {
     if (l$description != lOther$description) {
       return false;
     }
+    final l$order = order;
+    final lOther$order = other.order;
+    if (_$data.containsKey('order') != other._$data.containsKey('order')) {
+      return false;
+    }
+    if (l$order != lOther$order) {
+      return false;
+    }
     final l$datetime = datetime;
     final lOther$datetime = other.datetime;
     if (_$data.containsKey('datetime') !=
@@ -5388,6 +5486,7 @@ class Input$CreateTaskInput {
     final l$owner = owner;
     final l$title = title;
     final l$description = description;
+    final l$order = order;
     final l$datetime = datetime;
     final l$createdAt = createdAt;
     final l$updatedAt = updatedAt;
@@ -5397,6 +5496,7 @@ class Input$CreateTaskInput {
       _$data.containsKey('owner') ? l$owner : const {},
       l$title,
       _$data.containsKey('description') ? l$description : const {},
+      _$data.containsKey('order') ? l$order : const {},
       _$data.containsKey('datetime') ? l$datetime : const {},
       _$data.containsKey('createdAt') ? l$createdAt : const {},
       _$data.containsKey('updatedAt') ? l$updatedAt : const {},
@@ -5419,6 +5519,7 @@ abstract class CopyWith$Input$CreateTaskInput<TRes> {
     String? owner,
     String? title,
     String? description,
+    int? order,
     DateTime? datetime,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -5441,6 +5542,7 @@ class _CopyWithImpl$Input$CreateTaskInput<TRes>
     Object? owner = _undefined,
     Object? title = _undefined,
     Object? description = _undefined,
+    Object? order = _undefined,
     Object? datetime = _undefined,
     Object? createdAt = _undefined,
     Object? updatedAt = _undefined,
@@ -5452,6 +5554,7 @@ class _CopyWithImpl$Input$CreateTaskInput<TRes>
       if (owner != _undefined) 'owner': (owner as String?),
       if (title != _undefined && title != null) 'title': (title as String),
       if (description != _undefined) 'description': (description as String?),
+      if (order != _undefined) 'order': (order as int?),
       if (datetime != _undefined) 'datetime': (datetime as DateTime?),
       if (createdAt != _undefined) 'createdAt': (createdAt as DateTime?),
       if (updatedAt != _undefined) 'updatedAt': (updatedAt as DateTime?),
@@ -5472,6 +5575,7 @@ class _CopyWithStubImpl$Input$CreateTaskInput<TRes>
     String? owner,
     String? title,
     String? description,
+    int? order,
     DateTime? datetime,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -5485,6 +5589,7 @@ class Input$UpdateTaskInput {
     String? owner,
     String? title,
     String? description,
+    int? order,
     DateTime? datetime,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -5494,6 +5599,7 @@ class Input$UpdateTaskInput {
     if (owner != null) r'owner': owner,
     if (title != null) r'title': title,
     if (description != null) r'description': description,
+    if (order != null) r'order': order,
     if (datetime != null) r'datetime': datetime,
     if (createdAt != null) r'createdAt': createdAt,
     if (updatedAt != null) r'updatedAt': updatedAt,
@@ -5516,6 +5622,10 @@ class Input$UpdateTaskInput {
     if (data.containsKey('description')) {
       final l$description = data['description'];
       result$data['description'] = (l$description as String?);
+    }
+    if (data.containsKey('order')) {
+      final l$order = data['order'];
+      result$data['order'] = (l$order as int?);
     }
     if (data.containsKey('datetime')) {
       final l$datetime = data['datetime'];
@@ -5552,6 +5662,8 @@ class Input$UpdateTaskInput {
 
   String? get description => (_$data['description'] as String?);
 
+  int? get order => (_$data['order'] as int?);
+
   DateTime? get datetime => (_$data['datetime'] as DateTime?);
 
   DateTime? get createdAt => (_$data['createdAt'] as DateTime?);
@@ -5575,6 +5687,10 @@ class Input$UpdateTaskInput {
     if (_$data.containsKey('description')) {
       final l$description = description;
       result$data['description'] = l$description;
+    }
+    if (_$data.containsKey('order')) {
+      final l$order = order;
+      result$data['order'] = l$order;
     }
     if (_$data.containsKey('datetime')) {
       final l$datetime = datetime;
@@ -5639,6 +5755,14 @@ class Input$UpdateTaskInput {
     if (l$description != lOther$description) {
       return false;
     }
+    final l$order = order;
+    final lOther$order = other.order;
+    if (_$data.containsKey('order') != other._$data.containsKey('order')) {
+      return false;
+    }
+    if (l$order != lOther$order) {
+      return false;
+    }
     final l$datetime = datetime;
     final lOther$datetime = other.datetime;
     if (_$data.containsKey('datetime') !=
@@ -5688,6 +5812,7 @@ class Input$UpdateTaskInput {
     final l$owner = owner;
     final l$title = title;
     final l$description = description;
+    final l$order = order;
     final l$datetime = datetime;
     final l$createdAt = createdAt;
     final l$updatedAt = updatedAt;
@@ -5697,6 +5822,7 @@ class Input$UpdateTaskInput {
       _$data.containsKey('owner') ? l$owner : const {},
       _$data.containsKey('title') ? l$title : const {},
       _$data.containsKey('description') ? l$description : const {},
+      _$data.containsKey('order') ? l$order : const {},
       _$data.containsKey('datetime') ? l$datetime : const {},
       _$data.containsKey('createdAt') ? l$createdAt : const {},
       _$data.containsKey('updatedAt') ? l$updatedAt : const {},
@@ -5719,6 +5845,7 @@ abstract class CopyWith$Input$UpdateTaskInput<TRes> {
     String? owner,
     String? title,
     String? description,
+    int? order,
     DateTime? datetime,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -5741,6 +5868,7 @@ class _CopyWithImpl$Input$UpdateTaskInput<TRes>
     Object? owner = _undefined,
     Object? title = _undefined,
     Object? description = _undefined,
+    Object? order = _undefined,
     Object? datetime = _undefined,
     Object? createdAt = _undefined,
     Object? updatedAt = _undefined,
@@ -5752,6 +5880,7 @@ class _CopyWithImpl$Input$UpdateTaskInput<TRes>
       if (owner != _undefined) 'owner': (owner as String?),
       if (title != _undefined) 'title': (title as String?),
       if (description != _undefined) 'description': (description as String?),
+      if (order != _undefined) 'order': (order as int?),
       if (datetime != _undefined) 'datetime': (datetime as DateTime?),
       if (createdAt != _undefined) 'createdAt': (createdAt as DateTime?),
       if (updatedAt != _undefined) 'updatedAt': (updatedAt as DateTime?),
@@ -5771,6 +5900,7 @@ class _CopyWithStubImpl$Input$UpdateTaskInput<TRes>
     String? owner,
     String? title,
     String? description,
+    int? order,
     DateTime? datetime,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -5872,6 +6002,7 @@ class Input$ModelSubscriptionTaskFilterInput {
   factory Input$ModelSubscriptionTaskFilterInput({
     Input$ModelSubscriptionStringInput? title,
     Input$ModelSubscriptionStringInput? description,
+    Input$ModelSubscriptionIntInput? order,
     Input$ModelSubscriptionStringInput? datetime,
     Input$ModelSubscriptionStringInput? createdAt,
     Input$ModelSubscriptionStringInput? updatedAt,
@@ -5883,6 +6014,7 @@ class Input$ModelSubscriptionTaskFilterInput {
   }) => Input$ModelSubscriptionTaskFilterInput._({
     if (title != null) r'title': title,
     if (description != null) r'description': description,
+    if (order != null) r'order': order,
     if (datetime != null) r'datetime': datetime,
     if (createdAt != null) r'createdAt': createdAt,
     if (updatedAt != null) r'updatedAt': updatedAt,
@@ -5913,6 +6045,14 @@ class Input$ModelSubscriptionTaskFilterInput {
           ? null
           : Input$ModelSubscriptionStringInput.fromJson(
               (l$description as Map<String, dynamic>),
+            );
+    }
+    if (data.containsKey('order')) {
+      final l$order = data['order'];
+      result$data['order'] = l$order == null
+          ? null
+          : Input$ModelSubscriptionIntInput.fromJson(
+              (l$order as Map<String, dynamic>),
             );
     }
     if (data.containsKey('datetime')) {
@@ -5996,6 +6136,9 @@ class Input$ModelSubscriptionTaskFilterInput {
   Input$ModelSubscriptionStringInput? get description =>
       (_$data['description'] as Input$ModelSubscriptionStringInput?);
 
+  Input$ModelSubscriptionIntInput? get order =>
+      (_$data['order'] as Input$ModelSubscriptionIntInput?);
+
   Input$ModelSubscriptionStringInput? get datetime =>
       (_$data['datetime'] as Input$ModelSubscriptionStringInput?);
 
@@ -6029,6 +6172,10 @@ class Input$ModelSubscriptionTaskFilterInput {
     if (_$data.containsKey('description')) {
       final l$description = description;
       result$data['description'] = l$description?.toJson();
+    }
+    if (_$data.containsKey('order')) {
+      final l$order = order;
+      result$data['order'] = l$order?.toJson();
     }
     if (_$data.containsKey('datetime')) {
       final l$datetime = datetime;
@@ -6095,6 +6242,14 @@ class Input$ModelSubscriptionTaskFilterInput {
       return false;
     }
     if (l$description != lOther$description) {
+      return false;
+    }
+    final l$order = order;
+    final lOther$order = other.order;
+    if (_$data.containsKey('order') != other._$data.containsKey('order')) {
+      return false;
+    }
+    if (l$order != lOther$order) {
       return false;
     }
     final l$datetime = datetime;
@@ -6194,6 +6349,7 @@ class Input$ModelSubscriptionTaskFilterInput {
   int get hashCode {
     final l$title = title;
     final l$description = description;
+    final l$order = order;
     final l$datetime = datetime;
     final l$createdAt = createdAt;
     final l$updatedAt = updatedAt;
@@ -6205,6 +6361,7 @@ class Input$ModelSubscriptionTaskFilterInput {
     return Object.hashAll([
       _$data.containsKey('title') ? l$title : const {},
       _$data.containsKey('description') ? l$description : const {},
+      _$data.containsKey('order') ? l$order : const {},
       _$data.containsKey('datetime') ? l$datetime : const {},
       _$data.containsKey('createdAt') ? l$createdAt : const {},
       _$data.containsKey('updatedAt') ? l$updatedAt : const {},
@@ -6237,6 +6394,7 @@ abstract class CopyWith$Input$ModelSubscriptionTaskFilterInput<TRes> {
   TRes call({
     Input$ModelSubscriptionStringInput? title,
     Input$ModelSubscriptionStringInput? description,
+    Input$ModelSubscriptionIntInput? order,
     Input$ModelSubscriptionStringInput? datetime,
     Input$ModelSubscriptionStringInput? createdAt,
     Input$ModelSubscriptionStringInput? updatedAt,
@@ -6248,6 +6406,7 @@ abstract class CopyWith$Input$ModelSubscriptionTaskFilterInput<TRes> {
   });
   CopyWith$Input$ModelSubscriptionStringInput<TRes> get title;
   CopyWith$Input$ModelSubscriptionStringInput<TRes> get description;
+  CopyWith$Input$ModelSubscriptionIntInput<TRes> get order;
   CopyWith$Input$ModelSubscriptionStringInput<TRes> get datetime;
   CopyWith$Input$ModelSubscriptionStringInput<TRes> get createdAt;
   CopyWith$Input$ModelSubscriptionStringInput<TRes> get updatedAt;
@@ -6292,6 +6451,7 @@ class _CopyWithImpl$Input$ModelSubscriptionTaskFilterInput<TRes>
   TRes call({
     Object? title = _undefined,
     Object? description = _undefined,
+    Object? order = _undefined,
     Object? datetime = _undefined,
     Object? createdAt = _undefined,
     Object? updatedAt = _undefined,
@@ -6307,6 +6467,8 @@ class _CopyWithImpl$Input$ModelSubscriptionTaskFilterInput<TRes>
         'title': (title as Input$ModelSubscriptionStringInput?),
       if (description != _undefined)
         'description': (description as Input$ModelSubscriptionStringInput?),
+      if (order != _undefined)
+        'order': (order as Input$ModelSubscriptionIntInput?),
       if (datetime != _undefined)
         'datetime': (datetime as Input$ModelSubscriptionStringInput?),
       if (createdAt != _undefined)
@@ -6341,6 +6503,16 @@ class _CopyWithImpl$Input$ModelSubscriptionTaskFilterInput<TRes>
         : CopyWith$Input$ModelSubscriptionStringInput(
             local$description,
             (e) => call(description: e),
+          );
+  }
+
+  CopyWith$Input$ModelSubscriptionIntInput<TRes> get order {
+    final local$order = _instance.order;
+    return local$order == null
+        ? CopyWith$Input$ModelSubscriptionIntInput.stub(_then(_instance))
+        : CopyWith$Input$ModelSubscriptionIntInput(
+            local$order,
+            (e) => call(order: e),
           );
   }
 
@@ -6446,6 +6618,7 @@ class _CopyWithStubImpl$Input$ModelSubscriptionTaskFilterInput<TRes>
   call({
     Input$ModelSubscriptionStringInput? title,
     Input$ModelSubscriptionStringInput? description,
+    Input$ModelSubscriptionIntInput? order,
     Input$ModelSubscriptionStringInput? datetime,
     Input$ModelSubscriptionStringInput? createdAt,
     Input$ModelSubscriptionStringInput? updatedAt,
@@ -6461,6 +6634,9 @@ class _CopyWithStubImpl$Input$ModelSubscriptionTaskFilterInput<TRes>
 
   CopyWith$Input$ModelSubscriptionStringInput<TRes> get description =>
       CopyWith$Input$ModelSubscriptionStringInput.stub(_res);
+
+  CopyWith$Input$ModelSubscriptionIntInput<TRes> get order =>
+      CopyWith$Input$ModelSubscriptionIntInput.stub(_res);
 
   CopyWith$Input$ModelSubscriptionStringInput<TRes> get datetime =>
       CopyWith$Input$ModelSubscriptionStringInput.stub(_res);
@@ -6769,6 +6945,248 @@ class _CopyWithStubImpl$Input$ModelStringKeyConditionInput<TRes>
     List<String?>? between,
     String? beginsWith,
   }) => _res;
+}
+
+class Input$ModelIntKeyConditionInput {
+  factory Input$ModelIntKeyConditionInput({
+    int? eq,
+    int? le,
+    int? lt,
+    int? ge,
+    int? gt,
+    List<int?>? between,
+  }) => Input$ModelIntKeyConditionInput._({
+    if (eq != null) r'eq': eq,
+    if (le != null) r'le': le,
+    if (lt != null) r'lt': lt,
+    if (ge != null) r'ge': ge,
+    if (gt != null) r'gt': gt,
+    if (between != null) r'between': between,
+  });
+
+  Input$ModelIntKeyConditionInput._(this._$data);
+
+  factory Input$ModelIntKeyConditionInput.fromJson(Map<String, dynamic> data) {
+    final result$data = <String, dynamic>{};
+    if (data.containsKey('eq')) {
+      final l$eq = data['eq'];
+      result$data['eq'] = (l$eq as int?);
+    }
+    if (data.containsKey('le')) {
+      final l$le = data['le'];
+      result$data['le'] = (l$le as int?);
+    }
+    if (data.containsKey('lt')) {
+      final l$lt = data['lt'];
+      result$data['lt'] = (l$lt as int?);
+    }
+    if (data.containsKey('ge')) {
+      final l$ge = data['ge'];
+      result$data['ge'] = (l$ge as int?);
+    }
+    if (data.containsKey('gt')) {
+      final l$gt = data['gt'];
+      result$data['gt'] = (l$gt as int?);
+    }
+    if (data.containsKey('between')) {
+      final l$between = data['between'];
+      result$data['between'] = (l$between as List<dynamic>?)
+          ?.map((e) => (e as int?))
+          .toList();
+    }
+    return Input$ModelIntKeyConditionInput._(result$data);
+  }
+
+  Map<String, dynamic> _$data;
+
+  int? get eq => (_$data['eq'] as int?);
+
+  int? get le => (_$data['le'] as int?);
+
+  int? get lt => (_$data['lt'] as int?);
+
+  int? get ge => (_$data['ge'] as int?);
+
+  int? get gt => (_$data['gt'] as int?);
+
+  List<int?>? get between => (_$data['between'] as List<int?>?);
+
+  Map<String, dynamic> toJson() {
+    final result$data = <String, dynamic>{};
+    if (_$data.containsKey('eq')) {
+      final l$eq = eq;
+      result$data['eq'] = l$eq;
+    }
+    if (_$data.containsKey('le')) {
+      final l$le = le;
+      result$data['le'] = l$le;
+    }
+    if (_$data.containsKey('lt')) {
+      final l$lt = lt;
+      result$data['lt'] = l$lt;
+    }
+    if (_$data.containsKey('ge')) {
+      final l$ge = ge;
+      result$data['ge'] = l$ge;
+    }
+    if (_$data.containsKey('gt')) {
+      final l$gt = gt;
+      result$data['gt'] = l$gt;
+    }
+    if (_$data.containsKey('between')) {
+      final l$between = between;
+      result$data['between'] = l$between?.map((e) => e).toList();
+    }
+    return result$data;
+  }
+
+  CopyWith$Input$ModelIntKeyConditionInput<Input$ModelIntKeyConditionInput>
+  get copyWith => CopyWith$Input$ModelIntKeyConditionInput(this, (i) => i);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (other is! Input$ModelIntKeyConditionInput ||
+        runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$eq = eq;
+    final lOther$eq = other.eq;
+    if (_$data.containsKey('eq') != other._$data.containsKey('eq')) {
+      return false;
+    }
+    if (l$eq != lOther$eq) {
+      return false;
+    }
+    final l$le = le;
+    final lOther$le = other.le;
+    if (_$data.containsKey('le') != other._$data.containsKey('le')) {
+      return false;
+    }
+    if (l$le != lOther$le) {
+      return false;
+    }
+    final l$lt = lt;
+    final lOther$lt = other.lt;
+    if (_$data.containsKey('lt') != other._$data.containsKey('lt')) {
+      return false;
+    }
+    if (l$lt != lOther$lt) {
+      return false;
+    }
+    final l$ge = ge;
+    final lOther$ge = other.ge;
+    if (_$data.containsKey('ge') != other._$data.containsKey('ge')) {
+      return false;
+    }
+    if (l$ge != lOther$ge) {
+      return false;
+    }
+    final l$gt = gt;
+    final lOther$gt = other.gt;
+    if (_$data.containsKey('gt') != other._$data.containsKey('gt')) {
+      return false;
+    }
+    if (l$gt != lOther$gt) {
+      return false;
+    }
+    final l$between = between;
+    final lOther$between = other.between;
+    if (_$data.containsKey('between') != other._$data.containsKey('between')) {
+      return false;
+    }
+    if (l$between != null && lOther$between != null) {
+      if (l$between.length != lOther$between.length) {
+        return false;
+      }
+      for (int i = 0; i < l$between.length; i++) {
+        final l$between$entry = l$between[i];
+        final lOther$between$entry = lOther$between[i];
+        if (l$between$entry != lOther$between$entry) {
+          return false;
+        }
+      }
+    } else if (l$between != lOther$between) {
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  int get hashCode {
+    final l$eq = eq;
+    final l$le = le;
+    final l$lt = lt;
+    final l$ge = ge;
+    final l$gt = gt;
+    final l$between = between;
+    return Object.hashAll([
+      _$data.containsKey('eq') ? l$eq : const {},
+      _$data.containsKey('le') ? l$le : const {},
+      _$data.containsKey('lt') ? l$lt : const {},
+      _$data.containsKey('ge') ? l$ge : const {},
+      _$data.containsKey('gt') ? l$gt : const {},
+      _$data.containsKey('between')
+          ? l$between == null
+                ? null
+                : Object.hashAll(l$between.map((v) => v))
+          : const {},
+    ]);
+  }
+}
+
+abstract class CopyWith$Input$ModelIntKeyConditionInput<TRes> {
+  factory CopyWith$Input$ModelIntKeyConditionInput(
+    Input$ModelIntKeyConditionInput instance,
+    TRes Function(Input$ModelIntKeyConditionInput) then,
+  ) = _CopyWithImpl$Input$ModelIntKeyConditionInput;
+
+  factory CopyWith$Input$ModelIntKeyConditionInput.stub(TRes res) =
+      _CopyWithStubImpl$Input$ModelIntKeyConditionInput;
+
+  TRes call({int? eq, int? le, int? lt, int? ge, int? gt, List<int?>? between});
+}
+
+class _CopyWithImpl$Input$ModelIntKeyConditionInput<TRes>
+    implements CopyWith$Input$ModelIntKeyConditionInput<TRes> {
+  _CopyWithImpl$Input$ModelIntKeyConditionInput(this._instance, this._then);
+
+  final Input$ModelIntKeyConditionInput _instance;
+
+  final TRes Function(Input$ModelIntKeyConditionInput) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({
+    Object? eq = _undefined,
+    Object? le = _undefined,
+    Object? lt = _undefined,
+    Object? ge = _undefined,
+    Object? gt = _undefined,
+    Object? between = _undefined,
+  }) => _then(
+    Input$ModelIntKeyConditionInput._({
+      ..._instance._$data,
+      if (eq != _undefined) 'eq': (eq as int?),
+      if (le != _undefined) 'le': (le as int?),
+      if (lt != _undefined) 'lt': (lt as int?),
+      if (ge != _undefined) 'ge': (ge as int?),
+      if (gt != _undefined) 'gt': (gt as int?),
+      if (between != _undefined) 'between': (between as List<int?>?),
+    }),
+  );
+}
+
+class _CopyWithStubImpl$Input$ModelIntKeyConditionInput<TRes>
+    implements CopyWith$Input$ModelIntKeyConditionInput<TRes> {
+  _CopyWithStubImpl$Input$ModelIntKeyConditionInput(this._res);
+
+  TRes _res;
+
+  call({int? eq, int? le, int? lt, int? ge, int? gt, List<int?>? between}) =>
+      _res;
 }
 
 enum Enum$ModelAttributeTypes {

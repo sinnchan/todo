@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DbTask {
 
-@HiveField(0) String get id;@HiveField(1) String get owner;@HiveField(2) String get title;@HiveField(3) String? get description;@HiveField(5) DateTime? get datetime;@HiveField(6) bool? get isCompleted;@HiveField(7) DateTime? get createdAt;@HiveField(8) DateTime? get updatedAt;
+@HiveField(0) String get id;@HiveField(1) String get owner;@HiveField(2) String get title;@HiveField(3) String? get description;@HiveField(4) DateTime? get datetime;@HiveField(5) bool? get isCompleted;@HiveField(6) DateTime? get createdAt;@HiveField(7) DateTime? get updatedAt;
 /// Create a copy of DbTask
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -45,7 +45,7 @@ abstract mixin class $DbTaskCopyWith<$Res>  {
   factory $DbTaskCopyWith(DbTask value, $Res Function(DbTask) _then) = _$DbTaskCopyWithImpl;
 @useResult
 $Res call({
-@HiveField(0) String id,@HiveField(1) String owner,@HiveField(2) String title,@HiveField(3) String? description,@HiveField(5) DateTime? datetime,@HiveField(6) bool? isCompleted,@HiveField(7) DateTime? createdAt,@HiveField(8) DateTime? updatedAt
+@HiveField(0) String id,@HiveField(1) String owner,@HiveField(2) String title,@HiveField(3) String? description,@HiveField(4) DateTime? datetime,@HiveField(5) bool? isCompleted,@HiveField(6) DateTime? createdAt,@HiveField(7) DateTime? updatedAt
 });
 
 
@@ -157,7 +157,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@HiveField(0)  String id, @HiveField(1)  String owner, @HiveField(2)  String title, @HiveField(3)  String? description, @HiveField(5)  DateTime? datetime, @HiveField(6)  bool? isCompleted, @HiveField(7)  DateTime? createdAt, @HiveField(8)  DateTime? updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@HiveField(0)  String id, @HiveField(1)  String owner, @HiveField(2)  String title, @HiveField(3)  String? description, @HiveField(4)  DateTime? datetime, @HiveField(5)  bool? isCompleted, @HiveField(6)  DateTime? createdAt, @HiveField(7)  DateTime? updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _DbTask() when $default != null:
 return $default(_that.id,_that.owner,_that.title,_that.description,_that.datetime,_that.isCompleted,_that.createdAt,_that.updatedAt);case _:
@@ -178,7 +178,7 @@ return $default(_that.id,_that.owner,_that.title,_that.description,_that.datetim
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@HiveField(0)  String id, @HiveField(1)  String owner, @HiveField(2)  String title, @HiveField(3)  String? description, @HiveField(5)  DateTime? datetime, @HiveField(6)  bool? isCompleted, @HiveField(7)  DateTime? createdAt, @HiveField(8)  DateTime? updatedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@HiveField(0)  String id, @HiveField(1)  String owner, @HiveField(2)  String title, @HiveField(3)  String? description, @HiveField(4)  DateTime? datetime, @HiveField(5)  bool? isCompleted, @HiveField(6)  DateTime? createdAt, @HiveField(7)  DateTime? updatedAt)  $default,) {final _that = this;
 switch (_that) {
 case _DbTask():
 return $default(_that.id,_that.owner,_that.title,_that.description,_that.datetime,_that.isCompleted,_that.createdAt,_that.updatedAt);case _:
@@ -198,7 +198,7 @@ return $default(_that.id,_that.owner,_that.title,_that.description,_that.datetim
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@HiveField(0)  String id, @HiveField(1)  String owner, @HiveField(2)  String title, @HiveField(3)  String? description, @HiveField(5)  DateTime? datetime, @HiveField(6)  bool? isCompleted, @HiveField(7)  DateTime? createdAt, @HiveField(8)  DateTime? updatedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@HiveField(0)  String id, @HiveField(1)  String owner, @HiveField(2)  String title, @HiveField(3)  String? description, @HiveField(4)  DateTime? datetime, @HiveField(5)  bool? isCompleted, @HiveField(6)  DateTime? createdAt, @HiveField(7)  DateTime? updatedAt)?  $default,) {final _that = this;
 switch (_that) {
 case _DbTask() when $default != null:
 return $default(_that.id,_that.owner,_that.title,_that.description,_that.datetime,_that.isCompleted,_that.createdAt,_that.updatedAt);case _:
@@ -213,17 +213,17 @@ return $default(_that.id,_that.owner,_that.title,_that.description,_that.datetim
 
 
 class _DbTask implements DbTask {
-  const _DbTask({@HiveField(0) required this.id, @HiveField(1) required this.owner, @HiveField(2) required this.title, @HiveField(3) required this.description, @HiveField(5) required this.datetime, @HiveField(6) required this.isCompleted, @HiveField(7) required this.createdAt, @HiveField(8) required this.updatedAt});
+  const _DbTask({@HiveField(0) required this.id, @HiveField(1) required this.owner, @HiveField(2) required this.title, @HiveField(3) required this.description, @HiveField(4) required this.datetime, @HiveField(5) required this.isCompleted, @HiveField(6) required this.createdAt, @HiveField(7) required this.updatedAt});
   
 
 @override@HiveField(0) final  String id;
 @override@HiveField(1) final  String owner;
 @override@HiveField(2) final  String title;
 @override@HiveField(3) final  String? description;
-@override@HiveField(5) final  DateTime? datetime;
-@override@HiveField(6) final  bool? isCompleted;
-@override@HiveField(7) final  DateTime? createdAt;
-@override@HiveField(8) final  DateTime? updatedAt;
+@override@HiveField(4) final  DateTime? datetime;
+@override@HiveField(5) final  bool? isCompleted;
+@override@HiveField(6) final  DateTime? createdAt;
+@override@HiveField(7) final  DateTime? updatedAt;
 
 /// Create a copy of DbTask
 /// with the given fields replaced by the non-null parameter values.
@@ -255,7 +255,7 @@ abstract mixin class _$DbTaskCopyWith<$Res> implements $DbTaskCopyWith<$Res> {
   factory _$DbTaskCopyWith(_DbTask value, $Res Function(_DbTask) _then) = __$DbTaskCopyWithImpl;
 @override @useResult
 $Res call({
-@HiveField(0) String id,@HiveField(1) String owner,@HiveField(2) String title,@HiveField(3) String? description,@HiveField(5) DateTime? datetime,@HiveField(6) bool? isCompleted,@HiveField(7) DateTime? createdAt,@HiveField(8) DateTime? updatedAt
+@HiveField(0) String id,@HiveField(1) String owner,@HiveField(2) String title,@HiveField(3) String? description,@HiveField(4) DateTime? datetime,@HiveField(5) bool? isCompleted,@HiveField(6) DateTime? createdAt,@HiveField(7) DateTime? updatedAt
 });
 
 

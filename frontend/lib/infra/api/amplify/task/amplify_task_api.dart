@@ -9,7 +9,6 @@ import 'package:todo/domain/task/task_entity.dart';
 import 'package:todo/domain/task/task_sort.dart';
 import 'package:todo/domain/task/task_values.dart';
 import 'package:todo/domain/user/user_values.dart';
-import 'package:todo/infra/api/amplify/gen/models/Task.dart' as api;
 import 'package:todo/infra/api/graphql/gen/schema.graphql.dart';
 import 'package:todo/infra/api/graphql/gen/tasks_by_owner_created_at.graphql.dart';
 import 'package:todo/infra/api/graphql/gen/tasks_by_owner_datetime.graphql.dart';
@@ -61,15 +60,18 @@ class AmplifyTaskApi implements TaskApi {
 
   @override
   Future<void> createTask(Task task) async {
-    final apiTask = _mapper.toApi(task);
-    final request = ModelMutations.create(apiTask);
-    final response = await Amplify.API.mutate(request: request).response;
-    if (response.errors.isNotEmpty) {
-      throw ApiOperationException(
-        _formatErrors(response.errors),
-        recoverySuggestion: 'Check your network connection and try again.',
-      );
-    }
+    await _mutateRaw(
+      _createTaskWithLimitMutation,
+      {
+        'id': task.id,
+        'title': task.title,
+        'description': task.description,
+        'datetime': task.datetime?.toUtc().toIso8601String(),
+        'createdAt': task.createdAt.toUtc().toIso8601String(),
+        'updatedAt': task.updatedAt.toUtc().toIso8601String(),
+        'isCompleted': task.isCompleted ?? false,
+      },
+    );
   }
 
   @override
@@ -87,17 +89,12 @@ class AmplifyTaskApi implements TaskApi {
 
   @override
   Future<void> deleteTask(TaskId id) async {
-    final request = ModelMutations.deleteById(
-      api.Task.classType,
-      api.TaskModelIdentifier(id: id.id),
+    await _mutateRaw(
+      _deleteTaskWithLimitMutation,
+      {
+        'id': id.id,
+      },
     );
-    final response = await Amplify.API.mutate(request: request).response;
-    if (response.errors.isNotEmpty) {
-      throw ApiOperationException(
-        _formatErrors(response.errors),
-        recoverySuggestion: 'Check your network connection and try again.',
-      );
-    }
   }
 
   Enum$ModelSortDirection _sortDirection(SortDirection direction) {
@@ -203,6 +200,22 @@ class AmplifyTaskApi implements TaskApi {
       variables: variables,
     );
     final response = await Amplify.API.query(request: request).response;
+    return _handleResponse(response);
+  }
+
+  Future<Map<String, dynamic>?> _mutateRaw(
+    String document,
+    Map<String, dynamic> variables,
+  ) async {
+    final request = GraphQLRequest<String>(
+      document: document,
+      variables: variables,
+    );
+    final response = await Amplify.API.mutate(request: request).response;
+    return _handleResponse(response);
+  }
+
+  Map<String, dynamic>? _handleResponse(GraphQLResponse<String> response) {
     if (response.errors.isNotEmpty) {
       throw ApiOperationException(
         _formatErrors(response.errors),
@@ -323,3 +336,35 @@ class AmplifyTaskApi implements TaskApi {
     );
   }
 }
+
+const String _createTaskWithLimitMutation = r'''
+mutation CreateTaskWithLimit(
+  $id: ID!
+  $title: String!
+  $description: String
+  $datetime: AWSDateTime
+  $createdAt: AWSDateTime!
+  $updatedAt: AWSDateTime!
+  $isCompleted: Boolean
+) {
+  createTaskWithLimit(
+    id: $id
+    title: $title
+    description: $description
+    datetime: $datetime
+    createdAt: $createdAt
+    updatedAt: $updatedAt
+    isCompleted: $isCompleted
+  ) {
+    id
+  }
+}
+''';
+
+const String _deleteTaskWithLimitMutation = r'''
+mutation DeleteTaskWithLimit($id: ID!) {
+  deleteTaskWithLimit(id: $id) {
+    id
+  }
+}
+''';

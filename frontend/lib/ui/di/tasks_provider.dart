@@ -137,7 +137,8 @@ class Tasks extends _$Tasks {
       );
       _nextToken = nextToken;
       _hasMore = nextToken != null;
-    } catch (_) {
+    } catch (e, st) {
+      Zone.current.handleUncaughtError(e, st);
     } finally {
       _isFetching = false;
       _updateStatus();

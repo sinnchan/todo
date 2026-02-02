@@ -1,4 +1,5 @@
 import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
+import { taskLimitHandler } from '../functions/task-limit/resource';
 
 const schema = a.schema({
   Task: a
@@ -11,7 +12,9 @@ const schema = a.schema({
       updatedAt: a.datetime().required(),
       isCompleted: a.boolean().default(false).required(),
     })
-    .authorization((allow) => [allow.ownerDefinedIn('owner')])
+    .authorization((allow) => [
+      allow.ownerDefinedIn('owner').to(['read', 'update', 'delete']),
+    ])
     .secondaryIndexes((index) => [
       index('owner')
         .sortKeys(['datetime'])
@@ -30,6 +33,36 @@ const schema = a.schema({
         .name('byOwnerTitle')
         .queryField('tasksByOwnerTitle'),
     ]),
+  UserTaskCounter: a
+    .model({
+      owner: a.string().required(),
+      count: a.integer().required().default(0),
+    })
+    .authorization((allow) => [
+      allow.ownerDefinedIn('owner').to(['read']),
+    ]),
+  createTaskWithLimit: a
+    .mutation()
+    .arguments({
+      id: a.id().required(),
+      title: a.string().required(),
+      description: a.string(),
+      datetime: a.datetime(),
+      createdAt: a.datetime().required(),
+      updatedAt: a.datetime().required(),
+      isCompleted: a.boolean(),
+    })
+    .returns(a.ref('Task'))
+    .authorization((allow) => [allow.authenticated()])
+    .handler(a.handler.function(taskLimitHandler)),
+  deleteTaskWithLimit: a
+    .mutation()
+    .arguments({
+      id: a.id().required(),
+    })
+    .returns(a.ref('Task'))
+    .authorization((allow) => [allow.authenticated()])
+    .handler(a.handler.function(taskLimitHandler)),
 });
 
 export type Schema = ClientSchema<typeof schema>;

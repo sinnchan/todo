@@ -21,10 +21,10 @@ class DbTaskAdapter extends TypeAdapter<DbTask> {
       owner: fields[1] as String,
       title: fields[2] as String,
       description: fields[3] as String?,
-      datetime: fields[5] as DateTime?,
-      isCompleted: fields[6] as bool?,
-      createdAt: fields[7] as DateTime?,
-      updatedAt: fields[8] as DateTime?,
+      datetime: fields[4] as DateTime?,
+      isCompleted: fields[5] as bool?,
+      createdAt: fields[6] as DateTime?,
+      updatedAt: fields[7] as DateTime?,
     );
   }
 
@@ -40,13 +40,13 @@ class DbTaskAdapter extends TypeAdapter<DbTask> {
       ..write(obj.title)
       ..writeByte(3)
       ..write(obj.description)
-      ..writeByte(5)
+      ..writeByte(4)
       ..write(obj.datetime)
-      ..writeByte(6)
+      ..writeByte(5)
       ..write(obj.isCompleted)
-      ..writeByte(7)
+      ..writeByte(6)
       ..write(obj.createdAt)
-      ..writeByte(8)
+      ..writeByte(7)
       ..write(obj.updatedAt);
   }
 

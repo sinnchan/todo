@@ -4,6 +4,7 @@ type Task @aws_iam @aws_cognito_user_pools {
   owner: String
   title: String!
   description: String
+  order: Int
   datetime: AWSDateTime
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
@@ -175,6 +176,7 @@ input ModelTaskFilterInput {
   owner: ModelStringInput
   title: ModelStringInput
   description: ModelStringInput
+  order: ModelIntInput
   datetime: ModelStringInput
   createdAt: ModelStringInput
   updatedAt: ModelStringInput
@@ -192,12 +194,14 @@ type Query {
   tasksByOwnerCreatedAt(owner: String!, createdAt: ModelStringKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelTaskFilterInput, limit: Int, nextToken: String): ModelTaskConnection @aws_iam @aws_cognito_user_pools
   tasksByOwnerUpdatedAt(owner: String!, updatedAt: ModelStringKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelTaskFilterInput, limit: Int, nextToken: String): ModelTaskConnection @aws_iam @aws_cognito_user_pools
   tasksByOwnerTitle(owner: String!, title: ModelStringKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelTaskFilterInput, limit: Int, nextToken: String): ModelTaskConnection @aws_iam @aws_cognito_user_pools
+  tasksByOwnerOrder(owner: String!, order: ModelIntKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelTaskFilterInput, limit: Int, nextToken: String): ModelTaskConnection @aws_iam @aws_cognito_user_pools
 }
 
 input ModelTaskConditionInput {
   owner: ModelStringInput
   title: ModelStringInput
   description: ModelStringInput
+  order: ModelIntInput
   datetime: ModelStringInput
   createdAt: ModelStringInput
   updatedAt: ModelStringInput
@@ -211,6 +215,7 @@ input CreateTaskInput {
   owner: String
   title: String!
   description: String
+  order: Int
   datetime: AWSDateTime
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
@@ -222,6 +227,7 @@ input UpdateTaskInput {
   owner: String
   title: String
   description: String
+  order: Int
   datetime: AWSDateTime
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
@@ -242,6 +248,7 @@ type Mutation {
 input ModelSubscriptionTaskFilterInput {
   title: ModelSubscriptionStringInput
   description: ModelSubscriptionStringInput
+  order: ModelSubscriptionIntInput
   datetime: ModelSubscriptionStringInput
   createdAt: ModelSubscriptionStringInput
   updatedAt: ModelSubscriptionStringInput
@@ -266,4 +273,13 @@ input ModelStringKeyConditionInput {
   gt: String
   between: [String]
   beginsWith: String
+}
+
+input ModelIntKeyConditionInput {
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
 }
