@@ -32,8 +32,8 @@ class DbTaskMapper implements Mapper<Task, DbTask> {
       order: dbTask.order,
       datetime: dbTask.datetime,
       isCompleted: dbTask.isCompleted,
-      createdAt: dbTask.createdAt,
-      updatedAt: dbTask.updatedAt,
+      createdAt: dbTask.createdAt!,
+      updatedAt: dbTask.updatedAt!,
     );
   }
 }

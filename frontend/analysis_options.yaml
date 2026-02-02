@@ -8,6 +8,7 @@ analyzer:
     - "**/*.g.dart"
     - "**/*.freezed.dart"
     - "lib/infra/api/amplify/gen/**"
+    - "lib/infra/api/graphql/gen/**"
 
 linter:
   rules:

@@ -7,7 +7,9 @@ const schema = a.schema({
       title: a.string().required(),
       description: a.string(),
       order: a.integer(),
-      datetime: a.datetime().required(),
+      datetime: a.datetime(),
+      createdAt: a.datetime().required(),
+      updatedAt: a.datetime().required(),
       isCompleted: a.boolean().default(false).required(),
     })
     .authorization((allow) => [allow.ownerDefinedIn('owner')])
@@ -16,6 +18,22 @@ const schema = a.schema({
         .sortKeys(['datetime'])
         .name('byOwnerDatetime')
         .queryField('tasksByOwnerDatetime'),
+      index('owner')
+        .sortKeys(['createdAt'])
+        .name('byOwnerCreatedAt')
+        .queryField('tasksByOwnerCreatedAt'),
+      index('owner')
+        .sortKeys(['updatedAt'])
+        .name('byOwnerUpdatedAt')
+        .queryField('tasksByOwnerUpdatedAt'),
+      index('owner')
+        .sortKeys(['title'])
+        .name('byOwnerTitle')
+        .queryField('tasksByOwnerTitle'),
+      index('owner')
+        .sortKeys(['order'])
+        .name('byOwnerOrder')
+        .queryField('tasksByOwnerOrder'),
     ]),
 });
 
@@ -27,4 +45,3 @@ export const data = defineData({
     defaultAuthorizationMode: 'userPool',
   },
 });
-

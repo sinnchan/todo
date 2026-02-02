@@ -3,6 +3,8 @@ import 'package:todo/domain/task/task_entity.dart';
 import 'package:todo/domain/task/task_repository.dart';
 import 'package:todo/domain/task/task_values.dart';
 import 'package:todo/domain/user/user_values.dart';
+import 'package:todo/infra/api/amplify/task/amplify_task_api.dart';
+import 'package:todo/infra/api/task/task_api.dart';
 import 'package:todo/infra/db/task/db_task.dart';
 import 'package:todo/infra/db/task/tasks_dao.dart';
 import 'package:todo/infra/repository/task_repository.dart';
@@ -17,7 +19,13 @@ const String _boxName = 'tasks';
 Future<TaskRepository> taskRepository(Ref ref) async {
   return TaskRepositoryImpl(
     await ref.watch(tasksDaoProvider.future),
+    ref.watch(taskApiProvider),
   );
+}
+
+@riverpod
+TaskApi taskApi(Ref ref) {
+  return AmplifyTaskApi();
 }
 
 @riverpod

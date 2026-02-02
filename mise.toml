@@ -2,6 +2,7 @@
 MISE_EXPERIMENTAL = 1
 MISE_ENV = "dev"
 FRONTEND_AMPLIFY_DIR = "frontend/lib/infra/api/amplify"
+FRONTEND_SCHEMA_OUT = "frontend/lib/infra/api/graphql/schema.graphql"
 
 [tools]
 node = "20.20.0"
@@ -9,7 +10,20 @@ flutter = "3.38.9"
 
 [tasks.amplify_gen_model]
 dir = "backend"
-run = "npx ampx generate graphql-client-code --format modelgen --model-target dart --out ../$FRONTEND_AMPLIFY_DIR/gen/models"
+run = """
+  npx ampx generate graphql-client-code --format modelgen --model-target dart --out ../$FRONTEND_AMPLIFY_DIR/gen/models
+  SCHEMA_SRC=$(rg -l "tasksByOwnerCreatedAt" .amplify/artifacts/cdk.out -g "*.graphql" | xargs rg -l "type Query" | head -n 1)
+  if [ -z "$SCHEMA_SRC" ]; then echo "schema.graphql not found in .amplify artifacts" >&2; exit 1; fi
+  SCHEMA_OUT="../$FRONTEND_SCHEMA_OUT"
+  mkdir -p "$(dirname "$SCHEMA_OUT")"
+  cp "$SCHEMA_SRC" "$SCHEMA_OUT"
+  if ! rg -q "^scalar AWSDateTime" "$SCHEMA_OUT"; then
+    tmp="${SCHEMA_OUT}.tmp"
+    printf "scalar AWSDateTime\n\n" > "$tmp"
+    cat "$SCHEMA_OUT" >> "$tmp"
+    mv "$tmp" "$SCHEMA_OUT"
+  fi
+"""
 
 [tasks.amplify_sandbox]
 dir = "backend"

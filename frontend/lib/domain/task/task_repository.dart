@@ -9,4 +9,10 @@ abstract interface class TaskRepository {
   Future<void> deleteTask(TaskId id);
   Stream<Task> getTask(TaskId id);
   Stream<List<TaskId>> getTasks(UserId id, TaskSortSpec sortSpec);
+  Future<String?> fetchTasksPage({
+    required UserId userId,
+    required TaskSortSpec sortSpec,
+    required int limit,
+    String? nextToken,
+  });
 }

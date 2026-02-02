@@ -25,6 +25,15 @@ class TasksDao {
     return box.delete(id);
   }
 
+  Future<void> upsertTasks(Iterable<Task> tasks) async {
+    if (tasks.isEmpty) return;
+    final mapped = <String, DbTask>{};
+    for (final task in tasks) {
+      mapped[task.id] = _mapper.fromDomain(task);
+    }
+    await box.putAll(mapped);
+  }
+
   Stream<Task> getTask(TaskId id) async* {
     if (box.get(id) case final value?) {
       yield _taskFromBoxValue(value);

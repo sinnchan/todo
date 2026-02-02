@@ -16,12 +16,8 @@ _Task _$TaskFromJson(Map<String, dynamic> json) => _Task(
       ? null
       : DateTime.parse(json['datetime'] as String),
   isCompleted: json['isCompleted'] as bool?,
-  createdAt: json['createdAt'] == null
-      ? null
-      : DateTime.parse(json['createdAt'] as String),
-  updatedAt: json['updatedAt'] == null
-      ? null
-      : DateTime.parse(json['updatedAt'] as String),
+  createdAt: DateTime.parse(json['createdAt'] as String),
+  updatedAt: DateTime.parse(json['updatedAt'] as String),
 );
 
 Map<String, dynamic> _$TaskToJson(_Task instance) => <String, dynamic>{
@@ -32,6 +28,6 @@ Map<String, dynamic> _$TaskToJson(_Task instance) => <String, dynamic>{
   'order': instance.order,
   'datetime': instance.datetime?.toIso8601String(),
   'isCompleted': instance.isCompleted,
-  'createdAt': instance.createdAt?.toIso8601String(),
-  'updatedAt': instance.updatedAt?.toIso8601String(),
+  'createdAt': instance.createdAt.toIso8601String(),
+  'updatedAt': instance.updatedAt.toIso8601String(),
 };

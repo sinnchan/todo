@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Task {
 
- TaskId get id; UserId get owner; String get title; String? get description; int? get order; DateTime? get datetime; bool? get isCompleted; DateTime? get createdAt; DateTime? get updatedAt;
+ TaskId get id; UserId get owner; String get title; String? get description; int? get order; DateTime? get datetime; bool? get isCompleted; DateTime get createdAt; DateTime get updatedAt;
 /// Create a copy of Task
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $TaskCopyWith<$Res>  {
   factory $TaskCopyWith(Task value, $Res Function(Task) _then) = _$TaskCopyWithImpl;
 @useResult
 $Res call({
- TaskId id, UserId owner, String title, String? description, int? order, DateTime? datetime, bool? isCompleted, DateTime? createdAt, DateTime? updatedAt
+ TaskId id, UserId owner, String title, String? description, int? order, DateTime? datetime, bool? isCompleted, DateTime createdAt, DateTime updatedAt
 });
 
 
@@ -65,7 +65,7 @@ class _$TaskCopyWithImpl<$Res>
 
 /// Create a copy of Task
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? owner = null,Object? title = null,Object? description = freezed,Object? order = freezed,Object? datetime = freezed,Object? isCompleted = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? owner = null,Object? title = null,Object? description = freezed,Object? order = freezed,Object? datetime = freezed,Object? isCompleted = freezed,Object? createdAt = null,Object? updatedAt = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as TaskId,owner: null == owner ? _self.owner : owner // ignore: cast_nullable_to_non_nullable
@@ -74,9 +74,9 @@ as String,description: freezed == description ? _self.description : description 
 as String?,order: freezed == order ? _self.order : order // ignore: cast_nullable_to_non_nullable
 as int?,datetime: freezed == datetime ? _self.datetime : datetime // ignore: cast_nullable_to_non_nullable
 as DateTime?,isCompleted: freezed == isCompleted ? _self.isCompleted : isCompleted // ignore: cast_nullable_to_non_nullable
-as bool?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,
+as bool?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
+as DateTime,
   ));
 }
 
@@ -161,7 +161,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( TaskId id,  UserId owner,  String title,  String? description,  int? order,  DateTime? datetime,  bool? isCompleted,  DateTime? createdAt,  DateTime? updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( TaskId id,  UserId owner,  String title,  String? description,  int? order,  DateTime? datetime,  bool? isCompleted,  DateTime createdAt,  DateTime updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Task() when $default != null:
 return $default(_that.id,_that.owner,_that.title,_that.description,_that.order,_that.datetime,_that.isCompleted,_that.createdAt,_that.updatedAt);case _:
@@ -182,7 +182,7 @@ return $default(_that.id,_that.owner,_that.title,_that.description,_that.order,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( TaskId id,  UserId owner,  String title,  String? description,  int? order,  DateTime? datetime,  bool? isCompleted,  DateTime? createdAt,  DateTime? updatedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( TaskId id,  UserId owner,  String title,  String? description,  int? order,  DateTime? datetime,  bool? isCompleted,  DateTime createdAt,  DateTime updatedAt)  $default,) {final _that = this;
 switch (_that) {
 case _Task():
 return $default(_that.id,_that.owner,_that.title,_that.description,_that.order,_that.datetime,_that.isCompleted,_that.createdAt,_that.updatedAt);case _:
@@ -202,7 +202,7 @@ return $default(_that.id,_that.owner,_that.title,_that.description,_that.order,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( TaskId id,  UserId owner,  String title,  String? description,  int? order,  DateTime? datetime,  bool? isCompleted,  DateTime? createdAt,  DateTime? updatedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( TaskId id,  UserId owner,  String title,  String? description,  int? order,  DateTime? datetime,  bool? isCompleted,  DateTime createdAt,  DateTime updatedAt)?  $default,) {final _that = this;
 switch (_that) {
 case _Task() when $default != null:
 return $default(_that.id,_that.owner,_that.title,_that.description,_that.order,_that.datetime,_that.isCompleted,_that.createdAt,_that.updatedAt);case _:
@@ -227,8 +227,8 @@ class _Task implements Task {
 @override final  int? order;
 @override final  DateTime? datetime;
 @override final  bool? isCompleted;
-@override final  DateTime? createdAt;
-@override final  DateTime? updatedAt;
+@override final  DateTime createdAt;
+@override final  DateTime updatedAt;
 
 /// Create a copy of Task
 /// with the given fields replaced by the non-null parameter values.
@@ -263,7 +263,7 @@ abstract mixin class _$TaskCopyWith<$Res> implements $TaskCopyWith<$Res> {
   factory _$TaskCopyWith(_Task value, $Res Function(_Task) _then) = __$TaskCopyWithImpl;
 @override @useResult
 $Res call({
- TaskId id, UserId owner, String title, String? description, int? order, DateTime? datetime, bool? isCompleted, DateTime? createdAt, DateTime? updatedAt
+ TaskId id, UserId owner, String title, String? description, int? order, DateTime? datetime, bool? isCompleted, DateTime createdAt, DateTime updatedAt
 });
 
 
@@ -280,7 +280,7 @@ class __$TaskCopyWithImpl<$Res>
 
 /// Create a copy of Task
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? owner = null,Object? title = null,Object? description = freezed,Object? order = freezed,Object? datetime = freezed,Object? isCompleted = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? owner = null,Object? title = null,Object? description = freezed,Object? order = freezed,Object? datetime = freezed,Object? isCompleted = freezed,Object? createdAt = null,Object? updatedAt = null,}) {
   return _then(_Task(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as TaskId,owner: null == owner ? _self.owner : owner // ignore: cast_nullable_to_non_nullable
@@ -289,9 +289,9 @@ as String,description: freezed == description ? _self.description : description 
 as String?,order: freezed == order ? _self.order : order // ignore: cast_nullable_to_non_nullable
 as int?,datetime: freezed == datetime ? _self.datetime : datetime // ignore: cast_nullable_to_non_nullable
 as DateTime?,isCompleted: freezed == isCompleted ? _self.isCompleted : isCompleted // ignore: cast_nullable_to_non_nullable
-as bool?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,
+as bool?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
+as DateTime,
   ));
 }
 

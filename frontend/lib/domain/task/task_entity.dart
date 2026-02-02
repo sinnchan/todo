@@ -15,8 +15,8 @@ abstract class Task with _$Task {
     required int? order,
     required DateTime? datetime,
     required bool? isCompleted,
-    required DateTime? createdAt,
-    required DateTime? updatedAt,
+    required DateTime createdAt,
+    required DateTime updatedAt,
   }) = _Task;
 
   factory Task.fromJson(Map<String, Object?> json) => _$TaskFromJson(json);

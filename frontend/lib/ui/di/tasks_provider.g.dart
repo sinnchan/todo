@@ -46,7 +46,48 @@ final class TaskRepositoryProvider
   }
 }
 
-String _$taskRepositoryHash() => r'b958121437f6fd18d26f54e5ce62a577bb035a69';
+String _$taskRepositoryHash() => r'2726186cb88b87e8d4bbc47a0bb163554ef193f3';
+
+@ProviderFor(taskApi)
+const taskApiProvider = TaskApiProvider._();
+
+final class TaskApiProvider
+    extends $FunctionalProvider<TaskApi, TaskApi, TaskApi>
+    with $Provider<TaskApi> {
+  const TaskApiProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'taskApiProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$taskApiHash();
+
+  @$internal
+  @override
+  $ProviderElement<TaskApi> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  TaskApi create(Ref ref) {
+    return taskApi(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(TaskApi value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<TaskApi>(value),
+    );
+  }
+}
+
+String _$taskApiHash() => r'cef7cf0d46e0cc43510cc73e526576e2f5bc6b37';
 
 @ProviderFor(tasksDao)
 const tasksDaoProvider = TasksDaoProvider._();
