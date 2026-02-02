@@ -19,4 +19,8 @@ abstract interface class TaskRepository {
     required int limit,
     String? nextToken,
   });
+  Future<void> fetchTasks({
+    required UserId userId,
+    required TaskSortSpec sortSpec,
+  });
 }

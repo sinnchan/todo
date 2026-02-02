@@ -9,6 +9,45 @@ part of 'tasks_provider.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
+@ProviderFor(taskService)
+const taskServiceProvider = TaskServiceProvider._();
+
+final class TaskServiceProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<TaskService>,
+          TaskService,
+          FutureOr<TaskService>
+        >
+    with $FutureModifier<TaskService>, $FutureProvider<TaskService> {
+  const TaskServiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'taskServiceProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$taskServiceHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<TaskService> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<TaskService> create(Ref ref) {
+    return taskService(ref);
+  }
+}
+
+String _$taskServiceHash() => r'da553e5852b033b1830b088e581792eda0c77a6b';
+
 @ProviderFor(taskRepository)
 const taskRepositoryProvider = TaskRepositoryProvider._();
 
@@ -123,10 +162,17 @@ final class TasksDaoProvider
 
 String _$tasksDaoHash() => r'da66570ce14247c562d1ed23ce7a9f530b694421';
 
-@ProviderFor(Tasks)
+@ProviderFor(tasks)
 const tasksProvider = TasksFamily._();
 
-final class TasksProvider extends $AsyncNotifierProvider<Tasks, TasksState> {
+final class TasksProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<TaskId>>,
+          List<TaskId>,
+          Stream<List<TaskId>>
+        >
+    with $FutureModifier<List<TaskId>>, $StreamProvider<List<TaskId>> {
   const TasksProvider._({
     required TasksFamily super.from,
     required UserId super.argument,
@@ -150,7 +196,15 @@ final class TasksProvider extends $AsyncNotifierProvider<Tasks, TasksState> {
 
   @$internal
   @override
-  Tasks create() => Tasks();
+  $StreamProviderElement<List<TaskId>> $createElement(
+    $ProviderPointer pointer,
+  ) => $StreamProviderElement(pointer);
+
+  @override
+  Stream<List<TaskId>> create(Ref ref) {
+    final argument = this.argument as UserId;
+    return tasks(ref, argument);
+  }
 
   @override
   bool operator ==(Object other) {
@@ -163,17 +217,10 @@ final class TasksProvider extends $AsyncNotifierProvider<Tasks, TasksState> {
   }
 }
 
-String _$tasksHash() => r'3fc2f5a52da4035c3773597b35bb504669df2109';
+String _$tasksHash() => r'63625a5c23844a013b93bcf01672210b6696951e';
 
 final class TasksFamily extends $Family
-    with
-        $ClassFamilyOverride<
-          Tasks,
-          AsyncValue<TasksState>,
-          TasksState,
-          FutureOr<TasksState>,
-          UserId
-        > {
+    with $FunctionalFamilyOverride<Stream<List<TaskId>>, UserId> {
   const TasksFamily._()
     : super(
         retry: null,
@@ -183,33 +230,10 @@ final class TasksFamily extends $Family
         isAutoDispose: true,
       );
 
-  TasksProvider call(UserId userId) =>
-      TasksProvider._(argument: userId, from: this);
+  TasksProvider call(UserId id) => TasksProvider._(argument: id, from: this);
 
   @override
   String toString() => r'tasksProvider';
-}
-
-abstract class _$Tasks extends $AsyncNotifier<TasksState> {
-  late final _$args = ref.$arg as UserId;
-  UserId get userId => _$args;
-
-  FutureOr<TasksState> build(UserId userId);
-  @$mustCallSuper
-  @override
-  void runBuild() {
-    final created = build(_$args);
-    final ref = this.ref as $Ref<AsyncValue<TasksState>, TasksState>;
-    final element =
-        ref.element
-            as $ClassProviderElement<
-              AnyNotifier<AsyncValue<TasksState>, TasksState>,
-              AsyncValue<TasksState>,
-              Object?,
-              Object?
-            >;
-    element.handleValue(ref, created);
-  }
 }
 
 @ProviderFor(task)

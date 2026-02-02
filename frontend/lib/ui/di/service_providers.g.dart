@@ -15,11 +15,11 @@ const sortServiceProvider = SortServiceProvider._();
 final class SortServiceProvider
     extends
         $FunctionalProvider<
-          AsyncValue<TaskSortService>,
-          TaskSortService,
-          FutureOr<TaskSortService>
+          AsyncValue<TaskService>,
+          TaskService,
+          FutureOr<TaskService>
         >
-    with $FutureModifier<TaskSortService>, $FutureProvider<TaskSortService> {
+    with $FutureModifier<TaskService>, $FutureProvider<TaskService> {
   const SortServiceProvider._()
     : super(
         from: null,
@@ -36,14 +36,14 @@ final class SortServiceProvider
 
   @$internal
   @override
-  $FutureProviderElement<TaskSortService> $createElement(
+  $FutureProviderElement<TaskService> $createElement(
     $ProviderPointer pointer,
   ) => $FutureProviderElement(pointer);
 
   @override
-  FutureOr<TaskSortService> create(Ref ref) {
+  FutureOr<TaskService> create(Ref ref) {
     return sortService(ref);
   }
 }
 
-String _$sortServiceHash() => r'eebc9d46b8804644c3a83ad039bbec837a0080d3';
+String _$sortServiceHash() => r'6deaeac3f0048ae0b37f2585f52da2bfcddd08ef';

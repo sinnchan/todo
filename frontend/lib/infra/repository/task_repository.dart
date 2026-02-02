@@ -50,7 +50,7 @@ class TaskRepositoryImpl implements TaskRepository {
   Future<String?> fetchTasksPage({
     required UserId userId,
     required TaskSortSpec sortSpec,
-    required int limit,
+    int limit = 100,
     String? nextToken,
   }) async {
     final page = await _api.fetchTasks(
@@ -63,6 +63,22 @@ class TaskRepositoryImpl implements TaskRepository {
       await _dao.upsertTasks(page.items);
     }
     return page.nextToken;
+  }
+
+  @override
+  Future<void> fetchTasks({
+    required UserId userId,
+    required TaskSortSpec sortSpec,
+  }) async {
+    String? token;
+    for (var i = 1; i <= 10; i++) {
+      token = await fetchTasksPage(
+        userId: userId,
+        sortSpec: sortSpec,
+        nextToken: token,
+      );
+      if (token == null) break;
+    }
   }
 
   Future<void> _syncCreate(Task task) async {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:todo/ui/di/tasks_provider.dart';
 import 'package:todo/ui/route/router.dart';
 import 'package:todo/ui/share/task_add_field.dart';
 import 'package:todo/ui/share/task/task_list.dart';
@@ -10,20 +11,27 @@ class TodoListPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Todo'),
-        actions: [
-          IconButton(
-            onPressed: () => SettingsRoute().push(context),
-            icon: Icon(Icons.settings),
+    return SignedUserIdBuilder(
+      builder: (context, userId) {
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('Todo'),
+            actions: [
+              IconButton(
+                onPressed: () async {
+                  final service = await ref.read(taskServiceProvider.future);
+                  await service.fetchTasks(userId: userId);
+                },
+                icon: Icon(Icons.refresh),
+              ),
+              IconButton(
+                onPressed: () => SettingsRoute().push(context),
+                icon: Icon(Icons.settings),
+              ),
+            ],
           ),
-        ],
-      ),
-      body: SafeArea(
-        child: SignedUserIdBuilder(
-          builder: (context, userId) {
-            return Column(
+          body: SafeArea(
+            child: Column(
               children: [
                 Expanded(
                   child: TaskList(
@@ -36,10 +44,10 @@ class TodoListPage extends HookConsumerWidget {
                   child: TaskAddField(userId: userId),
                 ),
               ],
-            );
-          },
-        ),
-      ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

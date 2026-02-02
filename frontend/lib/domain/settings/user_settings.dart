@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:todo/domain/settings/settings_values.dart';
+import 'package:todo/domain/task/task_sort.dart';
 import 'package:todo/domain/user/user_values.dart';
 
 part 'user_settings.freezed.dart';
@@ -17,4 +18,13 @@ abstract class UserSettings with _$UserSettings {
 
   factory UserSettings.fromJson(Map<String, Object?> json) =>
       _$UserSettingsFromJson(json);
+}
+
+extension UserSettingsExt on UserSettings {
+  TaskSortSpec get sortSpec {
+    return TaskSortSpec(
+      key: sortKey,
+      direction: sortDirection,
+    );
+  }
 }

@@ -19,27 +19,24 @@ class TaskList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final tasksAsync = ref.watch(tasksProvider(userId));
-    final state = tasksAsync.asData?.value ?? TasksState.empty();
-    final taskIds = state.ids;
-    final isFetching = state.isFetching;
+    final tasks = ref.watch(tasksProvider(userId));
 
-    if (tasksAsync.hasError) {
+    if (tasks.hasError) {
       return Center(
         child: Text(
-          'Failed to load tasks: ${tasksAsync.error}',
+          'Failed to load tasks: ${tasks.error}',
         ),
       );
     }
 
-    if (tasksAsync.isLoading && taskIds.isEmpty) {
+    if (tasks.isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
 
     return NotificationListener<ScrollNotification>(
       onNotification: (notification) {
         if (notification.metrics.extentAfter < 240) {
-          ref.read(tasksProvider(userId).notifier).fetchNextPage();
+          // TODO: fetch
         }
         return false;
       },
@@ -49,7 +46,7 @@ class TaskList extends ConsumerWidget {
           SliverPadding(
             padding: padding,
             sliver: SliverImplicitlyAnimatedList<TaskId>(
-              items: taskIds,
+              items: tasks.value ?? [],
               areItemsTheSame: (a, b) => a.id == b.id,
               itemBuilder: (context, animation, id, index) {
                 return SizeFadeTransition(
@@ -79,23 +76,6 @@ class TaskList extends ConsumerWidget {
               },
             ),
           ),
-          if (isFetching)
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.only(
-                  left: padding.left,
-                  right: padding.right,
-                  bottom: padding.bottom,
-                ),
-                child: const Center(
-                  child: SizedBox(
-                    width: 24,
-                    height: 24,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  ),
-                ),
-              ),
-            ),
         ],
       ),
     );
