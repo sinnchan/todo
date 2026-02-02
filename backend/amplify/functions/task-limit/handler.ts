@@ -33,7 +33,7 @@ type AppSyncEvent = {
 
 export const handler = async (event: AppSyncEvent) => {
   const owner = resolveOwner(event.identity);
-  const fieldName = event.info?.fieldName;
+  const fieldName = event.info?.fieldName ?? resolveFieldName(event.arguments);
 
   switch (fieldName) {
     case 'createTaskWithLimit':
@@ -44,6 +44,19 @@ export const handler = async (event: AppSyncEvent) => {
       throw new Error(`Unsupported operation: ${fieldName ?? 'unknown'}`);
   }
 };
+
+function resolveFieldName(args?: Record<string, unknown>): string | undefined {
+  if (!args) {
+    return undefined;
+  }
+  if ('title' in args || 'createdAt' in args || 'updatedAt' in args) {
+    return 'createTaskWithLimit';
+  }
+  if ('id' in args) {
+    return 'deleteTaskWithLimit';
+  }
+  return undefined;
+}
 
 function resolveOwner(identity?: AppSyncEvent['identity']): string {
   const owner =

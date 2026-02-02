@@ -29,6 +29,18 @@ class TasksDao {
     await box.putAll(mapped);
   }
 
+  Future<void> deleteTasksNotIn(String ownerId, Set<String> keepIds) async {
+    final idsToDelete = <String>[];
+    for (final task in box.values) {
+      if (task.owner == ownerId && !keepIds.contains(task.id)) {
+        idsToDelete.add(task.id);
+      }
+    }
+    if (idsToDelete.isNotEmpty) {
+      await box.deleteAll(idsToDelete);
+    }
+  }
+
   Stream<DbTask> getTask(String id) async* {
     if (box.get(id) case final value?) {
       yield _taskFromBoxValue(value);

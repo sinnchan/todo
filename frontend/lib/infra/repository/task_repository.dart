@@ -84,14 +84,25 @@ class TaskRepositoryImpl implements TaskRepository {
     required TaskSortSpec sortSpec,
   }) async {
     String? token;
-    for (var i = 1; i <= 10; i++) {
-      token = await fetchTasksPage(
+    final fetchedIds = <String>{};
+    do {
+      final page = await _api.fetchTasks(
         userId: userId,
         sortSpec: sortSpec,
+        limit: 100,
         nextToken: token,
       );
-      if (token == null) break;
-    }
+      if (page.items.isNotEmpty) {
+        final tasks = page.items.map(_apiMapper.toDomain).toList();
+        for (final task in tasks) {
+          fetchedIds.add(task.id.id);
+        }
+        await _dao.upsertTasks(tasks.map(_dbMapper.fromDomain));
+      }
+      token = page.nextToken;
+    } while (token != null);
+
+    await _dao.deleteTasksNotIn(userId.id, fetchedIds);
   }
 
   Future<void> _syncCreate(Task task) async {

@@ -13,7 +13,10 @@ const schema = a.schema({
       isCompleted: a.boolean().default(false).required(),
     })
     .authorization((allow) => [
-      allow.ownerDefinedIn('owner').to(['read', 'update', 'delete']),
+      allow
+        .ownerDefinedIn('owner')
+        .identityClaim('sub')
+        .to(['read', 'update', 'delete']),
     ])
     .secondaryIndexes((index) => [
       index('owner')
@@ -39,7 +42,7 @@ const schema = a.schema({
       count: a.integer().required().default(0),
     })
     .authorization((allow) => [
-      allow.ownerDefinedIn('owner').to(['read']),
+      allow.ownerDefinedIn('owner').identityClaim('sub').to(['read']),
     ]),
   createTaskWithLimit: a
     .mutation()
