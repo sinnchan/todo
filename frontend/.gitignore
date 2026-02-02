@@ -1,5 +1,5 @@
 # flutter
-**/amplify_outputs.dart
+lib/infra/api/amplify/gen/config/sandbox/**
 
 # Miscellaneous
 *.class

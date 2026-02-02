@@ -29,7 +29,16 @@ applications:
         build:
           commands:
             - cd ../frontend
-            - mise x -- flutter build web --release
+            - |
+              if [ "$AWS_BRANCH" = "main" ]; then
+                export BUILD_ENV=prod
+              elif [ "$AWS_BRANCH" = "develop" ]; then
+                export BUILD_ENV=dev
+              else
+                export BUILD_ENV=dev
+              fi
+              echo "Using ENV=$BUILD_ENV for branch $AWS_BRANCH"
+            - mise x -- flutter build web --release --dart-define=ENV=$BUILD_ENV
       artifacts:
         baseDirectory: ../frontend/build/web
         files:
@@ -37,8 +46,3 @@ applications:
       cache:
         paths:
           - .npm/**/*
-          - $HOME/.pub-cache/**/*
-          - $HOME/.cache/flutter/**/*
-          - $HOME/.local/bin/**/*
-          - $HOME/.local/share/mise/**/*
-          - $HOME/.cache/mise/**/*
