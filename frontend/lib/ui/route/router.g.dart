@@ -6,7 +6,12 @@ part of 'router.dart';
 // GoRouterGenerator
 // **************************************************************************
 
-List<RouteBase> get $appRoutes => [$topRoute, $todoListRoute, $settingsRoute];
+List<RouteBase> get $appRoutes => [
+  $topRoute,
+  $todoListRoute,
+  $todoDetailRoute,
+  $settingsRoute,
+];
 
 RouteBase get $topRoute =>
     GoRouteData.$route(path: '/', factory: $TopRoute._fromState);
@@ -39,6 +44,33 @@ mixin $TodoListRoute on GoRouteData {
 
   @override
   String get location => GoRouteData.$location('/todo');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $todoDetailRoute =>
+    GoRouteData.$route(path: '/todo/:id', factory: $TodoDetailRoute._fromState);
+
+mixin $TodoDetailRoute on GoRouteData {
+  static TodoDetailRoute _fromState(GoRouterState state) =>
+      TodoDetailRoute(id: state.pathParameters['id']!);
+
+  TodoDetailRoute get _self => this as TodoDetailRoute;
+
+  @override
+  String get location =>
+      GoRouteData.$location('/todo/${Uri.encodeComponent(_self.id)}');
 
   @override
   void go(BuildContext context) => context.go(location);

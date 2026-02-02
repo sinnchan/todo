@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todo/domain/task/task_entity.dart';
 import 'package:todo/domain/task/task_values.dart';
 import 'package:todo/ui/di/tasks_provider.dart';
+import 'package:todo/ui/route/router.dart';
 
 class TaskItem extends HookConsumerWidget {
   const TaskItem({super.key, required this.id});
@@ -14,10 +15,9 @@ class TaskItem extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final toggling = useState(false);
-    final deleting = useState(false);
 
     Future<void> toggleCompleted(Task task) async {
-      if (toggling.value || deleting.value) return;
+      if (toggling.value) return;
       toggling.value = true;
       try {
         final repo = await ref.read(taskRepositoryProvider.future);
@@ -31,17 +31,6 @@ class TaskItem extends HookConsumerWidget {
       }
     }
 
-    Future<void> deleteTask(Task task) async {
-      if (toggling.value || deleting.value) return;
-      deleting.value = true;
-      try {
-        final repo = await ref.read(taskRepositoryProvider.future);
-        await repo.deleteTask(task.id);
-      } finally {
-        deleting.value = false;
-      }
-    }
-
     return ref
         .watch(taskProvider(id))
         .when(
@@ -50,9 +39,7 @@ class TaskItem extends HookConsumerWidget {
               child: ListTile(
                 title: Text(task.title),
                 leading: IconButton(
-                  onPressed: toggling.value || deleting.value
-                      ? null
-                      : () => toggleCompleted(task),
+                  onPressed: toggling.value ? null : () => toggleCompleted(task),
                   icon: Icon(
                     (task.isCompleted ?? false)
                         ? Icons.check_circle
@@ -63,11 +50,9 @@ class TaskItem extends HookConsumerWidget {
                   ),
                 ),
                 trailing: IconButton(
-                  tooltip: 'Delete',
-                  onPressed: toggling.value || deleting.value
-                      ? null
-                      : () => deleteTask(task),
-                  icon: const Icon(Icons.delete),
+                  tooltip: 'Details',
+                  onPressed: () => TodoDetailRoute(id: task.id.id).push(context),
+                  icon: const Icon(Icons.more_horiz),
                 ),
               ),
             );
