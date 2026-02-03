@@ -33,51 +33,43 @@ class TaskList extends ConsumerWidget {
       return const Center(child: CircularProgressIndicator());
     }
 
-    return NotificationListener<ScrollNotification>(
-      onNotification: (notification) {
-        if (notification.metrics.extentAfter < 240) {
-          // TODO: fetch
-        }
-        return false;
-      },
-      child: CustomScrollView(
-        key: PageStorageKey('task_list_${userId.id}'),
-        slivers: [
-          SliverPadding(
-            padding: padding,
-            sliver: SliverImplicitlyAnimatedList<TaskId>(
-              items: tasks.value ?? [],
-              areItemsTheSame: (a, b) => a.id == b.id,
-              itemBuilder: (context, animation, id, index) {
-                return SizeFadeTransition(
-                  animation: animation,
-                  curve: Curves.easeOutCubic,
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: TaskItem(
-                      key: ValueKey(id.id),
-                      id: id,
-                    ),
+    return CustomScrollView(
+      key: PageStorageKey('task_list_${userId.id}'),
+      slivers: [
+        SliverPadding(
+          padding: padding,
+          sliver: SliverImplicitlyAnimatedList<TaskId>(
+            items: tasks.value ?? [],
+            areItemsTheSame: (a, b) => a.id == b.id,
+            itemBuilder: (context, animation, id, index) {
+              return SizeFadeTransition(
+                animation: animation,
+                curve: Curves.easeOutCubic,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: TaskItem(
+                    key: ValueKey(id.id),
+                    id: id,
                   ),
-                );
-              },
-              removeItemBuilder: (context, animation, id) {
-                return SizeFadeTransition(
-                  animation: animation,
-                  curve: Curves.easeOutCubic,
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: TaskItem(
-                      key: ValueKey(id.id),
-                      id: id,
-                    ),
+                ),
+              );
+            },
+            removeItemBuilder: (context, animation, id) {
+              return SizeFadeTransition(
+                animation: animation,
+                curve: Curves.easeOutCubic,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: TaskItem(
+                    key: ValueKey(id.id),
+                    id: id,
                   ),
-                );
-              },
-            ),
+                ),
+              );
+            },
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

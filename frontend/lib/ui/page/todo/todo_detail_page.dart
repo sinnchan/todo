@@ -153,6 +153,7 @@ class TodoDetailPage extends HookConsumerWidget {
         lastDate: DateTime(2100),
       );
       if (date == null) return;
+      if (!context.mounted) return;
       final time = await showTimePicker(
         context: context,
         initialTime: TimeOfDay.fromDateTime(initial),
