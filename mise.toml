@@ -1,8 +1,61 @@
-experimental_monorepo_root = true
-
-[monorepo]
-config_roots = ["frontend/*", "backend/*"]
-
 [env]
 MISE_EXPERIMENTAL = 1
 MISE_ENV = "dev"
+AMPLIFY_APP_ID = "dao30regos9cf"
+FRONTEND_AMPLIFY_DIR = "frontend/lib/infra/api/amplify"
+FRONTEND_AMPLIFY_CONFIG_DIR = "frontend/lib/infra/api/amplify/gen/config"
+FRONTEND_SCHEMA_OUT = "frontend/lib/infra/api/graphql/schema.graphql"
+
+[tools]
+node = "20.20.0"
+flutter = "3.38.9"
+
+[tasks.amplify_gen_model]
+dir = "backend"
+run = """
+  npx ampx generate graphql-client-code --format modelgen --model-target dart --out ../$FRONTEND_AMPLIFY_DIR/gen/models
+  SCHEMA_SRC=$(rg -l "tasksByOwnerCreatedAt" .amplify/artifacts/cdk.out -g "*.graphql" | xargs rg -l "type Query" | head -n 1)
+  if [ -z "$SCHEMA_SRC" ]; then echo "schema.graphql not found in .amplify artifacts" >&2; exit 1; fi
+  SCHEMA_OUT="../$FRONTEND_SCHEMA_OUT"
+  mkdir -p "$(dirname "$SCHEMA_OUT")"
+  cp "$SCHEMA_SRC" "$SCHEMA_OUT"
+  if ! rg -q "^scalar AWSDateTime" "$SCHEMA_OUT"; then
+    tmp="${SCHEMA_OUT}.tmp"
+    printf "scalar AWSDateTime\n\n" > "$tmp"
+    cat "$SCHEMA_OUT" >> "$tmp"
+    mv "$tmp" "$SCHEMA_OUT"
+  fi
+"""
+
+[tasks.amplify_sandbox]
+dir = "backend"
+run = """
+  OUT_DIR="../$FRONTEND_AMPLIFY_CONFIG_DIR/sandbox"
+  mkdir -p "$OUT_DIR"
+  npx ampx sandbox --outputs-format dart --outputs-out-dir "$OUT_DIR"
+"""
+
+[tasks.amplify_gen_config]
+dir = "backend"
+run = """
+  set -e
+  OUT_BASE="../$FRONTEND_AMPLIFY_CONFIG_DIR"
+  mkdir -p "$OUT_BASE"
+  for env in develop main; do
+    OUT_DIR="$OUT_BASE/$env"
+    mkdir -p "$OUT_DIR"
+    npx ampx generate outputs --branch "$env" --app-id "$AMPLIFY_APP_ID" --format dart --out-dir "$OUT_DIR"
+  done
+"""
+
+[tasks.dart_format]
+dir = "frontend"
+run = """
+  set -e
+  FILES=$(rg --files -g "*.dart" lib test | rg -v "/gen/")
+  if [ -z "$FILES" ]; then
+    echo "No Dart files to format."
+    exit 0
+  fi
+  echo "$FILES" | xargs dart format
+"""

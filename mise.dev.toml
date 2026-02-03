@@ -1,5 +1,6 @@
 [tools]
 android-sdk = "19.0"
+aws = { version = "2.32.32", symlink_bins = "true" }
 java = "17.0.2"
 
 [shell_alias]

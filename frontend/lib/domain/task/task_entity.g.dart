@@ -1,0 +1,31 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'task_entity.dart';
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+_Task _$TaskFromJson(Map<String, dynamic> json) => _Task(
+  id: json['id'] as TaskId,
+  owner: json['owner'] as UserId,
+  title: json['title'] as String,
+  description: json['description'] as String?,
+  datetime: json['datetime'] == null
+      ? null
+      : DateTime.parse(json['datetime'] as String),
+  isCompleted: json['isCompleted'] as bool?,
+  createdAt: DateTime.parse(json['createdAt'] as String),
+  updatedAt: DateTime.parse(json['updatedAt'] as String),
+);
+
+Map<String, dynamic> _$TaskToJson(_Task instance) => <String, dynamic>{
+  'id': instance.id,
+  'owner': instance.owner,
+  'title': instance.title,
+  'description': instance.description,
+  'datetime': instance.datetime?.toIso8601String(),
+  'isCompleted': instance.isCompleted,
+  'createdAt': instance.createdAt.toIso8601String(),
+  'updatedAt': instance.updatedAt.toIso8601String(),
+};

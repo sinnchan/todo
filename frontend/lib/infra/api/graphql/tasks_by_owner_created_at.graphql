@@ -1,0 +1,25 @@
+query TasksByOwnerCreatedAt(
+  $owner: String!
+  $sortDirection: ModelSortDirection
+  $limit: Int
+  $nextToken: String
+) {
+  tasksByOwnerCreatedAt(
+    owner: $owner
+    sortDirection: $sortDirection
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      owner
+      title
+      description
+      datetime
+      isCompleted
+      createdAt
+      updatedAt
+    }
+    nextToken
+  }
+}

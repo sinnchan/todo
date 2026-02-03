@@ -1,0 +1,285 @@
+scalar AWSDateTime
+
+type Task @aws_iam @aws_cognito_user_pools {
+  owner: String
+  title: String!
+  description: String
+  order: Int
+  datetime: AWSDateTime
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  isCompleted: Boolean!
+  id: ID!
+}
+
+input AmplifyAIConversationTurnErrorInput {
+  errorType: String!
+  message: String!
+}
+
+input ModelStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelBooleanInput {
+  ne: Boolean
+  eq: Boolean
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelSubscriptionStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  in: [String]
+  notIn: [String]
+}
+
+input ModelSubscriptionIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  in: [Int]
+  notIn: [Int]
+}
+
+input ModelSubscriptionFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  in: [Float]
+  notIn: [Float]
+}
+
+input ModelSubscriptionBooleanInput {
+  ne: Boolean
+  eq: Boolean
+}
+
+input ModelSubscriptionIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  in: [ID]
+  notIn: [ID]
+}
+
+enum ModelAttributeTypes {
+  binary
+  binarySet
+  bool
+  list
+  map
+  number
+  numberSet
+  string
+  stringSet
+  _null
+}
+
+input ModelSizeInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+type ModelTaskConnection @aws_iam @aws_cognito_user_pools {
+  items: [Task]!
+  nextToken: String
+}
+
+input ModelTaskFilterInput {
+  owner: ModelStringInput
+  title: ModelStringInput
+  description: ModelStringInput
+  order: ModelIntInput
+  datetime: ModelStringInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  isCompleted: ModelBooleanInput
+  id: ModelIDInput
+  and: [ModelTaskFilterInput]
+  or: [ModelTaskFilterInput]
+  not: ModelTaskFilterInput
+}
+
+type Query {
+  getTask(id: ID!): Task @aws_iam @aws_cognito_user_pools
+  listTasks(filter: ModelTaskFilterInput, limit: Int, nextToken: String): ModelTaskConnection @aws_iam @aws_cognito_user_pools
+  tasksByOwnerDatetime(owner: String!, datetime: ModelStringKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelTaskFilterInput, limit: Int, nextToken: String): ModelTaskConnection @aws_iam @aws_cognito_user_pools
+  tasksByOwnerCreatedAt(owner: String!, createdAt: ModelStringKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelTaskFilterInput, limit: Int, nextToken: String): ModelTaskConnection @aws_iam @aws_cognito_user_pools
+  tasksByOwnerUpdatedAt(owner: String!, updatedAt: ModelStringKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelTaskFilterInput, limit: Int, nextToken: String): ModelTaskConnection @aws_iam @aws_cognito_user_pools
+  tasksByOwnerTitle(owner: String!, title: ModelStringKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelTaskFilterInput, limit: Int, nextToken: String): ModelTaskConnection @aws_iam @aws_cognito_user_pools
+  tasksByOwnerOrder(owner: String!, order: ModelIntKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelTaskFilterInput, limit: Int, nextToken: String): ModelTaskConnection @aws_iam @aws_cognito_user_pools
+}
+
+input ModelTaskConditionInput {
+  owner: ModelStringInput
+  title: ModelStringInput
+  description: ModelStringInput
+  order: ModelIntInput
+  datetime: ModelStringInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  isCompleted: ModelBooleanInput
+  and: [ModelTaskConditionInput]
+  or: [ModelTaskConditionInput]
+  not: ModelTaskConditionInput
+}
+
+input CreateTaskInput {
+  owner: String
+  title: String!
+  description: String
+  order: Int
+  datetime: AWSDateTime
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+  isCompleted: Boolean!
+  id: ID
+}
+
+input UpdateTaskInput {
+  owner: String
+  title: String
+  description: String
+  order: Int
+  datetime: AWSDateTime
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+  isCompleted: Boolean
+  id: ID!
+}
+
+input DeleteTaskInput {
+  id: ID!
+}
+
+type Mutation {
+  createTask(input: CreateTaskInput!, condition: ModelTaskConditionInput): Task @aws_iam @aws_cognito_user_pools
+  updateTask(input: UpdateTaskInput!, condition: ModelTaskConditionInput): Task @aws_iam @aws_cognito_user_pools
+  deleteTask(input: DeleteTaskInput!, condition: ModelTaskConditionInput): Task @aws_iam @aws_cognito_user_pools
+}
+
+input ModelSubscriptionTaskFilterInput {
+  title: ModelSubscriptionStringInput
+  description: ModelSubscriptionStringInput
+  order: ModelSubscriptionIntInput
+  datetime: ModelSubscriptionStringInput
+  createdAt: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  isCompleted: ModelSubscriptionBooleanInput
+  id: ModelSubscriptionIDInput
+  and: [ModelSubscriptionTaskFilterInput]
+  or: [ModelSubscriptionTaskFilterInput]
+  owner: ModelStringInput
+}
+
+type Subscription {
+  onCreateTask(filter: ModelSubscriptionTaskFilterInput, owner: String): Task @aws_subscribe(mutations: ["createTask"]) @aws_iam @aws_cognito_user_pools
+  onUpdateTask(filter: ModelSubscriptionTaskFilterInput, owner: String): Task @aws_subscribe(mutations: ["updateTask"]) @aws_iam @aws_cognito_user_pools
+  onDeleteTask(filter: ModelSubscriptionTaskFilterInput, owner: String): Task @aws_subscribe(mutations: ["deleteTask"]) @aws_iam @aws_cognito_user_pools
+}
+
+input ModelStringKeyConditionInput {
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  between: [String]
+  beginsWith: String
+}
+
+input ModelIntKeyConditionInput {
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+}

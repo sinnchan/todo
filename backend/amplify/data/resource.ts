@@ -1,17 +1,71 @@
 import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
+import { taskLimitHandler } from '../functions/task-limit/resource';
 
-/*== STEP 1 ===============================================================
-The section below creates a Todo database table with a "content" field. Try
-adding a new "isDone" field as a boolean. The authorization rule below
-specifies that any unauthenticated user can "create", "read", "update", 
-and "delete" any "Todo" records.
-=========================================================================*/
 const schema = a.schema({
-  Todo: a
+  Task: a
     .model({
-      content: a.string(),
+      owner: a.string(),
+      title: a.string().required(),
+      description: a.string(),
+      datetime: a.datetime(),
+      createdAt: a.datetime().required(),
+      updatedAt: a.datetime().required(),
+      isCompleted: a.boolean().default(false).required(),
     })
-    .authorization((allow) => [allow.guest()]),
+    .authorization((allow) => [
+      allow
+        .ownerDefinedIn('owner')
+        .identityClaim('sub')
+        .to(['read', 'update', 'delete']),
+    ])
+    .secondaryIndexes((index) => [
+      index('owner')
+        .sortKeys(['datetime'])
+        .name('byOwnerDatetime')
+        .queryField('tasksByOwnerDatetime'),
+      index('owner')
+        .sortKeys(['createdAt'])
+        .name('byOwnerCreatedAt')
+        .queryField('tasksByOwnerCreatedAt'),
+      index('owner')
+        .sortKeys(['updatedAt'])
+        .name('byOwnerUpdatedAt')
+        .queryField('tasksByOwnerUpdatedAt'),
+      index('owner')
+        .sortKeys(['title'])
+        .name('byOwnerTitle')
+        .queryField('tasksByOwnerTitle'),
+    ]),
+  UserTaskCounter: a
+    .model({
+      owner: a.string().required(),
+      count: a.integer().required().default(0),
+    })
+    .authorization((allow) => [
+      allow.ownerDefinedIn('owner').identityClaim('sub').to(['read']),
+    ]),
+  createTaskWithLimit: a
+    .mutation()
+    .arguments({
+      id: a.id().required(),
+      title: a.string().required(),
+      description: a.string(),
+      datetime: a.datetime(),
+      createdAt: a.datetime().required(),
+      updatedAt: a.datetime().required(),
+      isCompleted: a.boolean(),
+    })
+    .returns(a.ref('Task'))
+    .authorization((allow) => [allow.authenticated()])
+    .handler(a.handler.function(taskLimitHandler)),
+  deleteTaskWithLimit: a
+    .mutation()
+    .arguments({
+      id: a.id().required(),
+    })
+    .returns(a.ref('Task'))
+    .authorization((allow) => [allow.authenticated()])
+    .handler(a.handler.function(taskLimitHandler)),
 });
 
 export type Schema = ClientSchema<typeof schema>;
@@ -19,35 +73,6 @@ export type Schema = ClientSchema<typeof schema>;
 export const data = defineData({
   schema,
   authorizationModes: {
-    defaultAuthorizationMode: 'identityPool',
+    defaultAuthorizationMode: 'userPool',
   },
 });
-
-/*== STEP 2 ===============================================================
-Go to your frontend source code. From your client-side code, generate a
-Data client to make CRUDL requests to your table. (THIS SNIPPET WILL ONLY
-WORK IN THE FRONTEND CODE FILE.)
-
-Using JavaScript or Next.js React Server Components, Middleware, Server 
-Actions or Pages Router? Review how to generate Data clients for those use
-cases: https://docs.amplify.aws/gen2/build-a-backend/data/connect-to-API/
-=========================================================================*/
-
-/*
-"use client"
-import { generateClient } from "aws-amplify/data";
-import type { Schema } from "@/amplify/data/resource";
-
-const client = generateClient<Schema>() // use this Data client for CRUDL requests
-*/
-
-/*== STEP 3 ===============================================================
-Fetch records from the database and use them in your frontend component.
-(THIS SNIPPET WILL ONLY WORK IN THE FRONTEND CODE FILE.)
-=========================================================================*/
-
-/* For example, in a React component, you can use this snippet in your
-  function's RETURN statement */
-// const { data: todos } = await client.models.Todo.list()
-
-// return <ul>{todos.map(todo => <li key={todo.id}>{todo.content}</li>)}</ul>
