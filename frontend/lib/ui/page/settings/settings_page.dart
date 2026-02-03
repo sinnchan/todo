@@ -16,14 +16,6 @@ class SettingsPage extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Amplify.Auth.signOut();
-            },
-            icon: Icon(Icons.logout),
-          ),
-        ],
       ),
       body: SignedUserIdBuilder(
         builder: (context, userId) {
@@ -128,6 +120,12 @@ class _SettingsBody extends ConsumerWidget {
               ),
             );
           },
+        ),
+        const Divider(height: 32),
+        ListTile(
+          leading: const Icon(Icons.logout),
+          title: const Text('Log out'),
+          onTap: Amplify.Auth.signOut,
         ),
       ],
     );
