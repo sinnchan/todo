@@ -21,27 +21,25 @@ class TodoDetailPage extends HookConsumerWidget {
     final titleController = useTextEditingController();
     final descriptionController = useTextEditingController();
     final datetimeController = useTextEditingController();
-    final selectedDateTime = useState<DateTime?>(null);
-    final isCompleted = useState(false);
 
     useEffect(() {
       final task = taskAsync.value;
       if (task == null) return null;
       titleController.text = task.title;
       descriptionController.text = task.description ?? '';
-      selectedDateTime.value = task.datetime;
-      isCompleted.value = task.isCompleted ?? false;
       return null;
     }, [taskAsync.value]);
 
     useEffect(() {
-      datetimeController.text = _formatDateTime(selectedDateTime.value);
+      final task = taskAsync.value;
+      if (task == null) return null;
+      datetimeController.text = _formatDateTime(task.datetime);
       return null;
-    }, [selectedDateTime.value]);
+    }, [taskAsync.value]);
 
-    Future<void> saveTask(Task task) async {
+    Future<void> updateTitle(Task task, String value) async {
       if (saving.value || deleting.value) return;
-      final title = titleController.text.trim();
+      final title = value.trim();
       if (title.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Title is required.')),
@@ -52,12 +50,69 @@ class TodoDetailPage extends HookConsumerWidget {
       saving.value = true;
       try {
         final repo = await ref.read(taskRepositoryProvider.future);
-        final description = descriptionController.text.trim();
         final updated = task.copyWith(
           title: title,
-          description: description.isEmpty ? null : description,
-          datetime: selectedDateTime.value,
-          isCompleted: isCompleted.value,
+          updatedAt: DateTime.now(),
+        );
+        await repo.updateTask(updated);
+      } catch (e) {
+        if (!context.mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to update task: $e')),
+        );
+      } finally {
+        saving.value = false;
+      }
+    }
+
+    Future<void> updateDescription(Task task, String value) async {
+      if (saving.value || deleting.value) return;
+      saving.value = true;
+      try {
+        final repo = await ref.read(taskRepositoryProvider.future);
+        final trimmed = value.trim();
+        final updated = task.copyWith(
+          description: trimmed.isEmpty ? null : trimmed,
+          updatedAt: DateTime.now(),
+        );
+        await repo.updateTask(updated);
+      } catch (e) {
+        if (!context.mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to update task: $e')),
+        );
+      } finally {
+        saving.value = false;
+      }
+    }
+
+    Future<void> updateDateTime(Task task, DateTime? value) async {
+      if (saving.value || deleting.value) return;
+      saving.value = true;
+      try {
+        final repo = await ref.read(taskRepositoryProvider.future);
+        final updated = task.copyWith(
+          datetime: value,
+          updatedAt: DateTime.now(),
+        );
+        await repo.updateTask(updated);
+      } catch (e) {
+        if (!context.mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to update task: $e')),
+        );
+      } finally {
+        saving.value = false;
+      }
+    }
+
+    Future<void> updateCompleted(Task task, bool value) async {
+      if (saving.value || deleting.value) return;
+      saving.value = true;
+      try {
+        final repo = await ref.read(taskRepositoryProvider.future);
+        final updated = task.copyWith(
+          isCompleted: value,
           updatedAt: DateTime.now(),
         );
         await repo.updateTask(updated);
@@ -89,8 +144,8 @@ class TodoDetailPage extends HookConsumerWidget {
       }
     }
 
-    Future<void> pickDateTime() async {
-      final initial = selectedDateTime.value ?? DateTime.now();
+    Future<void> pickDateTime(Task task) async {
+      final initial = task.datetime ?? DateTime.now();
       final date = await showDatePicker(
         context: context,
         initialDate: initial,
@@ -103,13 +158,14 @@ class TodoDetailPage extends HookConsumerWidget {
         initialTime: TimeOfDay.fromDateTime(initial),
       );
       if (time == null) return;
-      selectedDateTime.value = DateTime(
+      final selected = DateTime(
         date.year,
         date.month,
         date.day,
         time.hour,
         time.minute,
       );
+      await updateDateTime(task, selected);
     }
 
     return Scaffold(
@@ -128,35 +184,6 @@ class TodoDetailPage extends HookConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Text(
-                          'Data',
-                          style: theme.textTheme.titleMedium,
-                        ),
-                        const SizedBox(height: 8),
-                        _DataRow(label: 'ID', value: task.id.id),
-                        _DataRow(label: 'Owner', value: task.owner.id),
-                        _DataRow(label: 'Title', value: task.title),
-                        _DataRow(
-                          label: 'Description',
-                          value: task.description ?? '-',
-                        ),
-                        _DataRow(
-                          label: 'Datetime',
-                          value: _formatDateTime(task.datetime),
-                        ),
-                        _DataRow(
-                          label: 'Completed',
-                          value: (task.isCompleted ?? false) ? 'Yes' : 'No',
-                        ),
-                        _DataRow(
-                          label: 'Created At',
-                          value: _formatDateTime(task.createdAt),
-                        ),
-                        _DataRow(
-                          label: 'Updated At',
-                          value: _formatDateTime(task.updatedAt),
-                        ),
-                        const Divider(height: 32),
-                        Text(
                           'Edit',
                           style: theme.textTheme.titleMedium,
                         ),
@@ -164,6 +191,7 @@ class TodoDetailPage extends HookConsumerWidget {
                         TextField(
                           controller: titleController,
                           textInputAction: TextInputAction.next,
+                          onSubmitted: (value) => updateTitle(task, value),
                           decoration: const InputDecoration(
                             labelText: 'Title',
                             border: OutlineInputBorder(),
@@ -174,6 +202,8 @@ class TodoDetailPage extends HookConsumerWidget {
                           controller: descriptionController,
                           minLines: 3,
                           maxLines: 6,
+                          onSubmitted: (value) =>
+                              updateDescription(task, value),
                           decoration: const InputDecoration(
                             labelText: 'Description',
                             border: OutlineInputBorder(),
@@ -195,7 +225,7 @@ class TodoDetailPage extends HookConsumerWidget {
                               child: OutlinedButton(
                                 onPressed: saving.value || deleting.value
                                     ? null
-                                    : pickDateTime,
+                                    : () => pickDateTime(task),
                                 child: const Text('Pick Date & Time'),
                               ),
                             ),
@@ -203,7 +233,7 @@ class TodoDetailPage extends HookConsumerWidget {
                             OutlinedButton(
                               onPressed: saving.value || deleting.value
                                   ? null
-                                  : () => selectedDateTime.value = null,
+                                  : () => updateDateTime(task, null),
                               child: const Text('Clear'),
                             ),
                           ],
@@ -212,19 +242,24 @@ class TodoDetailPage extends HookConsumerWidget {
                         SwitchListTile(
                           contentPadding: EdgeInsets.zero,
                           title: const Text('Completed'),
-                          value: isCompleted.value,
+                          value: task.isCompleted ?? false,
                           onChanged: saving.value || deleting.value
                               ? null
-                              : (value) => isCompleted.value = value,
+                              : (value) => updateCompleted(task, value),
                         ),
                         const SizedBox(height: 12),
+                        const Divider(height: 32),
                         SizedBox(
                           width: double.infinity,
                           child: FilledButton(
-                            onPressed: saving.value || deleting.value
+                            onPressed: deleting.value
                                 ? null
-                                : () => saveTask(task),
-                            child: saving.value
+                                : () => deleteTask(task),
+                            style: FilledButton.styleFrom(
+                              backgroundColor: theme.colorScheme.error,
+                              foregroundColor: theme.colorScheme.onError,
+                            ),
+                            child: deleting.value
                                 ? const SizedBox(
                                     width: 18,
                                     height: 18,
@@ -232,32 +267,10 @@ class TodoDetailPage extends HookConsumerWidget {
                                       strokeWidth: 2,
                                     ),
                                   )
-                                : const Text('Save Changes'),
+                                : const Text('Delete Todo'),
                           ),
                         ),
                       ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: FilledButton(
-                      onPressed: deleting.value ? null : () => deleteTask(task),
-                      style: FilledButton.styleFrom(
-                        backgroundColor: theme.colorScheme.error,
-                        foregroundColor: theme.colorScheme.onError,
-                      ),
-                      child: deleting.value
-                          ? const SizedBox(
-                              width: 18,
-                              height: 18,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                              ),
-                            )
-                          : const Text('Delete Todo'),
                     ),
                   ),
                 ),
@@ -269,41 +282,6 @@ class TodoDetailPage extends HookConsumerWidget {
             child: Text('Failed to load task: $err'),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _DataRow extends StatelessWidget {
-  const _DataRow({required this.label, required this.value});
-
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 110,
-            child: Text(
-              label,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.outline,
-              ),
-            ),
-          ),
-          Expanded(
-            child: Text(
-              value,
-              style: theme.textTheme.bodyMedium,
-            ),
-          ),
-        ],
       ),
     );
   }
