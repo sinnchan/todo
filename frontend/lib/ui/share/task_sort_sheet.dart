@@ -13,18 +13,19 @@ class SortSheet extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return switch (useSignedUserId()) {
-      SignedUserIdSignedIn(:final userId) => ref
-          .watch(userSettingsProvider(userId))
-          .when(
-            data: (settings) => SortSheetBody(
-              userId: userId,
-              settings: settings,
+      SignedUserIdSignedIn(:final userId) =>
+        ref
+            .watch(userSettingsProvider(userId))
+            .when(
+              data: (settings) => SortSheetBody(
+                userId: userId,
+                settings: settings,
+              ),
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (error, _) => Center(
+                child: Text('Failed to load settings: $error'),
+              ),
             ),
-            loading: () => const Center(child: CircularProgressIndicator()),
-            error: (error, _) => Center(
-              child: Text('Failed to load settings: $error'),
-            ),
-          ),
       SignedUserIdLoading() => const Center(
         child: CircularProgressIndicator(),
       ),

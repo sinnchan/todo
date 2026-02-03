@@ -94,8 +94,7 @@ class _SettingsBody extends ConsumerWidget {
             await _runSettingsUpdate(
               context,
               ref,
-              (service) =>
-                  service.updateSort(userId: userId, direction: value),
+              (service) => service.updateSort(userId: userId, direction: value),
             );
           },
         ),

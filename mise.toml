@@ -48,3 +48,15 @@ run = """
     npx ampx generate outputs --branch "$env" --app-id "$AMPLIFY_APP_ID" --format dart --out-dir "$OUT_DIR"
   done
 """
+
+[tasks.dart_format]
+dir = "frontend"
+run = """
+  set -e
+  FILES=$(rg --files -g "*.dart" lib test | rg -v "/gen/")
+  if [ -z "$FILES" ]; then
+    echo "No Dart files to format."
+    exit 0
+  fi
+  echo "$FILES" | xargs dart format
+"""

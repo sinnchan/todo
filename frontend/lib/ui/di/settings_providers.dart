@@ -33,7 +33,9 @@ Stream<UserSettings> userSettings(Ref ref, UserId id) async* {
   yield* repo.getUserSettings(id);
 }
 
-final settingsServiceProvider = hooks.FutureProvider<SettingsService>((ref) async {
+final settingsServiceProvider = hooks.FutureProvider<SettingsService>((
+  ref,
+) async {
   final repo = await ref.watch(userSettingsRepositoryProvider.future);
   return SettingsService(repo);
 });

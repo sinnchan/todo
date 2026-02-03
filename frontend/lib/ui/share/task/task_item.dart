@@ -32,7 +32,9 @@ class TaskItem extends HookConsumerWidget {
       }
     }
 
-    final content = ref.watch(taskProvider(id)).when(
+    final content = ref
+        .watch(taskProvider(id))
+        .when(
           data: (task) {
             return Card(
               key: ValueKey('task_${task.id.id}'),

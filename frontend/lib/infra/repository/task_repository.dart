@@ -16,8 +16,8 @@ class TaskRepositoryImpl implements TaskRepository {
     this._api, {
     DbTaskMapper? dbMapper,
     AmplifyTaskMapper? apiMapper,
-  })  : _dbMapper = dbMapper ?? const DbTaskMapper(),
-        _apiMapper = apiMapper ?? const AmplifyTaskMapper();
+  }) : _dbMapper = dbMapper ?? const DbTaskMapper(),
+       _apiMapper = apiMapper ?? const AmplifyTaskMapper();
 
   final TasksDao _dao;
   final TaskApi _api;
