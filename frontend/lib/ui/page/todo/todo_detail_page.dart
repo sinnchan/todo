@@ -49,12 +49,12 @@ class TodoDetailPage extends HookConsumerWidget {
 
       saving.value = true;
       try {
-        final repo = await ref.read(taskRepositoryProvider.future);
+        final service = await ref.read(taskServiceProvider.future);
         final updated = task.copyWith(
           title: title,
           updatedAt: DateTime.now(),
         );
-        await repo.updateTask(updated);
+        await service.updateTask(userId: task.owner, task: updated);
       } catch (e) {
         if (!context.mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
@@ -69,13 +69,13 @@ class TodoDetailPage extends HookConsumerWidget {
       if (saving.value || deleting.value) return;
       saving.value = true;
       try {
-        final repo = await ref.read(taskRepositoryProvider.future);
+        final service = await ref.read(taskServiceProvider.future);
         final trimmed = value.trim();
         final updated = task.copyWith(
           description: trimmed.isEmpty ? null : trimmed,
           updatedAt: DateTime.now(),
         );
-        await repo.updateTask(updated);
+        await service.updateTask(userId: task.owner, task: updated);
       } catch (e) {
         if (!context.mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
@@ -90,12 +90,12 @@ class TodoDetailPage extends HookConsumerWidget {
       if (saving.value || deleting.value) return;
       saving.value = true;
       try {
-        final repo = await ref.read(taskRepositoryProvider.future);
+        final service = await ref.read(taskServiceProvider.future);
         final updated = task.copyWith(
           datetime: value,
           updatedAt: DateTime.now(),
         );
-        await repo.updateTask(updated);
+        await service.updateTask(userId: task.owner, task: updated);
       } catch (e) {
         if (!context.mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
@@ -110,12 +110,12 @@ class TodoDetailPage extends HookConsumerWidget {
       if (saving.value || deleting.value) return;
       saving.value = true;
       try {
-        final repo = await ref.read(taskRepositoryProvider.future);
+        final service = await ref.read(taskServiceProvider.future);
         final updated = task.copyWith(
           isCompleted: value,
           updatedAt: DateTime.now(),
         );
-        await repo.updateTask(updated);
+        await service.updateTask(userId: task.owner, task: updated);
       } catch (e) {
         if (!context.mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
@@ -130,8 +130,8 @@ class TodoDetailPage extends HookConsumerWidget {
       if (saving.value || deleting.value) return;
       deleting.value = true;
       try {
-        final repo = await ref.read(taskRepositoryProvider.future);
-        await repo.deleteTask(task.id);
+        final service = await ref.read(taskServiceProvider.future);
+        await service.deleteTask(userId: task.owner, id: task.id);
         if (!context.mounted) return;
         TodoListRoute().go(context);
       } catch (e) {

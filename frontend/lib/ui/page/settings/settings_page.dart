@@ -1,8 +1,10 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:todo/app/service/settings_service.dart';
 import 'package:todo/domain/settings/user_settings.dart';
 import 'package:todo/domain/settings/settings_values.dart';
+import 'package:todo/domain/user/user_values.dart';
 import 'package:todo/ui/di/settings_providers.dart';
 import 'package:todo/ui/share/use_signed_user_id.dart';
 
@@ -29,13 +31,8 @@ class SettingsPage extends HookConsumerWidget {
               .watch(userSettingsProvider(userId))
               .when(
                 data: (value) => _SettingsBody(
+                  userId: userId,
                   settings: value,
-                  onChanged: (updated) async {
-                    final repo = await ref.read(
-                      userSettingsRepositoryProvider.future,
-                    );
-                    await repo.updateSettings(updated);
-                  },
                 ),
                 loading: () => const Center(
                   child: CircularProgressIndicator(),
@@ -50,17 +47,17 @@ class SettingsPage extends HookConsumerWidget {
   }
 }
 
-class _SettingsBody extends StatelessWidget {
+class _SettingsBody extends ConsumerWidget {
   const _SettingsBody({
+    required this.userId,
     required this.settings,
-    required this.onChanged,
   });
 
+  final UserId userId;
   final UserSettings settings;
-  final Future<void> Function(UserSettings settings) onChanged;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
@@ -73,9 +70,13 @@ class _SettingsBody extends StatelessWidget {
           items: SortKey.values
               .map((i) => DropdownMenuItem(value: i, child: Text(i.name)))
               .toList(),
-          onChanged: (value) {
+          onChanged: (value) async {
             if (value == null) return;
-            onChanged(settings.copyWith(sortKey: value));
+            await _runSettingsUpdate(
+              context,
+              ref,
+              (service) => service.updateSort(userId: userId, key: value),
+            );
           },
         ),
         const SizedBox(height: 12),
@@ -88,9 +89,14 @@ class _SettingsBody extends StatelessWidget {
           items: SortDirection.values
               .map((i) => DropdownMenuItem(value: i, child: Text(i.name)))
               .toList(),
-          onChanged: (value) {
+          onChanged: (value) async {
             if (value == null) return;
-            onChanged(settings.copyWith(sortDirection: value));
+            await _runSettingsUpdate(
+              context,
+              ref,
+              (service) =>
+                  service.updateSort(userId: userId, direction: value),
+            );
           },
         ),
         const SizedBox(height: 12),
@@ -98,19 +104,49 @@ class _SettingsBody extends StatelessWidget {
           contentPadding: EdgeInsets.zero,
           title: const Text('Show completed'),
           value: settings.showCompleted,
-          onChanged: (value) {
-            onChanged(settings.copyWith(showCompleted: value));
+          onChanged: (value) async {
+            await _runSettingsUpdate(
+              context,
+              ref,
+              (service) => service.updateShowCompleted(
+                userId: userId,
+                showCompleted: value,
+              ),
+            );
           },
         ),
         SwitchListTile(
           contentPadding: EdgeInsets.zero,
           title: const Text('Enable push notifications'),
           value: settings.enablePushNotification,
-          onChanged: (value) {
-            onChanged(settings.copyWith(enablePushNotification: value));
+          onChanged: (value) async {
+            await _runSettingsUpdate(
+              context,
+              ref,
+              (service) => service.updatePushNotification(
+                userId: userId,
+                enablePushNotification: value,
+              ),
+            );
           },
         ),
       ],
     );
+  }
+
+  Future<void> _runSettingsUpdate(
+    BuildContext context,
+    WidgetRef ref,
+    Future<void> Function(SettingsService service) action,
+  ) async {
+    try {
+      final service = await ref.read(settingsServiceProvider.future);
+      await action(service);
+    } catch (error) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(error.toString())),
+      );
+    }
   }
 }

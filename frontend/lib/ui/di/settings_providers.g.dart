@@ -15,7 +15,7 @@ const userSettingsRepositoryProvider = UserSettingsRepositoryProvider._();
 final class UserSettingsRepositoryProvider
     extends
         $FunctionalProvider<
-          AsyncValue<UserSettingsRepository>,
+          hooks.AsyncValue<UserSettingsRepository>,
           UserSettingsRepository,
           FutureOr<UserSettingsRepository>
         >
@@ -57,7 +57,7 @@ const userSettingsDaoProvider = UserSettingsDaoProvider._();
 final class UserSettingsDaoProvider
     extends
         $FunctionalProvider<
-          AsyncValue<UserSettingsDao>,
+          hooks.AsyncValue<UserSettingsDao>,
           UserSettingsDao,
           FutureOr<UserSettingsDao>
         >
@@ -96,7 +96,7 @@ const userSettingsProvider = UserSettingsFamily._();
 final class UserSettingsProvider
     extends
         $FunctionalProvider<
-          AsyncValue<UserSettings>,
+          hooks.AsyncValue<UserSettings>,
           UserSettings,
           Stream<UserSettings>
         >

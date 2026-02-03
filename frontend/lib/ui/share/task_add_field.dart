@@ -43,7 +43,7 @@ class TaskAddField extends HookConsumerWidget {
     }
     submitting.value = true;
     try {
-      final repo = await ref.read(taskRepositoryProvider.future);
+      final service = await ref.read(taskServiceProvider.future);
       final now = DateTime.now();
       final task = Task(
         id: TaskId(uuid()),
@@ -56,7 +56,7 @@ class TaskAddField extends HookConsumerWidget {
         updatedAt: now,
       );
 
-      await repo.createTask(task);
+      await service.createTask(userId: userId, task: task);
       if (!ref.context.mounted) return;
       controller.clear();
     } catch (e) {

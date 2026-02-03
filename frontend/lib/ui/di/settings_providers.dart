@@ -1,4 +1,6 @@
+import 'package:hooks_riverpod/hooks_riverpod.dart' as hooks;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:todo/app/service/settings_service.dart';
 import 'package:todo/domain/settings/settings_repository.dart';
 import 'package:todo/domain/settings/user_settings.dart';
 import 'package:todo/domain/user/user_values.dart';
@@ -30,3 +32,8 @@ Stream<UserSettings> userSettings(Ref ref, UserId id) async* {
   final repo = await ref.watch(userSettingsRepositoryProvider.future);
   yield* repo.getUserSettings(id);
 }
+
+final settingsServiceProvider = hooks.FutureProvider<SettingsService>((ref) async {
+  final repo = await ref.watch(userSettingsRepositoryProvider.future);
+  return SettingsService(repo);
+});

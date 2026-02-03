@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todo/domain/settings/settings_values.dart';
 import 'package:todo/domain/settings/user_settings.dart';
+import 'package:todo/domain/user/user_values.dart';
 import 'package:todo/ui/di/settings_providers.dart';
 import 'package:todo/ui/share/use_signed_user_id.dart';
 
@@ -12,16 +13,18 @@ class SortSheet extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return switch (useSignedUserId()) {
-      SignedUserIdSignedIn(:final userId) =>
-        ref
-            .watch(userSettingsProvider(userId))
-            .when(
-              data: (settings) => SortSheetBody(settings: settings),
-              loading: () => const Center(child: CircularProgressIndicator()),
-              error: (error, _) => Center(
-                child: Text('Failed to load settings: $error'),
-              ),
+      SignedUserIdSignedIn(:final userId) => ref
+          .watch(userSettingsProvider(userId))
+          .when(
+            data: (settings) => SortSheetBody(
+              userId: userId,
+              settings: settings,
             ),
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (error, _) => Center(
+              child: Text('Failed to load settings: $error'),
+            ),
+          ),
       SignedUserIdLoading() => const Center(
         child: CircularProgressIndicator(),
       ),
@@ -33,8 +36,13 @@ class SortSheet extends HookConsumerWidget {
 }
 
 class SortSheetBody extends HookConsumerWidget {
-  const SortSheetBody({super.key, required this.settings});
+  const SortSheetBody({
+    super.key,
+    required this.userId,
+    required this.settings,
+  });
 
+  final UserId userId;
   final UserSettings settings;
 
   @override
@@ -65,13 +73,11 @@ class SortSheetBody extends HookConsumerWidget {
             title: Text(_sortKeyLabel(key)),
             onTap: () async {
               selectedKey.value = key;
-              await _updateSettings(
+              await _updateSort(
                 context,
                 ref,
-                settings.copyWith(
-                  sortKey: key,
-                  sortDirection: selectedDirection.value,
-                ),
+                key: key,
+                direction: selectedDirection.value,
               );
             },
           ),
@@ -88,13 +94,11 @@ class SortSheetBody extends HookConsumerWidget {
             title: Text(_directionLabel(direction)),
             onTap: () async {
               selectedDirection.value = direction;
-              await _updateSettings(
+              await _updateSort(
                 context,
                 ref,
-                settings.copyWith(
-                  sortKey: selectedKey.value,
-                  sortDirection: direction,
-                ),
+                key: selectedKey.value,
+                direction: direction,
               );
             },
           ),
@@ -102,14 +106,19 @@ class SortSheetBody extends HookConsumerWidget {
     );
   }
 
-  Future<void> _updateSettings(
+  Future<void> _updateSort(
     BuildContext context,
-    WidgetRef ref,
-    UserSettings settings,
-  ) async {
+    WidgetRef ref, {
+    required SortKey key,
+    required SortDirection direction,
+  }) async {
     try {
-      final repo = await ref.read(userSettingsRepositoryProvider.future);
-      await repo.updateSettings(settings);
+      final service = await ref.read(settingsServiceProvider.future);
+      await service.updateSort(
+        userId: userId,
+        key: key,
+        direction: direction,
+      );
     } catch (e) {
       if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(

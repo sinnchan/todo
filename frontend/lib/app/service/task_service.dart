@@ -1,8 +1,8 @@
 import 'package:todo/domain/settings/settings_repository.dart';
-import 'package:todo/domain/settings/settings_values.dart';
 import 'package:todo/domain/settings/user_settings.dart';
 import 'package:todo/domain/task/task_entity.dart';
 import 'package:todo/domain/task/task_repository.dart';
+import 'package:todo/domain/task/task_values.dart';
 import 'package:todo/domain/user/user_values.dart';
 
 class TaskService {
@@ -16,30 +16,15 @@ class TaskService {
     await tasksRepo.fetchTasks(userId: userId, sortSpec: settings.sortSpec);
   }
 
-  Future<void> createTask({
-    required UserId userId,
-    required Task task,
-  }) async {
-    await tasksRepo.createTask(task);
+  Future<void> createTask({required UserId userId, required Task task}) {
+    return tasksRepo.createTask(task);
   }
 
-  Future<void> updateTask({
-    required UserId userId,
-    required Task task,
-  }) async {
-    await tasksRepo.updateTask(task);
+  Future<void> updateTask({required UserId userId, required Task task}) {
+    return tasksRepo.updateTask(task);
   }
 
-  Future<void> updateSort({
-    required UserId userId,
-    SortKey? key,
-    SortDirection? direction,
-  }) async {
-    final settings = await settingsRepo.getUserSettings(userId).first;
-    final updated = settings.copyWith(
-      sortKey: key ?? settings.sortKey,
-      sortDirection: direction ?? settings.sortDirection,
-    );
-    await settingsRepo.updateSettings(updated);
+  Future<void> deleteTask({required UserId userId, required TaskId id}) {
+    return tasksRepo.deleteTask(id);
   }
 }

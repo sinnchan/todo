@@ -21,12 +21,12 @@ class TaskItem extends HookConsumerWidget {
       if (toggling.value) return;
       toggling.value = true;
       try {
-        final repo = await ref.read(taskRepositoryProvider.future);
+        final service = await ref.read(taskServiceProvider.future);
         final updated = task.copyWith(
           isCompleted: !(task.isCompleted ?? false),
           updatedAt: DateTime.now(),
         );
-        await repo.updateTask(updated);
+        await service.updateTask(userId: task.owner, task: updated);
       } finally {
         toggling.value = false;
       }
