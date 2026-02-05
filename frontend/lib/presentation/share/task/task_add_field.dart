@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todo/domain/task/task_entity.dart';
 import 'package:todo/domain/task/task_values.dart';
 import 'package:todo/domain/user/user_values.dart';
-import 'package:todo/ui/di/tasks_provider.dart';
+import 'package:todo/presentation/di/tasks_provider.dart';
 
 class TaskAddField extends HookConsumerWidget {
   const TaskAddField({super.key, required this.userId});

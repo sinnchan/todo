@@ -3,8 +3,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todo/domain/task/task_entity.dart';
 import 'package:todo/domain/task/task_values.dart';
-import 'package:todo/ui/di/tasks_provider.dart';
-import 'package:todo/ui/route/router.dart';
+import 'package:todo/presentation/di/tasks_provider.dart';
+import 'package:todo/presentation/route/router.dart';
 
 class TodoDetailPage extends HookConsumerWidget {
   const TodoDetailPage({super.key, required this.taskId});

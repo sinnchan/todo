@@ -4,8 +4,8 @@ import 'package:animated_list_plus/transitions.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todo/domain/task/task_values.dart';
 import 'package:todo/domain/user/user_values.dart';
-import 'package:todo/ui/di/tasks_provider.dart';
-import 'package:todo/ui/share/task/task_item.dart';
+import 'package:todo/presentation/di/tasks_provider.dart';
+import 'package:todo/presentation/share/task/task_item.dart';
 
 class TaskList extends ConsumerWidget {
   const TaskList({

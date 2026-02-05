@@ -3,10 +3,10 @@ import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:todo/app/share/logger.dart';
+import 'package:todo/application/share/logger.dart';
 import 'package:todo/infra/api/amplify/amplify_config.dart';
 import 'package:todo/infra/api/amplify/gen/models/ModelProvider.dart';
-import 'package:todo/ui/application.dart';
+import 'package:todo/presentation/application.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

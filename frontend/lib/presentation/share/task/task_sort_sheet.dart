@@ -4,8 +4,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todo/domain/settings/settings_values.dart';
 import 'package:todo/domain/settings/user_settings.dart';
 import 'package:todo/domain/user/user_values.dart';
-import 'package:todo/ui/di/settings_providers.dart';
-import 'package:todo/ui/share/use_signed_user_id.dart';
+import 'package:todo/presentation/di/settings_providers.dart';
+import 'package:todo/presentation/share/use_signed_user_id.dart';
 
 class SortSheet extends HookConsumerWidget {
   const SortSheet({super.key});

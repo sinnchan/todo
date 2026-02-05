@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:todo/ui/page/settings/settings_page.dart';
-import 'package:todo/ui/page/todo/todo_detail_page.dart';
-import 'package:todo/ui/page/todo/todo_list_page.dart';
+import 'package:todo/presentation/page/settings/settings_page.dart';
+import 'package:todo/presentation/page/todo/todo_detail_page.dart';
+import 'package:todo/presentation/page/todo/todo_list_page.dart';
 import 'package:todo/domain/task/task_values.dart';
 
 part 'router.g.dart';

@@ -4,8 +4,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:todo/domain/task/task_entity.dart';
 import 'package:todo/domain/task/task_values.dart';
-import 'package:todo/ui/di/tasks_provider.dart';
-import 'package:todo/ui/route/router.dart';
+import 'package:todo/presentation/di/tasks_provider.dart';
+import 'package:todo/presentation/route/router.dart';
 
 class TaskItem extends HookConsumerWidget {
   const TaskItem({super.key, required this.id});

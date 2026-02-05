@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:todo/ui/di/settings_providers.dart';
-import 'package:todo/ui/di/tasks_provider.dart';
-import 'package:todo/ui/route/router.dart';
-import 'package:todo/ui/share/task/task_add_field.dart';
-import 'package:todo/ui/share/task/task_list.dart';
-import 'package:todo/ui/share/task/task_sort_sheet.dart';
-import 'package:todo/ui/share/use_signed_user_id.dart';
+import 'package:todo/presentation/di/settings_providers.dart';
+import 'package:todo/presentation/di/tasks_provider.dart';
+import 'package:todo/presentation/route/router.dart';
+import 'package:todo/presentation/share/task/task_add_field.dart';
+import 'package:todo/presentation/share/task/task_list.dart';
+import 'package:todo/presentation/share/task/task_sort_sheet.dart';
+import 'package:todo/presentation/share/use_signed_user_id.dart';
 
 class TodoListPage extends HookConsumerWidget {
   const TodoListPage({super.key});

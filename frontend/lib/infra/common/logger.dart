@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:logger/logger.dart' as ext;
-import 'package:todo/app/share/logger.dart';
+import 'package:todo/application/share/logger.dart';
 
 final _logger = ext.Logger(printer: CustomPrinter(printTime: true));
 

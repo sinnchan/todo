@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:todo/app/service/task_service.dart';
+import 'package:todo/application/service/task_service.dart';
 import 'package:todo/domain/settings/user_settings.dart';
 import 'package:todo/domain/task/task_entity.dart';
 import 'package:todo/domain/task/task_repository.dart';
@@ -12,8 +12,8 @@ import 'package:todo/infra/api/task/task_api.dart';
 import 'package:todo/infra/db/task/db_task.dart';
 import 'package:todo/infra/db/task/tasks_dao.dart';
 import 'package:todo/infra/repository/task_repository.dart';
-import 'package:todo/ui/di/box_provider.dart';
-import 'package:todo/ui/di/settings_providers.dart';
+import 'package:todo/presentation/di/box_provider.dart';
+import 'package:todo/presentation/di/settings_providers.dart';
 
 part 'tasks_provider.g.dart';
 

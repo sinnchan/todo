@@ -1,13 +1,13 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart' as hooks;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:todo/app/service/settings_service.dart';
+import 'package:todo/application/service/settings_service.dart';
 import 'package:todo/domain/settings/settings_repository.dart';
 import 'package:todo/domain/settings/user_settings.dart';
 import 'package:todo/domain/user/user_values.dart';
 import 'package:todo/infra/db/user_settings/db_user_setting_model.dart';
 import 'package:todo/infra/db/user_settings/user_settings_dao.dart';
 import 'package:todo/infra/repository/user_settings_repository.dart';
-import 'package:todo/ui/di/box_provider.dart';
+import 'package:todo/presentation/di/box_provider.dart';
 
 part 'settings_providers.g.dart';
 
